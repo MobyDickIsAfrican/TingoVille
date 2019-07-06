@@ -1,0 +1,30 @@
+{% extends 'ecommerce/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
+        {{ RegisterShopForm.Shop_Name|as_crispy_field }}
+      </div>
+      </div>
+
+      <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
+        {{ RegisterShopForm.Description|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+      {{ RegisterShopForm.Delivery_Location|as_crispy_field }}
+    </div>
+  </div>
+
+  <div class="form-row">
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'ecommerce/base.html' %}
+
+
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+       <div class="row">
+
+           <div class="col-md-6 col-xs-4">
+               <img src="{{item.image.url}}" class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;">
+
+               <div >
+                 <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
+                   {% csrf_token %}
+                   <p>{{QuantityForm}}</p>
+                   <button class="btn btn-primary btn-xs  col-xs-6">Buy Now</button>
+                   <button type="submit"class="btn btn-danger btn-xs col-xs-6">Add to Basket</button>
+                   </form>
+                   <h4 class="desc"><small>DESCRIPTION:</small></h4>
+                     <div class=" fig jumbotron">
+                         <p>
+                             {{Description}}
+                         </p>
+
+                     </div>
+               </div>
+           </div>
+
+           <div class="col-md-6 col-xs-4">
+
+               <h4 class="pro" style="margin-top:100px;">{{item.Name}} </h4>
+               <hr />
+                  <div class="jumbotron">
+                      <vr>
+                          <p>{{item.Price}}</p>
+
+
+                      </vr>
+
+
+
+               </div>
+
+
+
+           </div>
+
+
+
+
+       </div>
+
+
+
+   </div>
+
+
+{%endblock%}

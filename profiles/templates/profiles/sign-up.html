@@ -1,0 +1,42 @@
+{% extends 'ecommerce/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
+        {{ SignUpForm.username|as_crispy_field }}
+      </div>
+      </div>
+
+      <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
+        {{ SignUpForm.email|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+      {{ SignUpForm.contact|as_crispy_field }}
+    </div>
+  </div>
+
+  <div class="form-row">
+  <div class="form-group col-md-6 mb-0">
+    {{ SignUpForm.password1|as_crispy_field }}
+  </div>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+  {{ SignUpForm.password2|as_crispy_field }}
+</div>
+</div>
+
+    <div class="form-row">
+    <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+  </form>
+{% endblock %}
