@@ -1,4 +1,4 @@
-
+from .models import Product
 
 class Basket(object):
     def __init__(self, request):
@@ -10,9 +10,9 @@ class Basket(object):
     def AddToBasket(self, item, quantity= 1):
         itemid = str(item.id)
         if itemid not in self.basket:
-        	self.basket[itemid] = {'quantity': str(quantity), 'Price': str(item.Price)}
+        	self.basket[itemid] = {'quantity': quantity, 'Price': str(item.Price)}
         else:
-        	self.basket[itemid]['quantity'] += quantity
+        	self.basket[itemid]['quantity'] = quantity 
 
     def UpdateQuantity(self, item, quantity):
 #the quantity will be a QuantityForm
@@ -26,5 +26,19 @@ class Basket(object):
         self.session['cart'] = self.basket
         self.session.modified = True
         return self.session['cart']
- #self.cart[product_id] = {'quantity': 0,
-                                  #'price': str(product.price)}
+    def CartList(self):
+        cart_keys = self.basket.keys()
+        product_ids = list(map(int, cart_keys))
+        BasketProductsList = []
+        BasketProducts = Product.objects.filter(id__in = product_ids)
+        for item in BasketProducts:
+            BasketProductsList.append(item)
+        cart_values = self.basket.values()
+        CartQuantities = []
+        CartPrices = []
+        for item in cart_values:
+            CartQuantities.append(item['quantity'])
+            CartPrices.append(item['Price'])
+
+        cart_list =list(zip(BasketProductsList, CartQuantities, CartPrices))
+        return cart_list

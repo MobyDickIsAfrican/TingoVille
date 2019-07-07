@@ -1,0 +1,44 @@
+{% extends 'ecommerce/base.html' %}
+
+{% block content %}
+{%for qform, item, quantity, price in QForms%}
+<table>
+  <thead>
+    <th>Product   </th>
+    <th>Price   </th>
+    <th>Quantity   </th>
+    <th>Remove item   </th>
+   </thead>
+   <tbody>
+  <tr>
+    {% if item.image%}
+    <td>
+      <ul style="display:inline-block;">
+
+  <li>{{item.Name}}</li>
+  <li><img class="images"src="{{item.image.url}}" style="width:210px; height:200px;"></li>
+  </ul>
+    </td>
+
+    {%endif%}
+    <td>
+     {{price}}
+
+    </td>
+
+     <td>
+      <form class="form-horizontal" method="POST" action="">
+        {% csrf_token %}
+        {{qform}}
+        </form>
+
+       </td>
+
+
+    </tr>
+  </tbody>
+</table>
+{%endfor%}
+
+
+{% endblock %}
