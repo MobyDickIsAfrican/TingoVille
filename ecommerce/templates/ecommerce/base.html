@@ -30,12 +30,12 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
                         Sell
                         <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu" arial-labellby="dropdown_target">
-                        <a class="dropdown-item">Add Shop</a>
+                        <a class="dropdown-item" href="{% url 'my-shop' %}">Add Shop</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item">My Shops</a>
 
@@ -60,10 +60,14 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Basket</a>
+                    <a class="nav-link" href="{%url 'my-cart' %}">My Basket</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="login/">Login</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'sign-up'%}">Sign Up</a>
                 </li>
 
             </ul>

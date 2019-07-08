@@ -21,7 +21,7 @@ def SignUp(request):
 
 @login_required
 #need to build a custom decorator to check if a user does not already have a shop.
-def RegisterShop(request):
+def RegisterShop(request, id):
     if request.method == 'POST':
         RegisterShopForm = ShopForm(request.POST)
         if RegisterShopForm.is_valid():
@@ -46,7 +46,7 @@ def TestProduct(user):
 
 #@login_required
 #@user_passes_test(TestProduct, login_url ='register-shop')
-def RegisterProduct(request):
+def RegisterProduct(request, id):
     if request.method == 'POST':
         RegisterProductForm = ProductForm(request.POST)
         Imageformset = ProductImageFormset(request.POST)

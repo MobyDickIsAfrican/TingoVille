@@ -4,6 +4,278 @@
 {%load static%}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+<style>
+
+
+body{
+    font-family: 'Monserrat',sans-serif;
+    margin-top:150px;
+    margin-bottom:150px;
+
+    color:red;
+    /*
+    color: black;
+    font-family: vardana, arial, Geneva,Arial Black,Monserrat;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgb(240,240,240);
+    margin-top:80px;
+    */
+}
+
+.nav-link:hover{
+    border:groove;
+    color:green;
+  }
+.navbar-nav{
+    align-content:center;
+}
+.nav-item{
+
+}
+
+
+
+
+.navbar .navbar-collapse {
+
+}
+.nav-link{
+   margin-left:50px;
+   margin-right:50px;
+
+}
+
+.image {
+    width: 20px;
+    height: 20px;
+    margin: 20px;
+    padding: 20px;
+}
+.TAS{
+    margin-bottom:150px;
+}
+
+
+
+    /*
+    color: black;
+    font-family: vardana, arial, Geneva,Arial Black,Monserrat;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgb(240,240,240);
+    margin-top:80px;
+    */
+
+
+.nav-item:hover {
+    border: groove;
+    border-radius: 10px;
+    border-spacing: 20px 50px;
+    color: green;
+}
+
+.navbar-nav {
+    align-content: center;
+}
+
+.nav-item {
+}
+
+
+
+
+
+.navbar .navbar-collapse {
+}
+
+.nav-link {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.desc {
+    margin-top: 65px;
+    font-family: 'Monserrat';
+    background-color: #D0DFDF;
+    color: black;
+    text-align:left;
+}
+/*{
+    margin-top: 100px;
+    font-family: 'Monserrat';
+    background-color: darkslategray;
+    color: white;
+    text-align:center;
+    border-radius:5px;
+}*/
+.jumbotron {
+    padding: 5px 0px 5px 2px;
+    text-align: left;
+    border-radius: 7px;
+    background-color: #D0DFDF;
+}
+.container{
+    margin-top:40px;
+    margin-bottom:200px;
+}
+.btn-danger{
+    background-color:white;
+    color:red;
+
+}
+.btn-primary {
+    background-color: black;
+}
+
+
+
+/*img{
+
+
+    margin-top: 100px;
+    margin-left:-5px;
+    padding:5px;
+
+}
+button{
+    margin-right:21px;
+
+}*/
+.fig {
+    background-color: #D0DFDF;
+}
+
+.TAS {
+    margin-bottom: 50px;
+}
+
+
+
+/*{
+    margin:0;
+    padding:0;
+    list-style:none;
+    text-decoration:none;
+}
+.topdiv{
+    position:fixed;
+    top:0px;
+    width:100%;
+    height:80px;
+    display:block;
+    color:whitesmoke;
+    background:darkslategrey;
+
+}
+.logo_container{
+    height:100%;
+    display:table;
+    float:left;
+
+}
+.grey {
+    background-color: darkslategrey;
+}
+
+    .logo_container h1 {
+        color: white;
+        height: 100%;
+        display: table-cell;
+        vertical-align:middle;
+        font-family:'Montserrat';
+        font-size:32px;
+        font-weight:200;
+    }
+    .logo_container h1 span {
+       font-weight:800;
+    }
+
+
+div#bottomdiv {
+    position:static;
+    bottom: 0px;
+    width: 100%;
+    height: 280px;
+    color: whitesmoke;
+    background: darkslategrey;
+    margin-top:50px;
+
+
+}
+.inner_footer{
+    width:1000px;
+    height:100%;
+    display:block;
+    margin:0 auto;
+
+
+}
+.checkout{
+    float:left;
+    height:100%;
+}
+.checkout a{
+    height:100%;
+    display:table;
+    float:left;
+    padding:0px 25px;
+
+}
+.checkout a li{
+    display:table-cell;
+    vertical-align:baseline;
+    text-align:center;
+    height:67%;
+    color:white;
+    font-family:'Montserrat';
+    font-size:16px;
+
+}
+
+h2 {
+ text-decoration:;
+ font-size:1.2em;
+
+}
+.inner_header{
+    width:1000px;
+    height:100%;
+    display:block;
+    margin: 0 auto;
+
+}
+.navigation{
+    float:right;
+    height:100%;
+}
+    .navigation a {
+        float: left;
+        height: 100%;
+        display: table;
+        padding: 0px 20px;
+    }
+.navigation a:last-child{
+    padding-right:0;
+}
+        .navigation a li {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+            color: white;
+            font-family: 'Montserrat';
+            font-size: 16px;
+        }
+
+
+
+*/
+
+
+
+
+</style>
+
     <meta charset="utf-8" />
     <title>Homepage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +283,9 @@
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="(% static 'çss/ecommerce.css'%)
-"</head>
-<body>
+
+</head>
+<body class"p-3 mb-2 bg-light text-dark">
     <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
         <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
@@ -61,38 +333,59 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">My Basket</a>
+                <li class="nav-item dropdown" id="BASKET">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="Basket.html">
+                        My Basket
+                        <span class="caret"> </span>
+                    </a>
+                    <div id="item" class="dropdown-menu" arial-labelby="dropdown_target">
+                      <ul>
+                          <li>
+
+                              <select id="dynamic-select">
+                                  <options value="None"> Add </options>
+
+                              </select>
+
+                          </li>
+
+
+                          <!--<li><button onclick="removeOption()">Remove last item</button> </li>
+                          <li> <button onclick="removeAllOptions()">Remove all</button> </li>
+                             -->
+                      </ul>
+
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="#">My Account</a>
                 </li>
+
 
             </ul>
         </div>
     </nav>
-    <P>1</p>
-      <P>1</p>
-        <P>1</p>
-          <P>1</p>
-            <P>1</p>
-              <P>1</p>
-                <p>1</p>
-                  <p>1</p>
 
-
-
-    <h1 style="color:red;">Popular Categories</h1>
+    <h1  style="color:#0c0e29; margin-top:100px; margin-bottom:20px;">Popular Categories</h1>
     {%for cat, num in  PopularCategoryList %}
-    <table class="category">
+    <table class="category" style="align-content:center;">
     <th>{{cat.CategoryName}}</th>
     <tr>
      {%for pro in cat.products.all %}
      <td>
        <ul style="list-style:none;">
-
+  <li> {{pro.Name}}</li>
      <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{pro.image.url}}"  > </li>
-      <li> {{pro.Name}}</li>
+
+      <li id="price"> {{price}} </li>
+      <li id="Add">
+          <button type="button" onclick="addOption()">
+              Add to Basket
+          </button>
+      </li>
+      <li id="SeeMore"><a href="{% url 'product-page' pro.id %}">See more Info </a></li>
+
+  </ul>
    </ul>
     </td>
     {%endfor%}
@@ -112,7 +405,16 @@
       {%if good.image%}
      <li>{{good.Name}}</li>
 
-     <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{good.image.url}}"  > </li>
+     <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{good.image.url}}"></li>
+       <li id="price"> {{price}} </li>
+       <li id="Add">
+           <button type="button" onclick="addOption()">
+               Add to Basket
+           </button>
+       </li>
+       <li id="SeeMore"><a href="{% url 'product-page' good.id %}">See more Info </a></li>
+
+   </ul>   </li>
      {%endif%}
 
 </ul>
@@ -134,10 +436,19 @@
       <tr>
     {%for good, num in PopularList%}
     <td>
-  <ul style="list-style:none;">
+  <ul style="list-style:none; margin-bottom:100px;">
 
    <li>{{good.Name}}</li>
    <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{good.image.url}}"  > </li>
+   <li id="price"> {{price}} </li>
+   <li id="Add">
+       <button type="button" onclick="addOption()">
+           Add to Basket
+       </button>
+   </li>
+   <li id="SeeMore"><a href="{% url 'product-page' good.id %}">See more Info </a></li>
+
+</ul>
 </ul>
 </td>
 {%endfor%}
@@ -170,6 +481,38 @@
           integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
           integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        </script>
+
+        <script src="https://code.jQuery.com/jquery-3.4.1.js"></script>
+        <script>
+
+            function getOption() {
+                var select = document.getElementById("dynamic-select");
+                if (select.options.length > 0) {
+                    var option = select.options[select.selectedIndex];
+                    alert("Text: " + option.text + "\nValue: " + option.value);
+                } else {
+                    window.alert("Select box is empty");
+                }
+            }
+
+            function addOption() {
+                var select = document.getElementById("dynamic-select");
+                select.options[select.options.length] = new Option('New Element', '0', false, false);
+                $("p").text(Trial successful).fadeOut(3000)
+
+
+
+            function removeOption() {
+                var select = document.getElementById("dynamic-select");
+                select.options[select.selectedIndex] = null;
+            }
+
+            function removeAllOptions() {
+                var select = document.getElementById("dynamic-select");
+                select.options.length = 0;
+            }
+        </script>
 
 
 
