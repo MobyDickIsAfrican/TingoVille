@@ -12,7 +12,7 @@ class Basket(object):
         if itemid not in self.basket:
         	self.basket[itemid] = {'quantity': quantity, 'Price': str(item.Price)}
         else:
-        	self.basket[itemid]['quantity'] = quantity 
+        	self.basket[itemid]['quantity'] = quantity
 
     def UpdateQuantity(self, item, quantity):
 #the quantity will be a QuantityForm

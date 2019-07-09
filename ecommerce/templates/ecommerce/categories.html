@@ -1,0 +1,60 @@
+{% extends 'ecommerce/base.html' %}
+
+{% block content %}
+
+    <form method="POST" action="" enctype="multipart/form-data">
+      {%csrf_token%}
+      {{formset.management_form}}
+      {%for qform, item, quantity, price in QForms%}
+<table id="TableRow">
+
+<!--<style>
+table {
+    border : 1px none #808080;
+    border-width : 60%
+    padding : 20px;
+}
+</style>-->
+
+    {% if item.image%}
+
+
+<tr>
+  <td>
+  <ul style=" list-style:none; ">
+  <li>{{item.Name}}</li>
+  <li><img class="images"src="{{item.image.url}}" style="width:50px; height:40px;"></li>
+  </ul>
+    </td>
+<td> {{price}}
+<td><form>
+
+   {{qform}}
+   </form>
+ </td>
+
+  <tr>
+ <td><a href="{%url 'cart-item-delete' item.id %}"><input type="button" value="Delete" onclick="deleteRow(this)" action=""> <a>
+ </td>
+ </tr>
+ </tr>
+
+
+
+</table>
+
+<br/>
+<script>
+  function deleteRow(r) {
+    var i = r.parentNode.parentNode.parentNode.rowIndex;
+    document.getElementById("TableRow").deleteRow(i);
+  }
+  </script>
+
+{%endif%}
+{%endfor%}
+
+<button type="submit" class="btn btn-primary">Proceed to checkout</button>
+  </form>
+
+{% endblock %}

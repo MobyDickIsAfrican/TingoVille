@@ -1,13 +1,14 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
+{% load ecommerce_extras_filters %}
 
     <form method="POST" action="" enctype="multipart/form-data">
       {%csrf_token%}
+      {% zip_longest formset.forms goods as items %}
       {{formset.management_form}}
-      {%for qform, item, quantity, price in QForms%}
+      {%for form, good in items %}
 <table id="TableRow">
-
 <!--<style>
 table {
     border : 1px none #808080;
@@ -16,25 +17,31 @@ table {
 }
 </style>-->
 
-    {% if item.image%}
+    {{good.Name}}
+<style>
+table {
+  width: 100%;
+  background: #b2baaf;
+}
 
+  </style>
 
 <tr>
   <td>
   <ul style=" list-style:none; ">
-  <li>{{item.Name}}</li>
-  <li><img class="images"src="{{item.image.url}}" style="width:50px; height:40px;"></li>
+  <li>{{good.image}</li>
+  <li><img class="images"src="{{good.image.url}}" style="width:50px; height:40px;"></li>
   </ul>
     </td>
-<td> {{price}}
-<td><form>
+<td> {{good.Price}}
+<td>
 
-   {{qform}}
-   </form>
+   {{form}}
+
  </td>
 
   <tr>
- <td><a href="{%url 'cart-item-delete' item.id %}"><input type="button" value="Delete" onclick="deleteRow(this)" action=""> <a>
+ <td><a href="{%url 'cart-item-delete' good.id %}"><input type="button" value="Delete" onclick="deleteRow(this)" action=""> <a>
  </td>
  </tr>
  </tr>
@@ -44,17 +51,47 @@ table {
 </table>
 
 <br/>
-<script>
-  function deleteRow(r) {
-    var i = r.parentNode.parentNode.parentNode.rowIndex;
-    document.getElementById("TableRow").deleteRow(i);
-  }
-  </script>
+<script src="https://code.jQuery.com/jQuery-3.4.1.js"> </script>
 
-{%endif%}
+
 {%endfor%}
 
 <button type="submit" class="btn btn-primary">Proceed to checkout</button>
   </form>
+
+  <script>
+
+
+   var k=(0);
+   h='id_quantity';
+
+    /* var two = $('#id_quantity').serializeArray() ;*/
+    for(i=0; i<{{size}}; i++){
+      if(h=='id_quantity'){
+        var two= document.getElementById(h).value;
+        k=(two)+(k);
+        r='changed';
+        document.getElementById(h).setAttribute('id',r);
+      }
+
+      /*
+      dataHtml= '';
+      dataHtml += ' <input type="number" name="quantity" value="2" required id="'k'">'
+
+      document.getElementById('id_quantity').innerhtml= dataHtml;
+*/
+    }
+
+/*  window.onload() => {
+    replaceID
+  };
+    console.log('Javascript is working')*/
+
+
+console.log(k);
+
+
+
+    </script>
 
 {% endblock %}

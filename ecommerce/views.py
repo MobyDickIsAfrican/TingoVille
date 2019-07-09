@@ -66,57 +66,54 @@ def ProductPage(request, id):
         context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description }
         return render(request, 'ecommerce/product-page.html', context)
 
-
 def Cart(request):
+    cart = Basket(request)
+    CartContents = cart.CartList()
     if request.method == 'GET':
-        cart = Basket(request)
         trolley = cart.basket
         if not trolley:
             message = messages.something(request, 'Your cart is Empty, add items to your bag by exploring our great product catalogues')
             context = {'message': message}
             return render(request, 'ecommerce/cart.html', context)
         else:
-            CartContents = cart.CartList()
-            CartAddFormSet = formset_factory(CartAddForm, extra = len(CartContents), can_delete = True)
-            formset = CartAddFormSet()
-            i = 0
-            variable = request.session.get('CartForm')
-            if not variable:
-                variable = {}
-            QForms = []
-            for form in formset:
+            #variable = request.session.get('CartForm')
+            #if not variable:
+                #variable = {}
+            QForms =[]
+            initial = []
+            CartAddFormFormSet = formset_factory(CartAddForm, extra = len(CartContents))
+            for i in range(len(CartContents)):
                 item = CartContents[i][0]
                 quantity = CartContents[i][1]
                 price = CartContents[i][2]
-                qform = CartAddForm(initial = {'quantity': quantity, 'FormId': item.id})
-                variable[str(item.id)] = item.id
-                request.session['CartForm'] = variable
-                request.session.modified = True
-                QForms.append([qform,item, quantity, price])
-                i +=1
-            context = {'CartContents': CartContents, 'QForms': QForms}
+                initial.append({'quantity': quantity, 'FormId': item.id})
+
+            formset = CartAddFormFormSet(initial = initial)
+            goods = [x[0] for x in CartContents]
+            size = len(CartContents)
+            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods}
             return render(request, 'ecommerce/cart.html', context)
 
     elif request.method == 'POST':
-        cart = Basket(request)
         CartContents = cart.CartList()
-        CartAddFormSet = formset_factory(CartAddForm, extra = len(list(CartContents)), can_delete = True)
-        formset = CartAddFormSet(request.POST)
+        initial = []
+        for i in range(len(CartContents)):
+            item = CartContents[i][0]
+            quantity = CartContents[i][1]
+            price = CartContents[i][2]
+            initial.append({'quantity': quantity, 'FormId': item.id})
+        CartAddFormFormSet = formset_factory(CartAddForm)
+        formset = CartAddFormFormSet(request.POST)
+        trolley = cart.basket
         i = 0
-        variable1 = request.session['CartForm']
-        variable2 = variable1.values()
-        if formset.is_valid():
-            i = 0
-            for form in formset:
+        for form in formset.forms:
+            if form.is_valid():
                 item = CartContents[i][0]
-                quantity = CartContents[i][1]
-                price = CartContents[i][2]
-                cart.basket[str(item.id)]['quantity'] = form.cleaned_data['quantity']
-                request.session['cart'] = cart.save()
-                request.session.modified = True
+                trolley[str(item.id)]['quantity'] = form.cleaned_data['quantity']
                 i += 1
-            context = {'formset': formset}
-            return render(request, 'ecommerce/checkout.html')
+        request.session['cart'] = trolley
+        request.session.modified = True
+        return redirect('checkout')
 
 def CartItemDelete(request, id):
     if request.method == 'GET':
@@ -128,11 +125,7 @@ def CartItemDelete(request, id):
         request.session['cart'] = trolley
         request.session.modified = True
         return redirect('my-cart')
-'''
-for form in formset:
-    if form.cleaned_data in formset.deleted_forms:
-        cart.remove(Product.objects.get(id = variable2[i]))
-        request.session['cart'] = cart.save()
-        request.session.modified = True
-    i += 1
-'''
+
+def Checkout(request):
+    context = {}
+    return render(request, 'ecommerce/checkout.html', context)
