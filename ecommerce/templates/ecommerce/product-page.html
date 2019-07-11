@@ -8,17 +8,22 @@
        <div class="row">
 
            <div class="col-md-6 col-xs-4">
-               <img src="{{item.image.url}}" class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;">
+             {%with item.images.all|first as default%}
+               <img src="{{default.AddImage.url}}" class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;">
+               {%endwith%}
+               {%for x in item.images.all%}
+                <img src="{{x.AddImage.url}}" class="img-responsive img-circle" style="width:50px;height:50px;margin-top:100px;">
+               {%endfor%}
 
                <div >
                  <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
                    {% csrf_token %}
                    <p>{{QuantityForm}}</p>
                    <button class="btn btn-primary btn-xs  col-xs-6">Buy Now</button>
-                   <button type="submit"class="btn btn-danger btn-xs col-xs-6">    Add to Basket></button>
+                   <button  id="btn" type=""class="btn btn-danger btn-xs col-xs-6" value="" >    Add to Basket></button>
                    </form>
                    <h4 class="desc"><small>DESCRIPTION:</small></h4>
-                     <div class=" fig jumbotron">
+                     <div class="fig jumbotron">
                          <p>
                              {{Description}}
                          </p>
@@ -54,6 +59,29 @@
 
 
    </div>
+   <script>
+     /*var EmptyDiv =document.getElementById("Empty");
+     var btn =document.getElementById("btn");
+     btn.addEventListener("click",function(){
+       var NewRequest=new XMLHttpRequest();
+       NewRequest.open('GET', 'http://localhost:8000/my-cart/');
+       NewRequest.onload=function(){
+         var NewData=JSON.parse(NewRequest.responseText);
+         renderHTML(NewData);
+       };
+       NewRequest.send();
+     });
 
+     function renderHTML(data){
+       EmptyDiv.insertAdjacentHTML('beforeend', 'string to add');
+     }*/
+     var NewRequest=new XMLHttpRequest();
+     NewRequest.open('GET', 'http://localhost:8000/product/1/json-products');
+     NewRequest.onload=function(){
+       /*var NewData=JSON.parse(NewRequest.responseText);*/
+       console.log(NewRequest.responseText)
+     };
+       NewRequest.send();
+     </script>
 
 {%endblock%}

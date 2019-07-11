@@ -3,6 +3,11 @@ from .forms import UserRegisterForm, ProductForm, ShopForm, ProductImageForm, Pr
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from ecommerce.models import ProductImage
+from django.contrib.auth import views
+from django.contrib.auth import views as auth_views
+from django.utils.decorators import method_decorator
+from functools import wraps
+from ecommerce.views import Product
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -19,9 +24,32 @@ def SignUp(request):
     context = {'SignUpForm': SignUpForm}
     return render(request, 'profiles/sign-up.html', context)
 
+class Login_session(object):
+    def __init__(self, vars):
+        self.vars = vars
+    def __call__(self, LoginView):
+        @wraps(LoginView)
+        def Inner(request, *args, **kwargs):
+            self.vars = request.session['cart']
+            back_up_session = {}
+            for key, var in self.vars.items():
+                try:
+                    back_up_session[key] = var
+                except KeyError:
+                    pass
+            response = LoginView(request, *args, **kwargs)
+            for key2, value in back_up_session.items():
+                request.session[key2] = value
+            return response
+        return Inner
+
+@method_decorator(Login_session(vars), name='dispatch')
+class LoginView(auth_views.LoginView):
+    pass
+
 @login_required
 #need to build a custom decorator to check if a user does not already have a shop.
-def RegisterShop(request, id):
+def RegisterShop(request):
     if request.method == 'POST':
         RegisterShopForm = ShopForm(request.POST)
         if RegisterShopForm.is_valid():
@@ -46,19 +74,20 @@ def TestProduct(user):
 
 #@login_required
 #@user_passes_test(TestProduct, login_url ='register-shop')
-def RegisterProduct(request, id):
+def RegisterProduct(request):
     if request.method == 'POST':
         RegisterProductForm = ProductForm(request.POST)
-        Imageformset = ProductImageFormset(request.POST)
-        if RegisterProductForm.is_valid():
+        Imageformset = ProductImageFormset(request.POST, request.FILES)
+        u = RegisterProductForm.is_valid()
+        v = Imageformset.is_valid()
+        if u and v:
             RegisterProductForm.save()
-            if Imageformset.is_valid():
-                for form in Imageformset:
-                    name = form.cleaned_data.get('name')
-                    image = form.cleaned_data.get('AddImage')
-                    if name:
-                        ProductImage(name = name, AddImage =image).save()
-
+            x = RegisterProductForm.save()
+            for form in Imageformset:
+                name = form.cleaned_data.get('name')
+                image = form.cleaned_data.get('AddImage')
+                if name and image:
+                    ProductImage(name = name, AddImage =image, image = x).save()
             message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
             return redirect('my-shop')
     else:
@@ -66,3 +95,6 @@ def RegisterProduct(request, id):
         Imageformset = ProductImageFormset(request.GET or None)
     context = {'RegisterProductForm':RegisterProductForm, 'Imageformset':Imageformset}
     return render(request, 'profiles/register-product.html', context)
+
+def Account(request, id):
+    return render(request, 'profiles/accoount.html')

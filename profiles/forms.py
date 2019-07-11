@@ -20,7 +20,7 @@ class UserRegisterForm(UserCreationForm):
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ['Shop_Name', 'Description', 'Delivery_Location']
+        fields = ['Shop_Name', 'Description', 'Street_Address', 'Suburb', 'City', 'ZipCode']
 
 
 class ProductForm(forms.ModelForm):

@@ -10,12 +10,16 @@ from profiles.models import Account
 ## created the shop or sold the product.
 
 class Shop(models.Model):
-    name = models.ForeignKey(Account, on_delete = models.CASCADE, related_name = 'shop')
+    name = models.ForeignKey(Account, on_delete = models.CASCADE, related_name = 'shop', null = True)
     #each user can have many shops
     Shop_Name = models.CharField(max_length = 30, unique = True)
     Description = models.TextField(max_length = 200)
-    Delivery_Location = models.PointField(null=True, blank=True, srid = 4326)
+    #Delivery_ = models.PointField(null=True, blank=True, srid = 4326)
     #srid = 4326 is the defaault and most popular
+    Street_Address = models.CharField(max_length = 50, blank = False, default = '1 Jorissen Street')
+    Suburb = models.CharField(max_length = 30, blank = False, default = 'Braamforntein')
+    City = models.CharField(max_length = 30, blank = False, default = 'Johannesburg')
+    ZipCode = models.CharField(max_length = 30, blank =True)
     created = models.DateTimeField(auto_now_add = True, blank = True)
 
     #add cool customiseable stuff for the seller to make shop feel organic.
@@ -136,5 +140,5 @@ class ShoppingCartOrder(models.Model):
 
 class ProductImage(models.Model):
     image = models.ForeignKey(Product, on_delete = models.CASCADE, null = True, related_name = 'images')
-    AddImage = models.ImageField(upload_to = 'Product_image', blank = True)
+    AddImage = models.ImageField(upload_to = 'Product_image', blank = False)
     name = models.CharField(max_length = 200, default = 'write here')

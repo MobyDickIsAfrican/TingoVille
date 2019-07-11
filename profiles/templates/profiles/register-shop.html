@@ -19,9 +19,30 @@
 
     <div class="form-row">
     <div class="form-group col-md-6 mb-0">
-      {{ RegisterShopForm.Delivery_Location|as_crispy_field }}
+      {{ RegisterShopForm.Street_Address|as_crispy_field }}
     </div>
   </div>
+
+  <div class="form-row">
+  <div class="form-group col-md-6 mb-0">
+    {{ RegisterShopForm.Suburb|as_crispy_field }}
+  </div>
+  </div>
+
+  <div class="form-row">
+  <div class="form-group col-md-6 mb-0">
+    {{ RegisterShopForm.City|as_crispy_field }}
+  </div>
+  </div>
+
+  <div class="form-row">
+  <div class="form-group col-md-6 mb-0">
+    {{ RegisterShopForm.ZipCode|as_crispy_field }}
+  </div>
+  </div>
+
+
+
 
   <div class="form-row">
     <button type="submit" class="btn btn-primary">Sign in</button>

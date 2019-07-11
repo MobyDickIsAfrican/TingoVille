@@ -6,10 +6,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.Home, name ='home'),
-    path('shop/', views.MyShop, name ='my-shop'),
+    path('my-shop/', views.MyShop, name ='my-shop'),
     path('product/<int:id>/', views.ProductPage, name= 'product-page'),
     path('my-cart/', views.Cart, name = 'my-cart'),
     path('my-cart/product/<int:id>/', views.CartItemDelete, name = 'cart-item-delete'),
-    path('my-cart/checkout/', views.Checkout, name = 'checkout')
+    path('my-cart/checkout/', views.Checkout, name = 'checkout'),
+
     #path('categories/', views.CategoriesPage, name ='categories-page')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

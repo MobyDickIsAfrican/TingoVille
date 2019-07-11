@@ -4,7 +4,8 @@ from django.contrib import messages
 from .forms import CartAddForm
 from .cart import Basket
 from django.forms import formset_factory
-
+from django.contrib.auth.decorators import login_required
+from .forms import CheckoutForm
 def keyfunc(x):
     return x[1]
 
@@ -126,6 +127,25 @@ def CartItemDelete(request, id):
         request.session.modified = True
         return redirect('my-cart')
 
+
+@login_required
 def Checkout(request):
-    context = {}
+    if request.method == 'POST':
+        form = CheckoutForm(request.POST)
+        details = request.session['shipping']
+        if not details:
+            details = {}
+
+        if form.is_valid():
+            details['Street_Address'] = form.cleaned_data['Street_Address']
+            details['Suburb'] = form.cleaned_data['Suburb']
+            details['City'] = form.cleaned_data['City']
+            details['ZipCode'] = form.cleaned_data['ZipCode']
+
+        #request.session['shipping'] = details
+        #request.session.modified = True
+        return redirect('account')
+    else:
+        form = CheckoutForm()
+    context = {'form': form}
     return render(request, 'ecommerce/checkout.html', context)
