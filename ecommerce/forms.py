@@ -8,10 +8,10 @@ class CartAddForm(forms.Form):
 		fields = ['quantity']
 
 class CheckoutForm(forms.Form):
-	Street_Address = forms.CharField(max_length = 50, required = True)
-	Suburb = forms.CharField(max_length = 30, required = True)
-	City = forms.CharField(max_length = 30, required = True)
-	ZipCode = forms.CharField(max_length = 30, required = False)
+	Street_Address = forms.CharField(max_length = 10, required = True)
+	Suburb = forms.CharField(max_length = 20, required = True)
+	City = forms.CharField(max_length = 15, required = True)
+	ZipCode = forms.CharField(max_length = 8, required = False)
 
 	class Meta:
 		fields = ['Street_Address', 'Suburb', 'City', 'ZipCode']

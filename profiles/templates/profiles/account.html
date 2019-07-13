@@ -1,0 +1,27 @@
+{% extends 'ecommerce/base.html' %}
+{% block content %}
+<h1>My Orders</h1>
+<style>
+table {
+  width: 100%;
+  background: #b2baaf;
+}
+</style>
+<table style="width=100%">
+  <tr>
+  <th>Order Reference Number</th>
+    <th>Order Date</th>
+      <th>Delivery Date</th>
+          <th>Total Cost</th>
+          </tr>
+            {%for item, date , number, Delivery_Date, cost in AccountDetails%}
+            <tr>
+<td>{{number}}</td>
+<td>{{date}}</td>
+<td>{{Delivery_Date}}</td>
+<td>{{cost}}</td>
+          </tr>
+</table>
+{%endfor%}
+
+{% endblock %}

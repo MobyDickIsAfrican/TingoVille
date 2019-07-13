@@ -1,0 +1,61 @@
+{% extends 'ecommerce/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<style>
+table {
+  width: 100%;
+}
+</style>
+
+
+
+    <form method="post">
+      <dl>
+<dt> Shipping details
+<dd>{%csrf_token%}
+  <div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+      {{form.Street_Address|as_crispy_field }}
+    </div>
+    </div>
+
+    <div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+      {{form.Suburb|as_crispy_field }}
+    </div>
+  </div>
+
+  <div class="form-row">
+  <div class="form-group col-md-6 mb-0">
+    {{form.City|as_crispy_field }}
+  </div>
+</div>
+
+<div class="form-row">
+<div class="form-group col-md-6 mb-0">
+  {{form.ZipCode|as_crispy_field }}
+</div>
+</div>
+  </dd>
+</dt>
+</dl>
+  <table style="width=100%">
+    <tr>
+<th>  Number of items </th>
+<th>Payment options</th>
+<th>Total cost</th>
+</tr>
+<tr>
+  <!--psuedo variable-->
+  <td>4</td>
+  <td>Cash On Delivery</td>
+  <td>Zar</td>
+</tr>
+</table>
+<br/>
+<div class="form-row">
+<button type="submit" class="btn btn-success">Submit</button>
+</div>
+</form>
+
+{%endblock%}

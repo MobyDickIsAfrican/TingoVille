@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
 from django.conf import settings
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, date
 from profiles.models import Account
 
 
@@ -33,7 +33,8 @@ class Shop(models.Model):
 
 class ProductCategory (models.Model):
     CategoryName = models.CharField(max_length = 50, unique= True)
-
+    image = models.ImageField(upload_to = 'Category_image', blank = True)
+    
     def __str__(self):
         return self.CategoryName
 
@@ -56,7 +57,7 @@ class Product(models.Model):
     ProductType = models.CharField(max_length = 200, default = 'write type here, i.e is it a cellphone, radio etc.')
     Price = models.DecimalField(max_digits = 9, decimal_places = 2)
     Stock = models.IntegerField(default = 1)
-    image = models.ImageField(upload_to = 'Product_image', blank = True)
+    #image = models.ImageField(upload_to = 'Product_image', blank = True)
     Description = models.TextField(default = 'follow the campus shop guides for creating your description')
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
@@ -117,12 +118,14 @@ class ShoppingCartOrder(models.Model):
     #this also has to be changed to a one to one relationship, but the existing cart has to be deleted upon completion of order
     Date_Ordered = models.DateTimeField(auto_now= True)
     # We need to add a boolean conditional that tells us if the cart exists.
+    #need to add a description to this model. It will have a default.
 
 
     def ReferenceNumber(self):
-        date = Date_Ordered.datetime.strftime("%d%m%Y%H%M%S")
-        cart_id_string = str(ShoppingCartOrder.id)
-        account_str = str(Account.id)
+        date = self.Date_Ordered.date()
+        date = date.strftime("%d%m%Y%H%M%S")
+        cart_id_string = str(self.id)
+        account_str = str(self.Owner.id)
         #creates a unique reference number for the cart when an order is placed
         #or when the function is called.
         #A is used to distinquish the user account number from the reference

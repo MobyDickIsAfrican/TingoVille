@@ -30,7 +30,9 @@ table {
   <td>
   <ul style=" list-style:none; ">
   <li>{{good.image}</li>
-  <li><img class="images"src="{{good.image.url}}" style="width:50px; height:40px;"></li>
+  {%with good.images.all|first as default%}
+  <li><img class="images"src="{{default.AddImage.url}}" style="width:50px; height:40px;"></li>
+  {%endwith%}
   </ul>
     </td>
 <td> {{good.Price}}

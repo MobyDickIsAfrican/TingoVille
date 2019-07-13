@@ -10,21 +10,18 @@ img {
   width: 250px;
   height: 260px;
 }
-table
-{
-  width: 100%
-}
-td{
-  width: 25%;
-}
-</style>
 
+</style>
+<h1> Shop by {{cats.CategoryName}}</h1>
 <div class="row">
-  {%for item in query%}
+
+  {%for item in pro%}
   <div class="three column">
     <ul style=" style-list: none;">
-  <li>{{item.CategoryName}}</li>
-  <li><img src="{{item.image.url}}"></li>
+  <li>{{item.Name}}</li>
+  {%with item.images.all|first as default%}
+  <li><img src="{{default.AddImage.url}}"></li>
+  {%endwith%}
   </ul>
 </div>
   {%if forloop.counter|divisibleby:3 %}

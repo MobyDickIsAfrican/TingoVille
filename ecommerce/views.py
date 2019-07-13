@@ -1,4 +1,4 @@
-from .models import Shop, Product, ProductCategory
+from .models import Shop, Product, ProductCategory, ShoppingCartOrder, OrderItem
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import CartAddForm
@@ -6,6 +6,10 @@ from .cart import Basket
 from django.forms import formset_factory
 from django.contrib.auth.decorators import login_required
 from .forms import CheckoutForm
+from django.views.generic import View
+from django.http import HttpResponse
+from profiles.models import Account
+
 def keyfunc(x):
     return x[1]
 
@@ -31,7 +35,6 @@ def Home(request):
 
     SortedProducts = sorted(PopularProducts, key = keyfunc)
     PopularList = SortedProducts[:7]
-
     Fresh = []
     count = 0
     for item in Product.objects.all():
@@ -64,6 +67,9 @@ def ProductPage(request, id):
     else:
         QuantityForm = CartAddForm(initial = {'FormId': 1})
         Description = item.Description
+        #if request.is_ajax():
+            #var2 = request.session['item']
+            #variable = var2
         context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description }
         return render(request, 'ecommerce/product-page.html', context)
 
@@ -132,20 +138,66 @@ def CartItemDelete(request, id):
 def Checkout(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
-        details = request.session['shipping']
-        if not details:
-            details = {}
-
+        details = {}
         if form.is_valid():
             details['Street_Address'] = form.cleaned_data['Street_Address']
             details['Suburb'] = form.cleaned_data['Suburb']
             details['City'] = form.cleaned_data['City']
             details['ZipCode'] = form.cleaned_data['ZipCode']
+            trolley = request.session['cart']
+            cart_account = get_object_or_404(Account, user = request.user)
+            shoppingcart, status = ShoppingCartOrder.objects.get_or_create(Owner = cart_account)
+            for key, value in trolley.items():
+                orderitem, status = OrderItem.objects.get_or_create(product = Product.objects.get(id = int(key)), quantity = value['quantity'])
+                shoppingcart.CartOrder.add(orderitem.id)
+            shoppingcart.save()
 
-        #request.session['shipping'] = details
-        #request.session.modified = True
-        return redirect('account')
+            request.session['shipping'] = details
+            request.session.modified = True
+            #add a flash message here to tell the user their order is being processed and they will
+            #find their reference number below.
+            return redirect('account')
     else:
         form = CheckoutForm()
     context = {'form': form}
     return render(request, 'ecommerce/checkout.html', context)
+
+class AjaxView(View):
+    def post(self, request, kwargs):
+        #return the item id, and the hash of the session_id using request.session.session_key
+        v = request.session.session_key
+        var1 = hash(v)
+        #here i am violating my rule of only calling the calling the session by Basket(request)
+        request.session['var1'] = var1
+        request.session.modified = True
+        data = {'var1': var1}
+        data = json.dumps(data)
+        return HttpResponse(data)
+
+
+
+def json_data(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            data = request.body
+            data = json.loads(data)
+            image_id = data['id']
+            var1 = data['var1']
+            if var1 == request.session['var1']:
+                #here i am violating my rule of only calling the calling the session by Basket(request)
+                request.session['item'] = image_id
+                request.session.modified = True
+
+def CategoryView(request):
+    #make a query for all Categories
+    #now i need to get a default image for the CategoryView - this can be done in the models
+    query = ProductCategory.objects.all()
+
+    context = {'query': query}
+    return render(request, 'ecommerce/categories.html', context)
+    
+def CategoryProducts(request, id):
+    cats = ProductCategory.objects.get(id = id)
+    pro = cats.products.all()
+    context = {'cats': cats, 'pro': pro}
+    return render(request, 'ecommerce/category-products.html', context)

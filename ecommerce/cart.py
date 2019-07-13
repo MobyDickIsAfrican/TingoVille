@@ -42,3 +42,4 @@ class Basket(object):
 
         cart_list =list(zip(BasketProductsList, CartQuantities, CartPrices))
         return cart_list
+    #I need to add a functionality such that when a Shop owner deletes a product, it is removed from the basket.
