@@ -9,7 +9,7 @@ from .forms import CheckoutForm
 from django.views.generic import View
 from django.http import HttpResponse
 from profiles.models import Account
-
+import json
 def keyfunc(x):
     return x[1]
 
@@ -98,7 +98,8 @@ def Cart(request):
             formset = CartAddFormFormSet(initial = initial)
             goods = [x[0] for x in CartContents]
             size = len(CartContents)
-            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods}
+            image_id = request.session['item']
+            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id}
             return render(request, 'ecommerce/cart.html', context)
 
     elif request.method == 'POST':
@@ -162,9 +163,19 @@ def Checkout(request):
     context = {'form': form}
     return render(request, 'ecommerce/checkout.html', context)
 
-class AjaxView(View):
-    def post(self, request, kwargs):
+def AjaxView(request):
         #return the item id, and the hash of the session_id using request.session.session_key
+
+    if request.method == 'POST':
+        data = request.POST
+        image_id = data['id']
+        var1 = data['var1']
+        if var1 == request.session['var1']:
+            #here i am violating my rule of only calling the calling the session by Basket(request)
+            request.session['item'] = image_id
+            request.session.modified = True
+        return HttpResponse(data)
+    if request.method == 'GET':
         v = request.session.session_key
         var1 = hash(v)
         #here i am violating my rule of only calling the calling the session by Basket(request)
@@ -176,17 +187,7 @@ class AjaxView(View):
 
 
 
-def json_data(request):
-    if request.is_ajax():
-        if request.method == 'POST':
-            data = request.body
-            data = json.loads(data)
-            image_id = data['id']
-            var1 = data['var1']
-            if var1 == request.session['var1']:
-                #here i am violating my rule of only calling the calling the session by Basket(request)
-                request.session['item'] = image_id
-                request.session.modified = True
+
 
 def CategoryView(request):
     #make a query for all Categories
@@ -195,7 +196,7 @@ def CategoryView(request):
 
     context = {'query': query}
     return render(request, 'ecommerce/categories.html', context)
-    
+
 def CategoryProducts(request, id):
     cats = ProductCategory.objects.get(id = id)
     pro = cats.products.all()

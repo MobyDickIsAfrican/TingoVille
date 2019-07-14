@@ -22,7 +22,7 @@
                    <p>{{QuantityForm}}</p>
                    {{variable}}
                    <button class="btn btn-primary btn-xs  col-xs-6">Buy Now</button>
-                   <button  id="btn" type=""class="btn btn-danger btn-xs col-xs-6" value="" >    Add to Basket></button>
+                   <button  type=""class="btn btn-danger btn-xs col-xs-6" value="" >    Add to Basket></button>
                    </form>
                    <h4 class="desc"><small>DESCRIPTION:</small></h4>
                      <div class="fig jumbotron">
@@ -62,22 +62,87 @@
 
    </div>
 
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+
        <script type="text/javascript">{% javascript_settings %}</script>
        <script type="text/javascript">
+         var id=[];
+       {%for x in item.images.all%}
+       var y='{{x.id}}';
+       id.push(y);
+       {%endfor%}
+      var x=id[0];
+      console.log(x);
+      var p;
+      $(this).on("click",function(){
+        console.log(4);
+        $(document).ready(function(){
+            $.ajax({
+         url: configuration['ecommerce']['ajax_view'],
+         cache: false,
+         type: "GET",
+         success: function(data){
+           p=data;
+           var thing=JSON.parse(p);
+           console.log(thing.var1);
+           var t=thing.var1;
+           $(document).ready(function(){
+               $.ajax({
+            url: configuration['ecommerce']['ajax_view'],
+            cache: false,
+            type: "POST",
+            data: {'id': x, 'var1':t},
+            success: function (data) {
+             console.log('success');
 
-         var x;
+           },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+            }
+               });
+           });
 
-         $(document).on("click", ".img-responsive", function() {
+
+
+         }
+
+                 });
+            });
+      });
+
+     /*if(p !== null){
+       $(document).ready(function(){
+           $.ajax({
+        url: 'ajax/',
+        cache: false,
+        type: "POST",
+        data: {"id": x, "var1":p[0].var1}
+        success: function(data){
+         console.log('success');
+         console.log(p);
+        }
+        beforeSend: function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+        }
+           });
+       });
+
+
+
+     }*/
+
+
+        /* $(document).on("click", ".img-responsive", function() {
              x= $(this).attr("id");
              var myImgSrc = document.getElementById(x).src;
              document.getElementById('IneverChange').src = myImgSrc;
          });
+
          var p;
-         $('btn').on("click",function(){
+         $("btn").on("click",function(){
            $(document).ready(function(){
                $.ajax({
-           	url: configuration['ecommerce']['ajax_view'],
+           	url: 'ajax/',
            	cache: false,
            	type: "GET",
            	success: function(data){
@@ -86,28 +151,30 @@
                     });
                });
          });
-          console.log(p)
-         if(p != null){
+          console.log(p);
+         if(p !== null){
            $(document).ready(function(){
                $.ajax({
-           	url: configuration['ecommerce']['ajax_view'],
+           	url: 'ajax/',
            	cache: false,
            	type: "POST",
            	data: {"id": x, "var1":p[0].var1}
-           	success: function(data){}
+           	success: function(data){
+             console.log(success);
+            }
            	beforeSend: function(xhr, settings){
            	    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-           	}}
+           	}
                });
            });
 
 
 
          }
+*/
 
 
-       </script>
-   <!--<script>
+
      /*var EmptyDiv =document.getElementById("Empty");
      var btn =document.getElementById("btn");
      btn.addEventListener("click",function(){
@@ -123,15 +190,12 @@
      function renderHTML(data){
        EmptyDiv.insertAdjacentHTML('beforeend', 'string to add');
      }*/
-     var NewRequest=new XMLHttpRequest();
-     NewRequest.open('GET', 'http://localhost:8000/product/1/json-products');
-     NewRequest.onload=function(){
-       /*var NewData=JSON.parse(NewRequest.responseText);*/
-      /* console.log(NewRequest.responseText)*/
-     };
-       NewRequest.send();
-     </script>-->
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+
+
+
+
+
+
      </script>
     <script type=text/javascript>
       $(document).on("click", ".img-responsive", function() {
