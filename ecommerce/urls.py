@@ -13,11 +13,12 @@ urlpatterns = [
     path('my-cart/product/<int:id>/', views.CartItemDelete, name = 'cart-item-delete'),
     path('my-cart/checkout/', views.Checkout, name = 'checkout'),
     path('ajax/', views.AjaxView, name = 'ajax-view'),
+    path('cart-ajax/', views.AddToCartAjax, name = 'cart-ajax'),
     path('categories', views.CategoryView, name = 'categories'),
     path('product_category/<int:id>/', views.CategoryProducts, name = 'category-products'),
     #path('categories/', views.CategoriesPage, name ='categories-page')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 def javascript_settings():
-    js_conf = {'ajax_view': reverse('ajax-view'), }
+    js_conf = {'ajax_view': reverse('ajax-view'), 'ajax_cart': reverse('cart-ajax') }
     return js_conf

@@ -113,7 +113,7 @@
      /*if(p !== null){
        $(document).ready(function(){
            $.ajax({
-        url: 'ajax/',
+        url: configuration['ecommerce']['ajax_cart'],
         cache: false,
         type: "POST",
         data: {"id": x, "var1":p[0].var1}
@@ -197,6 +197,7 @@
 
 
      </script>
+
     <script type=text/javascript>
       $(document).on("click", ".img-responsive", function() {
           var x= $(this).attr("id");

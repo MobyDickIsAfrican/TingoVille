@@ -10,6 +10,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from profiles.models import Account
 import json
+from .documents import ProductDocument
 def keyfunc(x):
     return x[1]
 
@@ -170,10 +171,10 @@ def AjaxView(request):
         data = request.POST
         image_id = data['id']
         var1 = data['var1']
-        if var1 == request.session['var1']:
+        #if var1 == request.session['var1']:
             #here i am violating my rule of only calling the calling the session by Basket(request)
-            request.session['item'] = image_id
-            request.session.modified = True
+        request.session['item'] = image_id
+        request.session.modified = True
         return HttpResponse(data)
     if request.method == 'GET':
         v = request.session.session_key
@@ -184,6 +185,14 @@ def AjaxView(request):
         data = {'var1': var1}
         data = json.dumps(data)
         return HttpResponse(data)
+
+def AddToCartAjax(request):
+    if request.is_ajax():
+        if request.method == 'GET':
+            cart= request.session['cart']
+            num = len(cart)
+            data = json.dumps({'num':num})
+            return HttpResponse(data)
 
 
 
@@ -202,3 +211,14 @@ def CategoryProducts(request, id):
     pro = cats.products.all()
     context = {'cats': cats, 'pro': pro}
     return render(request, 'ecommerce/category-products.html', context)
+
+def Search(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        if query:
+            SearchResults = ProductDocument.search().filter(query)
+            queryset = SearchResults.to_queryset()
+            context = {'queryset': queryset}
+            return render(request, 'ecommerce/search.html', context)
+        else:
+            return render(request, 'ecommerce/no-search-results.html')

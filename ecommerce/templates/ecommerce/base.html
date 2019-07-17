@@ -77,6 +77,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="login/">Login</a>
+                    <p id='read'>badge</p>
                 </li>
 
                 <li class="nav-item">
@@ -86,6 +87,7 @@
         </div>
     </nav>
     <div class="container" style="margin-top:100px; margin-bottom:100px;">
+
 {% block content %}
 
 {% endblock %}
@@ -119,10 +121,26 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
               integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {% block custom_js %}
-    {% endblock%}
     <script>
 
+      $(document).ready(function(){
+          $.ajax({
+       url: configuration['ecommerce']['ajax_cart'],
+       cache: false,
+       type: "GET",
+       success: function(data){
+         var dis=JSON.parse(data);
+         console.log(dis.num);
+         var badge=dis.num;
+        document.getElementById('read').innerHTML=dis.num;
+       }
+    });
+  });
+
+
       </script>
+    {% endblock%}
+
 
     </body>
     </html>
