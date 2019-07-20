@@ -1,0 +1,7 @@
+{% extends 'ecommerce/base.html' %}
+
+{% block content %}
+{%for item in queryset%}
+{{item.Name}}
+{%endfor%}
+{% endblock %}

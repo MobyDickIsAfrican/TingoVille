@@ -10,7 +10,11 @@ from django.views.generic import View
 from django.http import HttpResponse
 from profiles.models import Account
 import json
-from .documents import ProductDocument
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
+
+
+
 def keyfunc(x):
     return x[1]
 
@@ -212,13 +216,30 @@ def CategoryProducts(request, id):
     context = {'cats': cats, 'pro': pro}
     return render(request, 'ecommerce/category-products.html', context)
 
-def Search(request):
+
+def Searching(request):
     if request.method == 'GET':
         query = request.GET.get('q')
         if query:
-            SearchResults = ProductDocument.search().filter(query)
-            queryset = SearchResults.to_queryset()
+            client = Elasticsearch()
+            s = Search(using = client, index = 'products').query('match', Description = query)
+            queryset = []
+            for hit in s:
+                p = Product.objects.get(id = hit.meta.id)
+                queryset.append(p)
             context = {'queryset': queryset}
             return render(request, 'ecommerce/search.html', context)
         else:
             return render(request, 'ecommerce/no-search-results.html')
+''''
+def AjaxSearch(request):
+    if request.is_ajax():
+        if request.method == 'POST':
+            #do some stuff
+            data = request.POST[0]
+            return HttpResponse(data)
+        elif request.method == 'GET':
+            # i do some stuff
+            data = json.loads({'query1': {'name': blahbla, 'íd': 1, 'type': cat, 'url': url}, 'query2': query2, 'query3': query3})
+            return HttpResponse(data)
+'''

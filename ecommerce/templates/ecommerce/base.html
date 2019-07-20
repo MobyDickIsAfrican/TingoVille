@@ -88,6 +88,15 @@
     </nav>
     <div class="container" style="margin-top:100px; margin-bottom:100px;">
 
+<div class="search-container">
+    <form method = "GET" action="{%url 'search' %}">
+      <input class='search' type="text" placeholder="Search.." name="q" id = "q">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+    <p class='changeme'></p>
+  </div>
+
+
 {% block content %}
 
 {% endblock %}
@@ -139,6 +148,50 @@
 
 
       </script>
+<script>
+$('search').on('change',function(){
+  var x=document.getElementById('search').innerHTML;
+  $(document).ready(function(){
+      $.ajax({
+   url: configuration['ecommerce']['ajax_view'],
+   cache: false,
+   type: "POST",
+   data: {'SearchedItem': x},
+   success: function(data){
+      $(document).ready(function(){
+         $.ajax({
+      url: configuration['ecommerce']['ajax_view'],
+      cache: false,
+      type: "GET",
+      success: function (data) {
+      var thing=JSON.parse(data);
+      var a=thing.name;
+      var b=thing.id;
+      var type=thing.type;
+      var ur=thing.url;
+      var query2=thing.query2;
+      var query3=thing.query3;
+      document.getElementById('changeme').innerHTML=a;
+     }
+
+         });
+     });
+
+
+
+   },
+   beforeSend: function(xhr, settings){
+       xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+   }
+
+           });
+      });
+});
+
+
+
+</script>
+
     {% endblock%}
 
 
