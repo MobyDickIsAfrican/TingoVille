@@ -12,6 +12,8 @@ from profiles.models import Account
 import json
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
+from ecommerce.documents import CategoryDocument, ShopDocument
+from django.urls import reverse
 
 
 
@@ -222,24 +224,65 @@ def Searching(request):
         query = request.GET.get('q')
         if query:
             client = Elasticsearch()
-            s = Search(using = client, index = 'products').query('match', Description = query)
+            s = Search(using = client, index = 'products').query('multi_match', query = query, fields = ['Name', 'ProductType', 'Description'], fuzziness = 1)
             queryset = []
             for hit in s:
                 p = Product.objects.get(id = hit.meta.id)
                 queryset.append(p)
-            context = {'queryset': queryset}
+
+
+            cats = Search(using = client, index = 'categories').query('multi_match', query = query, fields = ['Name'], fuzziness = 1)
+            catqueryset = []
+            for hit in cats:
+                c = ProductCategory.objects.get(id = hit.meta.id)
+                catqueryset.append(c)
+
+            shops = Search(using = client, index = 'shops').query('multi_match', query = query, fields = ['Name'], fuzziness = 1)
+            shopqueryset = []
+            for hit in shops:
+                var = Shop.objects.get(id = hit.meta.id)
+                catqueryset.append(var)
+
+            context = {'catqueryset': catqueryset, 'shopqueryset': shopqueryset,'queryset': queryset}
             return render(request, 'ecommerce/search.html', context)
         else:
             return render(request, 'ecommerce/no-search-results.html')
-''''
+
 def AjaxSearch(request):
     if request.is_ajax():
         if request.method == 'POST':
-            #do some stuff
-            data = request.POST[0]
+            data = request.POST.get('SearchedItem')
+            request.session['search'] = data
+            request.session.modified = True
+            data = json.dumps(data)
             return HttpResponse(data)
         elif request.method == 'GET':
-            # i do some stuff
-            data = json.loads({'query1': {'name': blahbla, 'íd': 1, 'type': cat, 'url': url}, 'query2': query2, 'query3': query3})
+            data = request.session['search']
+            client = Elasticsearch()
+            s = Search(using = client, index = 'products').query('multi_match', query = data, fields = ['Name', 'ProductType', 'Description'], fuzziness = 1)
+            queryset = {}
+
+            query = []
+            for hit in s:
+                p = Product.objects.get(id = hit.meta.id)
+                queryset['Name'] = p.Name
+                queryset['id'] = p.id
+                queryset['type'] = 'product'
+                queryset['url']= reverse('product-page', kwargs = {'id': p.id})
+                query.append(queryset)
+
+            '''
+            cats = Search(using = client, index = 'categories').query('multi_match', query = query, fields = ['Name'], fuzziness = 1)
+            catqueryset = []
+            for hit in cats:
+                c = ProductCategory.objects.get(id = hit.meta.id)
+                catqueryset.append(c)
+
+            shops = Search(using = client, index = 'shops').query('multi_match', query = query, fields = ['Name'], fuzziness = 1)
+            shopqueryset = []
+            for hit in shops:
+                var = Shop.objects.get(id = hit.meta.id)
+                catqueryset.append(var)
+                '''
+            data = json.dumps(query)
             return HttpResponse(data)
-'''

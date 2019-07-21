@@ -90,11 +90,13 @@
 
 <div class="search-container">
     <form method = "GET" action="{%url 'search' %}">
-      <input class='search' type="text" placeholder="Search.." name="q" id = "q">
-      <button type="submit"><i class="fa fa-search"></i></button>
+      <input class='search' type="text" placeholder="Search.." name="q" id='q' oninput="findme()"/>
+      <button class="btn-primary btn-lg" type="submit" value="search"></button>
+     <div id='display'></div>
     </form>
-    <p class='changeme'></p>
-  </div>
+    <p class='changeme'>risk</p>
+  
+</div>
 
 
 {% block content %}
@@ -149,29 +151,39 @@
 
       </script>
 <script>
-$('search').on('change',function(){
-  var x=document.getElementById('search').innerHTML;
+function findme(){
+  var x=document.getElementById('q').value;
+  console.log(x);
   $(document).ready(function(){
       $.ajax({
-   url: configuration['ecommerce']['ajax_view'],
+   url: configuration['ecommerce']['ajax_search'],
    cache: false,
    type: "POST",
+   dataType:'JSON',
    data: {'SearchedItem': x},
    success: function(data){
+     console.log("postcomplete")
       $(document).ready(function(){
          $.ajax({
-      url: configuration['ecommerce']['ajax_view'],
+      url: configuration['ecommerce']['ajax_search'],
       cache: false,
       type: "GET",
       success: function (data) {
       var thing=JSON.parse(data);
-      var a=thing.name;
-      var b=thing.id;
-      var type=thing.type;
-      var ur=thing.url;
-      var query2=thing.query2;
-      var query3=thing.query3;
-      document.getElementById('changeme').innerHTML=a;
+      var size=thing.length;
+
+      for (var i=0; i<size;i++){
+        var name=thing[i].Name;
+        var id=thing[i].id;
+        var type=thing[i].type;
+        var url=thing[i].url;
+        var par=document.createElement("P");
+        var tex=document.createTextNode(name);
+        par.appendChild(tex);
+        document.getElementById('display').appendChild(par);
+
+      }
+
      }
 
          });
@@ -186,7 +198,7 @@ $('search').on('change',function(){
 
            });
       });
-});
+}
 
 
 

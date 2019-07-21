@@ -1,7 +1,33 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
-{%for item in queryset%}
-{{item.Name}}
+{%for t in catqueryset%}
+<div>
+<a href="{% url 'category-products' t.id %}"><p>{{t.Name}}</p>
+{%if t.image%}
+<a href="{% url 'category-products' t.id %}"><img src="{{t.image.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;"></a>
+{%endif%}
 {%endfor%}
+
+{%for r in shopqueryset%}
+<div>
+<p>{{r.Name}}</p>
+</div>
+{%endfor%}
+
+{%for item in queryset%}
+<div>
+<a href="{% url 'product-page' item.id %}"><p>{{item.Name}}</p></a>
+{%with item.images.all|first as default%}
+{%if default.AddImage%}
+<a href="{% url 'product-page' item.id %}">  <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;"></a>
+{%endif%}
+  {%endwith%}
+<a href="{% url 'product-page' item.id %}"><p>{{item.Description}}</p></a>
+</div>
+{%endfor%}
+
+
+
+
 {% endblock %}

@@ -16,10 +16,11 @@ urlpatterns = [
     path('cart-ajax/', views.AddToCartAjax, name = 'cart-ajax'),
     path('categories', views.CategoryView, name = 'categories'),
     path('product_category/<int:id>/', views.CategoryProducts, name = 'category-products'),
-    path('search/', views.Searching, name ='search')
+    path('search/', views.Searching, name ='search'),
+    path('ajax_search/', views.AjaxSearch, name = 'ajax-search')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #for development environment
 
 def javascript_settings():
-    js_conf = {'ajax_view': reverse('ajax-view'), 'ajax_cart': reverse('cart-ajax') }
+    js_conf = {'ajax_view': reverse('ajax-view'), 'ajax_cart': reverse('cart-ajax'), 'ajax_search': reverse('ajax-search')}
     return js_conf
