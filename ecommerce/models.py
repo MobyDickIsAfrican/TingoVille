@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from datetime import datetime, date
 from profiles.models import Account
-
+from django.contrib.postgres.fields import ArrayField
 
 
 ## creating a shop model for the seller. The AUTH_USER_MODEL is used to link the seller to the user who actually
@@ -34,7 +34,7 @@ class Shop(models.Model):
 class ProductCategory (models.Model):
     CategoryName = models.CharField(max_length = 50, unique= True)
     image = models.ImageField(upload_to = 'Category_image', blank = True)
-    
+
     def __str__(self):
         return self.CategoryName
 
@@ -84,9 +84,68 @@ class Product(models.Model):
             return self.Name
 
 class Inventory (models.Model):
-    #Owner = models.OneToOneField(Shop, on_delete = models.CASCADE)
-    #ProductList = Product.product.objects.all()
-    pass
+    shop = models.OneToOneField(Shop, on_delete= models.CASCADE, related_name = 'inventory', null = True)
+    PendingOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list)
+    PendingOrderIds = ArrayField(models.IntegerField(blank = True), default = list)
+    PendingProductIds = ArrayField(models.IntegerField(blank = True), default = list)
+    AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list)
+    AcceptedUsersIds = ArrayField(models.IntegerField(blank = True), default = list)
+    AcceptedProductIds = ArrayField(models.IntegerField(blank = True), default = list)
+
+    def Messages(self, user_id, obj):
+        item = obj.product
+        product_id = item.id
+        name = item.Name
+        #attribute = obj.colour
+        order_message = f'An order has been placed for {stock} {name}s '
+        self.PendingOrders.append(order_message)
+        self.PendingProductIds.append(product_id)
+        self.PendingOrderIds.append(user_id)
+        return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
+
+    def Remove(self, user_id, product_id):
+        again = True
+        position = self.PendingOrderIds.index(user_id)
+        for item in self.PendingProductIds:
+            if item == product_id and self.PendingProductIds.index(item) == position:
+                again = False
+                self.PendingOrders.pop(position)
+                self.PendingOrderIds.pop(position)
+                self.PendingProductIds.pop(position)
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
+        if again:
+            position = self.PendingProductIds.index(product_id)
+            for item in self.PendingOrderIds:
+                if item == product_id and self.PendingProductIds.index(item) == position:
+                    again = False
+                    self.PendingOrders.pop(position)
+                    self.PendingOrderIds.pop(position)
+                    self.PendingProductIds.pop(position)
+                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
+
+    def Approve(self, user_id, product_id):
+        again = True
+        position = self.PendingOrderIds.index(user_id)
+        for item in self.PendingProductIds:
+            if item == product_id and self.PendingProductIds.index(item) == position:
+                again = False
+                message=self.PendingOrders.pop(position)
+                order_id = self.PendingOrderIds.pop(position)
+                item_id = self.PendingProductIds.pop(position)
+                self.AcceptedOrders.append(message)
+                self.AcceptedOrdersIds.append(order_id)
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedOrdersIds'])
+        if again:
+            position = self.PendingProductIds.index(product_id)
+            for item in self.PendingOrderIds:
+                if item == product_id and self.PendingProductIds.index(item) == position:
+                    again = False
+                    message=self.PendingOrders.pop(position)
+                    order_id = self.PendingOrderIds.pop(position)
+                    item_id = self.PendingProductIds.pop(position)
+                    self.AcceptedOrders.append(message)
+                    self.AcceptedOrdersIds.append(order_id)
+                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedOrdersIds'])
 
 
 class OrderItem(models.Model):
@@ -99,6 +158,7 @@ class OrderItem(models.Model):
     OrderExists = models.BooleanField(default = False)
     #I think this should be true
     quantity = models.IntegerField(default = 1)
+    #colour = models.CharField(blank = True, max_length = 200,)
     #auto_now is true, as product is added to the cart
     Date_Added = models.DateTimeField(auto_now_add = True)
 
