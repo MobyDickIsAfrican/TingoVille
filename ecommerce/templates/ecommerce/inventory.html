@@ -1,0 +1,64 @@
+{% extends 'ecommerce/base.html' %}
+
+{% block content %}
+{% load ecommerce_extras_filters %}
+<h1> Pending Orders </h1>
+<div>
+    <table>
+  {%for message, product_id, userId in PendingQuerySet%}
+<tr>
+  {{message}}
+  <div>
+    <ul id=PendingOrders style=" display: on-block; list-style: none ;">
+      <button class="btn btn-success btn-xs  col-xs-6" href=#>Accept </button>
+      <button  type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button>
+   </ul>
+  </div>
+  </tr>
+  {% endfor %}
+    </table>
+  </div>
+
+  <div>
+  <h1> Accepted Orders <h2>
+      <table>
+      {%for message, product_id, userId in AcceptedQuerySet%}
+    <tr>
+      {{message}}
+      </tr>
+      {%endfor%}
+  </table>
+</div>
+
+
+
+<div>
+
+  <h1> Inventory</h1>
+  <table>
+
+
+    <th>
+<td>Product description</td> <td> To be delivered</td> <td> Delivered </td> <td> Returns</td><td> Sales</td> <td> New Stock</td>
+      </th>
+      {% zip_longest QForms products as items %}
+      {% for form, item in items %}
+      <tr>
+        {%for pros in item.images.all%}
+        <td>{{pros.Name}}</td> <td> {{item.ToBeDelivered}} </td> <td> {{Delivered}} </td> <td> {{Returns}} </td> <td> {{item.Sales}}</td> <td><form method= "POST"> {%csrf_token%}{%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} {{form.quantity}}</form>  </td>
+
+{%endfor%}
+        </tr>
+
+      {% endfor %}
+        </table>
+    </div>
+
+    <script>
+
+
+      </script>
+
+
+
+ {% endblock %}

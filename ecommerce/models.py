@@ -58,6 +58,11 @@ class Product(models.Model):
     Price = models.DecimalField(max_digits = 9, decimal_places = 2)
     Stock = models.IntegerField(default = 1)
     #image = models.ImageField(upload_to = 'Product_image', blank = True)
+    #change made here
+    ToBeDelivered = models.IntegerField(default = 0)
+    #change made here
+    Delivered = models.IntegerField(default = 0)
+    Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
     Description = models.TextField(default = 'follow the campus shop guides for creating your description')
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
@@ -72,7 +77,7 @@ class Product(models.Model):
         #index = (('Name','id'),)
         #Ordering = ('-created',)
         #Product_Ordering = () this is to order by smalles or largest price
-        #pass
+        #pass 
 
     def Available(self):
         if self.LeftOver() == 0:
@@ -85,19 +90,20 @@ class Product(models.Model):
 
 class Inventory (models.Model):
     shop = models.OneToOneField(Shop, on_delete= models.CASCADE, related_name = 'inventory', null = True)
-    PendingOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list)
-    PendingOrderIds = ArrayField(models.IntegerField(blank = True), default = list)
-    PendingProductIds = ArrayField(models.IntegerField(blank = True), default = list)
-    AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list)
-    AcceptedUsersIds = ArrayField(models.IntegerField(blank = True), default = list)
-    AcceptedProductIds = ArrayField(models.IntegerField(blank = True), default = list)
+    PendingOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
+    PendingOrderIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
+    PendingProductIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
+    AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
+    AcceptedUsersIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
+    AcceptedProductIds = ArrayField(models.IntegerField(blank = True), default = list, blank = True)
 
     def Messages(self, user_id, obj):
         item = obj.product
         product_id = item.id
         name = item.Name
+        stock = obj.quantity
         #attribute = obj.colour
-        order_message = f'An order has been placed for {stock} {name}s '
+        order_message = f'An order has been placed for {stock} red {name}s '
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
         self.PendingOrderIds.append(user_id)
@@ -129,12 +135,13 @@ class Inventory (models.Model):
         for item in self.PendingProductIds:
             if item == product_id and self.PendingProductIds.index(item) == position:
                 again = False
-                message=self.PendingOrders.pop(position)
+                message = self.PendingOrders.pop(position)
                 order_id = self.PendingOrderIds.pop(position)
                 item_id = self.PendingProductIds.pop(position)
                 self.AcceptedOrders.append(message)
-                self.AcceptedOrdersIds.append(order_id)
-                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedOrdersIds'])
+                self.AcceptedUsersIds.append(order_id)
+                self.AcceptedProductIds.append(product_id)
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds'])
         if again:
             position = self.PendingProductIds.index(product_id)
             for item in self.PendingOrderIds:
@@ -144,8 +151,9 @@ class Inventory (models.Model):
                     order_id = self.PendingOrderIds.pop(position)
                     item_id = self.PendingProductIds.pop(position)
                     self.AcceptedOrders.append(message)
-                    self.AcceptedOrdersIds.append(order_id)
-                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedOrdersIds'])
+                    self.AcceptedUsersIds.append(order_id)
+                    self.AcceptedProductIds.append(product_id)
+                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds'])
 
 
 class OrderItem(models.Model):
@@ -204,4 +212,8 @@ class ShoppingCartOrder(models.Model):
 class ProductImage(models.Model):
     image = models.ForeignKey(Product, on_delete = models.CASCADE, null = True, related_name = 'images')
     AddImage = models.ImageField(upload_to = 'Product_image', blank = False)
+    Stock = models.IntegerField(default = 1)
     name = models.CharField(max_length = 200, default = 'write here')
+
+    def __str__(self):
+        return self.name

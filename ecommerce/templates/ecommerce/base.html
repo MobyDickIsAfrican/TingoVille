@@ -13,6 +13,18 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="(% static 'ecommerce/static/css/ecommerce.css'%)
 "</head>
+<style>
+.ui-autocomplete{
+  width: 50px;
+  
+}
+ul.ui-autocomplete.ui-menu{
+  list-style-type:none;
+  box-shadow: 1px 1px 1px 1px;
+  border-length: 40%;
+  list-style-position:outside;
+}
+</style>
 <body>
     <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -95,7 +107,7 @@
      <div id='display'></div>
     </form>
     <p class='changeme'>risk</p>
-  
+
 </div>
 
 
@@ -131,6 +143,9 @@
               integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
               integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+              <script src="https://code.jquery.com"></script>
+              <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     {% block custom_js %}
     <script>
 
@@ -171,8 +186,20 @@ function findme(){
       success: function (data) {
       var thing=JSON.parse(data);
       var size=thing.length;
+console.log(thing)
+$( function() {
+  var Searches= [];
+  var item;
+  for (var i=0; i<size; i++){
+  item=thing[i].Name;
+  Searches.push(item);
+ }
+   $( '#q' ).autocomplete({
+     source: Searches
+   });
+     } );
 
-      for (var i=0; i<size;i++){
+    /*  for (var i=0; i<size; i++){
         var name=thing[i].Name;
         var id=thing[i].id;
         var type=thing[i].type;
@@ -182,7 +209,7 @@ function findme(){
         par.appendChild(tex);
         document.getElementById('display').appendChild(par);
 
-      }
+      }*/
 
      }
 
@@ -199,7 +226,6 @@ function findme(){
            });
       });
 }
-
 
 
 </script>

@@ -12,9 +12,9 @@ from profiles.models import Account
 import json
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
-from ecommerce.documents import CategoryDocument, ShopDocument
+from .documents import CategoryDocument, ShopDocument
 from django.urls import reverse
-
+from .tasks import OrderMessage
 
 
 def keyfunc(x):
@@ -159,7 +159,8 @@ def Checkout(request):
                 orderitem, status = OrderItem.objects.get_or_create(product = Product.objects.get(id = int(key)), quantity = value['quantity'])
                 shoppingcart.CartOrder.add(orderitem.id)
             shoppingcart.save()
-
+            cart_id = shoppingcart.id
+            OrderMessage.delay(cart_id)
             request.session['shipping'] = details
             request.session.modified = True
             #add a flash message here to tell the user their order is being processed and they will

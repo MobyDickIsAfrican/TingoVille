@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegisterForm, ProductForm, ShopForm, ProductImageForm, ProductImageFormset
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from ecommerce.models import ProductImage, ShoppingCartOrder
+from ecommerce.models import ProductImage, ShoppingCartOrder, Inventory, Product, Shop
 from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 from django.utils.decorators import method_decorator
 from functools import wraps
-from ecommerce.views import Product, Shop
 from .models import Account
 from datetime import timedelta
+from django.forms import formset_factory
+from .forms import QuantityForm
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -59,6 +60,8 @@ def RegisterShop(request):
             MyShop = RegisterShopForm.save(commit = False)
             MyShop.name = shop_account
             MyShop.save()
+            inventory = Inventory(shop = MyShop)
+            inventory.save()
             Shop_Name = RegisterShopForm.cleaned_data['Shop_Name']
             message = messages.success(request, f'Congratulations your Shop, {Shop_Name} has been created. Start adding products! We have created an inventory for you')
             return redirect('my-shop')
@@ -95,8 +98,9 @@ def RegisterProduct(request):
             for form in Imageformset:
                 name = form.cleaned_data.get('name')
                 image = form.cleaned_data.get('AddImage')
+                stock = form.cleaned_data.get('Stock')
                 if name and image:
-                    ProductImage(name = name, AddImage =image, image = x).save()
+                    ProductImage(name = name, AddImage =image, Stock = stock, image = x).save()
             message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
             return redirect('my-shop')
     else:
@@ -130,3 +134,52 @@ def AccountView(request):
 
     else:
         return render(request, 'profiles/account-none.html')
+
+@login_required
+@user_passes_test(TestProduct, login_url ='register-shop')
+def InventoryView(request, id):
+    this_user = request.user
+    this_account = get_object_or_404(Account, user = this_user)
+    this_shop = get_object_or_404(Shop, name = this_account)
+    id = this_shop.inventory.id
+    inventory = Inventory.objects.get(id = id)
+    PendingQuerySet = zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, Product.objects.filter(id__in = inventory.PendingProductIds))
+    AcceptedQuerySet = zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, Product.objects.filter(id__in = inventory.AcceptedProductIds))
+    shop = inventory.shop
+    QForms = []
+    for item in shop.product_set.all():
+        for item2 in item.images.all():
+            form = QuantityForm(initial = {'FormId': item.id, 'ProductId': item2.id})
+            QForms.append(form)
+    if request.method == 'GET':
+        var = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds))
+        if len(var) > 0:
+            for x, y, z in var:
+                p = Product.objects.get(id = y)
+                string_list = x.split()
+                quantity = int(string_list[::-1][2])
+                p.ToBeDelivered = p.ToBeDelivered + quantity
+                p.Sales = (p.Price)*(p.Delivered)
+                p.save(update_fields = ['ToBeDelivered'])
+                inventory.AcceptedOrders.remove(x)
+                inventory.AcceptedProductIds.remove(y)
+                inventory.AcceptedOrdersIds.remove(z)
+                inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedOrdersIds'])
+        shop = inventory.shop
+        products = shop.product_set.all()
+        context = {'products': products, 'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet}
+        return render(request, 'ecommerce/inventory.html', context)
+    if request.method == 'POST':
+        for form in QForms:
+            form = QuantityForm(request.POST)
+            if form.is_valid():
+                product_id = form.cleaned_data['ProductId']
+                item_id = form.cleaned_data['FormId']
+                quantity = form.cleaned_data['quantity']
+                products = shop.product.all()
+                p = products.objects.get(id = item_id)
+                pro = p.images.get(id = product_id)
+                pro.Stock = pro.Stock + quantity
+                pro.save(update_fields = ['Stock'])
+                return redirect(reverse('inventory'))
+                # i need to add Stock form field to the Register - Product template.
