@@ -1,5 +1,6 @@
 from celery import shared_task
-from .models import Inventory
+from .models import Inventory, ShoppingCartOrder
+from django.shortcuts import render, redirect, get_object_or_404
 
 @shared_task
 def OrderMessage(cart_id):
@@ -9,4 +10,5 @@ def OrderMessage(cart_id):
         obj = item.product
         shop = obj.shop
         inventory = get_object_or_404(Inventory, shop = shop)
-        return inventory.Messages(user_id, obj)
+        item_id = item.id
+        return inventory.Messages(user_id, item_id)

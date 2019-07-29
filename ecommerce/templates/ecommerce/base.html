@@ -16,7 +16,7 @@
 <style>
 .ui-autocomplete{
   width: 50px;
-  
+
 }
 ul.ui-autocomplete.ui-menu{
   list-style-type:none;
@@ -57,7 +57,7 @@ ul.ui-autocomplete.ui-menu{
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="#">
+                    <a class="nav-link dropdown-toggle" href= "{% url 'categories' %}" >
                         Buy
                         <span class="caret"></span>
                     </a>
@@ -71,6 +71,7 @@ ul.ui-autocomplete.ui-menu{
                         <a class="dropdown-item">Accessories</a>
 
                     </div>
+                  
                 </li>
 
                 <li class="nav-item">
@@ -88,7 +89,7 @@ ul.ui-autocomplete.ui-menu{
                 </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login/">Login</a>
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
                     <p id='read'>badge</p>
                 </li>
 
@@ -106,7 +107,7 @@ ul.ui-autocomplete.ui-menu{
       <button class="btn-primary btn-lg" type="submit" value="search"></button>
      <div id='display'></div>
     </form>
-    <p class='changeme'>risk</p>
+
 
 </div>
 

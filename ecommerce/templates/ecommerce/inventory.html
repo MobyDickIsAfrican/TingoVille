@@ -4,25 +4,26 @@
 {% load ecommerce_extras_filters %}
 <h1> Pending Orders </h1>
 <div>
-    <table>
-  {%for message, product_id, userId in PendingQuerySet%}
-<tr>
-  {{message}}
-  <div>
-    <ul id=PendingOrders style=" display: on-block; list-style: none ;">
-      <button class="btn btn-success btn-xs  col-xs-6" href=#>Accept </button>
-      <button  type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button>
-   </ul>
-  </div>
-  </tr>
-  {% endfor %}
+    <table >
+    {%for message, product_id, userId, productquery in PendingQuerySet%}
+    <tr>
+  <td>{{message}}</td>
+    <td>  <button id='accept' class="btn btn-success btn-xs  col-xs-6" href=# onclick="go()">Accept </button></td>
+    <td>  <button  id='decline' type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button></td>
+
+    </tr>
+    {% endfor %}
+
+
+
+
     </table>
   </div>
 
   <div>
   <h1> Accepted Orders <h2>
       <table>
-      {%for message, product_id, userId in AcceptedQuerySet%}
+      {%for message, product_id, userId, acceptedproductquery, objectid in AcceptedQuerySet%}
     <tr>
       {{message}}
       </tr>
@@ -34,27 +35,79 @@
 
 <div>
 
-  <h1> Inventory</h1>
-  <table>
+  <h1> Feedback</h1>
+  <table style="width:60%;">
 
 
-    <th>
-<td>Product description</td> <td> To be delivered</td> <td> Delivered </td> <td> Returns</td><td> Sales</td> <td> New Stock</td>
-      </th>
+    <tr>
+
+<td>Product description</td> <td> To be delivered</td> <td> Delivered </td> <td> Returns</td><td> Sales</td>
+
+
       {% zip_longest QForms products as items %}
       {% for form, item in items %}
-      <tr>
+     <tr>
         {%for pros in item.images.all%}
-        <td>{{pros.Name}}</td> <td> {{item.ToBeDelivered}} </td> <td> {{Delivered}} </td> <td> {{Returns}} </td> <td> {{item.Sales}}</td> <td><form method= "POST"> {%csrf_token%}{%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} {{form.quantity}}</form>  </td>
+        <td>{{pros.Name}}</td>
+         <td>{{items.ToBeDelivered}} </td>
+         <td>Yes </td>
+         <td> NO RETURN </td>
+         <td> {{item.Sales}}</td>
 
-{%endfor%}
         </tr>
-
+        {%endfor%}
       {% endfor %}
         </table>
     </div>
+    <div>
 
-    <script>
+      <h1> Inventory</h1>
+      <table style="width:60%;">
+
+
+        <tr>
+
+    <td>Product description</td> <td>Available stock</td> <td> New Stock</td>
+
+
+          {% zip_longest QForms products as items %}
+          {% for form, item in items %}
+         <tr>
+            {%for pros in item.images.all%}
+            <td>{{pros.Name}}</td>
+          <td>15 </td>
+             <td>
+               <form method= "POST">
+                  {%csrf_token%} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} {{form.quantity}}
+               <button type="submit" class="btn btn-primary">Submit
+               </button>
+             </form>
+           </td>
+
+
+            </tr>
+            {%endfor%}
+          {% endfor %}
+            </table>
+        </div>
+
+    <script type="text/javascript">
+      var x={{AcceptedQuerySet}};
+      console.log(x);
+      function go(){
+        $(document).ready(function(){
+            $.ajax({
+         url: configuration['ecommerce']['ajax_accept'],
+         cache: false,
+         type: "POST",
+         dataType:'JSON',
+         data:x,
+         success: function(data){
+         console.log("successful");
+         }
+      });
+    });
+      }
 
 
       </script>

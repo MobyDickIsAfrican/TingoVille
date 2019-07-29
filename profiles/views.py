@@ -143,8 +143,11 @@ def InventoryView(request, id):
     this_shop = get_object_or_404(Shop, name = this_account)
     id = this_shop.inventory.id
     inventory = Inventory.objects.get(id = id)
+    acceptedproducts =[]
+    for p in Product.objects.filter(id__in = inventory.AcceptedProductIds):
+        acceptedproducts.append(p.id)
     PendingQuerySet = zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, Product.objects.filter(id__in = inventory.PendingProductIds))
-    AcceptedQuerySet = zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, Product.objects.filter(id__in = inventory.AcceptedProductIds))
+    AcceptedQuerySet = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, acceptedproducts, inventory.AcceptedObjectId))
     shop = inventory.shop
     QForms = []
     for item in shop.product_set.all():
@@ -152,19 +155,14 @@ def InventoryView(request, id):
             form = QuantityForm(initial = {'FormId': item.id, 'ProductId': item2.id})
             QForms.append(form)
     if request.method == 'GET':
-        var = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds))
+        var = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, inventory.AcceptedObjectId))
         if len(var) > 0:
-            for x, y, z in var:
-                p = Product.objects.get(id = y)
-                string_list = x.split()
-                quantity = int(string_list[::-1][2])
-                p.ToBeDelivered = p.ToBeDelivered + quantity
-                p.Sales = (p.Price)*(p.Delivered)
-                p.save(update_fields = ['ToBeDelivered'])
+            for x, y, z, k in var:
                 inventory.AcceptedOrders.remove(x)
                 inventory.AcceptedProductIds.remove(y)
                 inventory.AcceptedOrdersIds.remove(z)
-                inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedOrdersIds'])
+                inventory.AcceptedObjectId.remove(k)
+                inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedOrdersIds', 'AcceptedObjectId'])
         shop = inventory.shop
         products = shop.product_set.all()
         context = {'products': products, 'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet}

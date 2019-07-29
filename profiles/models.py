@@ -6,13 +6,36 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from datetime import datetime
-
+from itertools import groupby, dropwhile
+from django.contrib.postgres.fields import ArrayField
 
 class Account(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'account')
 # models.CASCADE deletes the account if the User is deleted
+    ProcessedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
+    SortedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
+
     def __str__(self):
         return self.user.username
+
+    def Message(self, cart_id, order_id):
+        self.ProcessedOrders.append([cart_id, order_id])
+        return self.save(updated_fields = ['ProcessedOrders']
+
+    def Processed(self):
+        unsorted = self.ProcessedOrders
+        self.SortedOrders = sorted(self.ProcessedOrders, key = lambda x: x[0])
+        return self.save(update_fields =['SortedOrders'])
+
+    def CheckProcessedFully(self):
+        result = groupby(SortedOrders, lambda x: x[0])
+        for cart_id, items in result:
+            cart = ShoppingCart.objects.get(id = cart_id)
+            if len(list(items)) == cart.CartOrder.all().count():
+                progress_bar = ProgressBar.objects.get(cart_id = cart_id)
+                progress_bar.OrderBeingReadied()
+                self.SortedOrders = list(dropwhile(lambda x: x[0] == cart_id, self.SortedOrders))
+                self.ProcessedOrders = self.SortedOrders
 
 def Create_Account(sender, instance, created, **kwargs):
     if created:
@@ -21,3 +44,22 @@ def Create_Account(sender, instance, created, **kwargs):
 #if created - is a boolean that checks if a new object has been created
 post_save.connect(Create_Account, sender = User)
 # this  saves or updates the Account model when a User is instantiated
+
+class ProgressBar(models.Model):
+    account = models.ForeignKey(Account, on_delete = models.CASCADE, related_name = 'progressbars')
+    progress = models.IntegerField(default = 1)
+    cart_id = models.IntegerField(blank = True)
+    completed = models.BooleanField(default = False)
+
+    def OrderBeingReadied(self):
+        self.progress = 40
+        return self.save(update_fields =['progress'])
+        
+    #def CollectOrder(cart_id):
+    #pass
+
+    def save(self, *args, **kwargs):
+        if self.completed:
+            return self.delete()
+        else:
+            return super(ProgressBar, self).save(*args, **kwargs)

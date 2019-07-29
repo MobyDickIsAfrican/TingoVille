@@ -56,34 +56,18 @@ class Product(models.Model):
     Name = models.CharField(max_length = 200, default = 'write here')
     ProductType = models.CharField(max_length = 200, default = 'write type here, i.e is it a cellphone, radio etc.')
     Price = models.DecimalField(max_digits = 9, decimal_places = 2)
-    Stock = models.IntegerField(default = 1)
+    #Stock = models.IntegerField(default = 1)
     #image = models.ImageField(upload_to = 'Product_image', blank = True)
     #change made here
-    ToBeDelivered = models.IntegerField(default = 0)
-    #change made here
-    Delivered = models.IntegerField(default = 0)
-    Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
     Description = models.TextField(default = 'follow the campus shop guides for creating your description')
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
-
-    @property
-    #add comment here, why am i doing this
-    def LeftOver(self):
-        #still need to define this function
-        return int(Stock) - 5
 
     #class Meta:
         #index = (('Name','id'),)
         #Ordering = ('-created',)
         #Product_Ordering = () this is to order by smalles or largest price
-        #pass 
-
-    def Available(self):
-        if self.LeftOver() == 0:
-            return False
-        else:
-            return True
+        #pass
 
     def __str__(self):
             return self.Name
@@ -93,11 +77,14 @@ class Inventory (models.Model):
     PendingOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
     PendingOrderIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     PendingProductIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
+    PendingObjectId = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
     AcceptedUsersIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     AcceptedProductIds = ArrayField(models.IntegerField(blank = True), default = list, blank = True)
+    AcceptedObjectId =  ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
 
-    def Messages(self, user_id, obj):
+    def Messages(self, cart_id, obj_id):
+        obj = OrderItem.objects.get(id = obj_id)
         item = obj.product
         product_id = item.id
         name = item.Name
@@ -106,55 +93,47 @@ class Inventory (models.Model):
         order_message = f'An order has been placed for {stock} red {name}s '
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
-        self.PendingOrderIds.append(user_id)
-        return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
+        self.PendingOrderIds.append(cart_id)
+        self.PendingObjectId.append(obj_id)
+        return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId'])
 
-    def Remove(self, user_id, product_id):
-        again = True
-        position = self.PendingOrderIds.index(user_id)
-        for item in self.PendingProductIds:
-            if item == product_id and self.PendingProductIds.index(item) == position:
-                again = False
-                self.PendingOrders.pop(position)
-                self.PendingOrderIds.pop(position)
-                self.PendingProductIds.pop(position)
-                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
-        if again:
-            position = self.PendingProductIds.index(product_id)
-            for item in self.PendingOrderIds:
-                if item == product_id and self.PendingProductIds.index(item) == position:
-                    again = False
-                    self.PendingOrders.pop(position)
-                    self.PendingOrderIds.pop(position)
-                    self.PendingProductIds.pop(position)
-                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds'])
+    def Remove(self, obj_id):
+        pending = list(zip(self.PendingOrders, self.PendingOrderIds, self.PendingProductIds, self.PendingObjectId))
+        num = 0
+        for w, x, y, z in pending:
+            if z == obj_id:
+                self.PendingOrders.pop(num)
+                self.PendingOrderIds.pop(num)
+                self.PendingProductIds.pop(num)
+                self.PendingObjectId.pop(position)
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId'])
+            num += 1
 
-    def Approve(self, user_id, product_id):
-        again = True
-        position = self.PendingOrderIds.index(user_id)
-        for item in self.PendingProductIds:
-            if item == product_id and self.PendingProductIds.index(item) == position:
-                again = False
-                message = self.PendingOrders.pop(position)
-                order_id = self.PendingOrderIds.pop(position)
-                item_id = self.PendingProductIds.pop(position)
+    def Approve(self, obj_id):
+        pending = list(zip(self.PendingOrders, self.PendingOrderIds, self.PendingProductIds, self.PendingObjectId))
+        num = 0
+        for w, x, y, z in pending:
+            if z == obj_id:
+                message = self.PendingOrders.pop(num)
+                cart_id = self.PendingOrderIds.pop(num)
+                product_id = self.PendingProductIds.pop(num)
+                self.PendingObjectId.pop(num)
+                p = Product.objects.get(id = y)
+                string_list = w.split()
+                quantity = int(string_list[::-1][2])
+                attribute = string_list[::-1][1]
+                for item in p.ProductImage.all():
+                    if item.name == attribute:
+                        item.ToBeDelivered = p.ToBeDelivered + quantity
+                        item.Stock = item.Stock - quantity
+                        item.save(update_fields = ['ToBeDelivered'])
+                        break
                 self.AcceptedOrders.append(message)
-                self.AcceptedUsersIds.append(order_id)
+                self.AcceptedUsersIds.append(cart_id)
                 self.AcceptedProductIds.append(product_id)
-                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds'])
-        if again:
-            position = self.PendingProductIds.index(product_id)
-            for item in self.PendingOrderIds:
-                if item == product_id and self.PendingProductIds.index(item) == position:
-                    again = False
-                    message=self.PendingOrders.pop(position)
-                    order_id = self.PendingOrderIds.pop(position)
-                    item_id = self.PendingProductIds.pop(position)
-                    self.AcceptedOrders.append(message)
-                    self.AcceptedUsersIds.append(order_id)
-                    self.AcceptedProductIds.append(product_id)
-                    return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds'])
-
+                self.AcceptedObjectId.append(obj_id)
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds', 'AcceptedObjectId'])
+            num += 1
 
 class OrderItem(models.Model):
     #on_delete is not a valid keyword argument for ManyToManyField
@@ -162,11 +141,10 @@ class OrderItem(models.Model):
     #a ForeignKey has to be used abovem istead of ManyToManyField.
     #we us a related_name so that we can be able to track how many orders a particular product has, before completion of order
     #a product is created once, but the quantity can be changed
-    #MyCart = models.ForeignKey(ShoppingCartOrder, related_name = 'mycart')
-    OrderExists = models.BooleanField(default = False)
+    #OrderExists = models.BooleanField(default = False)
     #I think this should be true
     quantity = models.IntegerField(default = 1)
-    #colour = models.CharField(blank = True, max_length = 200,)
+    attribute = models.CharField(default = 'Default', max_length = 200,)
     #auto_now is true, as product is added to the cart
     Date_Added = models.DateTimeField(auto_now_add = True)
 
@@ -214,6 +192,14 @@ class ProductImage(models.Model):
     AddImage = models.ImageField(upload_to = 'Product_image', blank = False)
     Stock = models.IntegerField(default = 1)
     name = models.CharField(max_length = 200, default = 'write here')
+    ToBeDelivered = models.IntegerField(default = 0)
+    Delivered = models.IntegerField(default = 0)
+    Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.ToBeDelivered = self.ToBeDelivered - self.Delivered
+        self.Delivered = 0
+        super(ProductImage, self).save(*args, **kwargs)

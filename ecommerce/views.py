@@ -1,4 +1,4 @@
-from .models import Shop, Product, ProductCategory, ShoppingCartOrder, OrderItem
+from .models import Shop, Product, ProductCategory, ShoppingCartOrder, OrderItem, Inventory
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import CartAddForm
@@ -160,7 +160,13 @@ def Checkout(request):
                 shoppingcart.CartOrder.add(orderitem.id)
             shoppingcart.save()
             cart_id = shoppingcart.id
-            OrderMessage.delay(cart_id)
+            for item in shoppingcart.CartOrder.all():
+                obj = item.product
+                shop = obj.shop
+                inventory = get_object_or_404(Inventory, shop = shop)
+                item_id = item.id
+                inventory.Messages(cart_id, item_id)
+                inventory.save()
             request.session['shipping'] = details
             request.session.modified = True
             #add a flash message here to tell the user their order is being processed and they will
@@ -287,3 +293,5 @@ def AjaxSearch(request):
                 '''
             data = json.dumps(query)
             return HttpResponse(data)
+def AjaxAccept(request):
+    pass
