@@ -1,0 +1,15 @@
+{% extends 'ecommerce/base.html' %}
+{% block content %}
+
+{%for item in progress_bar_queryset%}
+
+
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+
+
+{%endfor%}
+{%endblock%}

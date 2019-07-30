@@ -122,7 +122,7 @@ class Inventory (models.Model):
                 string_list = w.split()
                 quantity = int(string_list[::-1][2])
                 attribute = string_list[::-1][1]
-                for item in p.ProductImage.all():
+                for item in p.images.all():
                     if item.name == attribute:
                         item.ToBeDelivered = p.ToBeDelivered + quantity
                         item.Stock = item.Stock - quantity

@@ -26,7 +26,7 @@ class ShopForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['Name', 'ProductType', 'Price', 'Stock', 'Description' ]
+        fields = ['Name', 'ProductType', 'Price', 'Description' ]
         '''
     def clean_Description(self):
         descriptiondata = self.cleaned_data['Description']

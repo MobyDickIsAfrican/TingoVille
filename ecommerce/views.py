@@ -15,6 +15,7 @@ from elasticsearch_dsl import Search
 from .documents import CategoryDocument, ShopDocument
 from django.urls import reverse
 from .tasks import OrderMessage
+from profiles.models import ProgressBar
 
 
 def keyfunc(x):
@@ -85,8 +86,9 @@ def Cart(request):
     CartContents = cart.CartList()
     if request.method == 'GET':
         trolley = cart.basket
+        #need to fix the message error
         if not trolley:
-            message = messages.something(request, 'Your cart is Empty, add items to your bag by exploring our great product catalogues')
+            message = messages(request, 'Your cart is Empty, add items to your bag by exploring our great product catalogues')
             context = {'message': message}
             return render(request, 'ecommerce/cart.html', context)
         else:
@@ -154,12 +156,14 @@ def Checkout(request):
             details['ZipCode'] = form.cleaned_data['ZipCode']
             trolley = request.session['cart']
             cart_account = get_object_or_404(Account, user = request.user)
-            shoppingcart, status = ShoppingCartOrder.objects.get_or_create(Owner = cart_account)
+            shoppingcart = ShoppingCartOrder.objects.create(Owner = cart_account)
             for key, value in trolley.items():
-                orderitem, status = OrderItem.objects.get_or_create(product = Product.objects.get(id = int(key)), quantity = value['quantity'])
+                orderitem = OrderItem.objects.create(product = Product.objects.get(id = int(key)), quantity = value['quantity'])
                 shoppingcart.CartOrder.add(orderitem.id)
             shoppingcart.save()
             cart_id = shoppingcart.id
+            progress_bar = ProgressBar.objects.create(account = cart_account, cart_id = cart_id )
+            progress_bar.save()
             for item in shoppingcart.CartOrder.all():
                 obj = item.product
                 shop = obj.shop
@@ -168,6 +172,7 @@ def Checkout(request):
                 inventory.Messages(cart_id, item_id)
                 inventory.save()
             request.session['shipping'] = details
+            request.session['cart'] = {}
             request.session.modified = True
             #add a flash message here to tell the user their order is being processed and they will
             #find their reference number below.

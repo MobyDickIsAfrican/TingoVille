@@ -11,6 +11,8 @@ from .models import Account
 from datetime import timedelta
 from django.forms import formset_factory
 from .forms import QuantityForm
+from django.urls import reverse
+from .models import ProgressBar
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -129,6 +131,8 @@ def AccountView(request):
             cost = item.TotalCost()
             costs.append(cost)
         AccountDetails = list(zip(query, dates, numbers, Delivery_Dates, costs))
+        user_account.Processed()
+        user_account.CheckProcessedFully()
         context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails}
         return render(request, 'profiles/account.html', context)
 
@@ -146,10 +150,14 @@ def InventoryView(request, id):
     acceptedproducts =[]
     for p in Product.objects.filter(id__in = inventory.AcceptedProductIds):
         acceptedproducts.append(p.id)
-    PendingQuerySet = zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, Product.objects.filter(id__in = inventory.PendingProductIds))
+    PendingQuerySet = zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, inventory.PendingObjectId, Product.objects.filter(id__in = inventory.PendingProductIds))
     AcceptedQuerySet = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, acceptedproducts, inventory.AcceptedObjectId))
     shop = inventory.shop
     QForms = []
+    #inventory.PendingOrders = []
+    #inventory.PendingProductIds = []
+    #inventory.PendingOrderIds = []
+    #inventory.save(update_fields = ['PendingOrders', 'PendingProductIds', 'PendingOrderIds'])
     for item in shop.product_set.all():
         for item2 in item.images.all():
             form = QuantityForm(initial = {'FormId': item.id, 'ProductId': item2.id})
@@ -160,12 +168,12 @@ def InventoryView(request, id):
             for x, y, z, k in var:
                 inventory.AcceptedOrders.remove(x)
                 inventory.AcceptedProductIds.remove(y)
-                inventory.AcceptedOrdersIds.remove(z)
+                inventory.AcceptedUsersIds.remove(z)
                 inventory.AcceptedObjectId.remove(k)
-                inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedOrdersIds', 'AcceptedObjectId'])
+                inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedUsersIds', 'AcceptedObjectId'])
         shop = inventory.shop
         products = shop.product_set.all()
-        context = {'products': products, 'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet}
+        context = {'products': products, 'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet, 'inventory': inventory}
         return render(request, 'ecommerce/inventory.html', context)
     if request.method == 'POST':
         for form in QForms:
@@ -174,10 +182,28 @@ def InventoryView(request, id):
                 product_id = form.cleaned_data['ProductId']
                 item_id = form.cleaned_data['FormId']
                 quantity = form.cleaned_data['quantity']
-                products = shop.product.all()
-                p = products.objects.get(id = item_id)
+                products = shop.product_set.all()
+                p = products.get(id = item_id)
                 pro = p.images.get(id = product_id)
                 pro.Stock = pro.Stock + quantity
                 pro.save(update_fields = ['Stock'])
-                return redirect(reverse('inventory'))
+                return redirect('inventory', id = inventory.id)
                 # i need to add Stock form field to the Register - Product template.
+
+@login_required
+@user_passes_test(TestProduct, login_url ='register-shop')
+def AcceptOrder(request, inventory_id ,cart_id, order_id):
+    inventory = Inventory.objects.get(id = inventory_id)
+    cart = ShoppingCartOrder.objects.get(id = cart_id)
+    account_user = cart.Owner
+    inventory.Approve(order_id)
+    account_user.Message(cart_id, order_id)
+    return redirect('inventory', id = inventory_id)
+
+@login_required
+def OrderTracker(request):
+    user = request.user
+    user_account = get_object_or_404(Account, user = user)
+    progress_bar_queryset = user_account.progressbars.all()
+    context = {'progress_bar_queryset': progress_bar_queryset}
+    return render(request, 'ecommerce/track-order.html', context)

@@ -7,6 +7,7 @@ from .models import OrderItem
 from .models import ShoppingCartOrder
 from django.contrib.gis.admin import OSMGeoAdmin
 from .models import ProductImage
+from .models import Inventory
 
 admin.site.register(Product)
 admin.site.register(Shop)

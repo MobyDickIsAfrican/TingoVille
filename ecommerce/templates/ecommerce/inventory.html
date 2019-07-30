@@ -5,16 +5,15 @@
 <h1> Pending Orders </h1>
 <div>
     <table >
-    {%for message, product_id, userId, productquery in PendingQuerySet%}
+    {%for message, product_id, cart_id, order_id, productquery in PendingQuerySet%}
     <tr>
   <td>{{message}}</td>
-    <td>  <button id='accept' class="btn btn-success btn-xs  col-xs-6" href=# onclick="go()">Accept </button></td>
+    <td><a href="{%url 'accept-order' inventory_id=inventory.id cart_id=cart_id order_id=order_id%}"><input id='accept' class="btn btn-success btn-xs  col-xs-6"
+type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
     <td>  <button  id='decline' type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button></td>
 
     </tr>
     {% endfor %}
-
-
 
 
     </table>
@@ -44,18 +43,20 @@
 <td>Product description</td> <td> To be delivered</td> <td> Delivered </td> <td> Returns</td><td> Sales</td>
 
 
-      {% zip_longest QForms products as items %}
-      {% for form, item in items %}
+
+      {% for item in products %}
+      {%if item.orders.all %}
      <tr>
         {%for pros in item.images.all%}
-        <td>{{pros.Name}}</td>
-         <td>{{items.ToBeDelivered}} </td>
+        <td>{{pros.name}} {{item.Name}}</td>
+         <td>{{pros.ToBeDelivered}} </td>
          <td>Yes </td>
          <td> NO RETURN </td>
-         <td> {{item.Sales}}</td>
+         <td> {{pros.Sales}}</td>
 
         </tr>
         {%endfor%}
+        {%endif%}
       {% endfor %}
         </table>
     </div>
@@ -72,13 +73,14 @@
 
           {% zip_longest QForms products as items %}
           {% for form, item in items %}
+          {%for pros in item.images.all%}
          <tr>
-            {%for pros in item.images.all%}
-            <td>{{pros.Name}}</td>
-          <td>15 </td>
+
+            <td>{{pros.name}} {{item.Name}}</td>
+          <td>{{pros.Stock}} </td>
              <td>
                <form method= "POST">
-                  {%csrf_token%} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} {{form.quantity}}
+                  {%csrf_token%} {{form.quantity}} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} 
                <button type="submit" class="btn btn-primary">Submit
                </button>
              </form>
