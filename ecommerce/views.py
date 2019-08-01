@@ -12,7 +12,7 @@ from profiles.models import Account
 import json
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
-from .documents import CategoryDocument, ShopDocument
+#from .documents import CategoryDocument, ShopDocument
 from django.urls import reverse
 from .tasks import OrderMessage
 from profiles.models import ProgressBar
@@ -31,7 +31,7 @@ def Home(request):
             sum = sum + p.orders.all().count()
 
         PopularityList.append((c, sum))
-    PopularCategories = sorted(PopularityList, key = keyfunc)
+    PopularCategories = sorted(PopularityList, key = keyfunc, reverse = True)
     PopularCategoryList =PopularCategories[:7]
 
     #orderting the products by most bought
@@ -41,7 +41,7 @@ def Home(request):
             popularity = pro.orders.all().count()
             PopularProducts.append((pro, popularity))
 
-    SortedProducts = sorted(PopularProducts, key = keyfunc)
+    SortedProducts = sorted(PopularProducts, key = keyfunc, reverse = True)
     PopularList = SortedProducts[:7]
     Fresh = []
     count = 0
@@ -88,7 +88,8 @@ def Cart(request):
         trolley = cart.basket
         #need to fix the message error
         if not trolley:
-            message = messages(request, 'Your cart is Empty, add items to your bag by exploring our great product catalogues')
+            #message = messages(request, 'Your cart is Empty, add items to your bag by exploring our great product catalogues')
+            message = 'Silly message'
             context = {'message': message}
             return render(request, 'ecommerce/cart.html', context)
         else:
@@ -99,13 +100,13 @@ def Cart(request):
             initial = []
             CartAddFormFormSet = formset_factory(CartAddForm, extra = len(CartContents))
             for i in range(len(CartContents)):
-                item = CartContents[i][0]
+                item_id = CartContents[i][0]
                 quantity = CartContents[i][1]
                 price = CartContents[i][2]
-                initial.append({'quantity': quantity, 'FormId': item.id})
+                initial.append({'quantity': quantity, 'FormId': item_id})
 
             formset = CartAddFormFormSet(initial = initial)
-            goods = [x[0] for x in CartContents]
+            goods = [Product.objects.get(id = x[0])for x in CartContents]
             size = len(CartContents)
             image_id = request.session['item']
             context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id}

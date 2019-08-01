@@ -404,10 +404,10 @@ h2 {
     {%for good in Fresh%}
       <td>
     <ul style="list-style:none;">
-      {%if good.image%}
+      {%if good.images.all%}
      <li>{{good.Name}}</li>
 {%with good.images.all|first as default1%}
-     <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{default1.image.url}}"></li>
+     <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{default1.AddImage.url}}"></li>
      {%endwith%}
        <li id="price"> {{price}} </li>
        <li id="Add">
@@ -443,7 +443,7 @@ h2 {
 
    <li>{{good.Name}}</li>
    {%with good.images.all|first as default2%}
-   <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{default2.image.url}}"  > </li>
+   <li> <img class ="images" style="width:200px; height:190px; margin:20px; padding:20px;" src="{{default2.AddImage.url}}"  > </li>
    {%endwith%}
    <li id="price"> {{price}} </li>
    <li id="Add">

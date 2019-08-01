@@ -6,6 +6,7 @@ from profiles.models import Account
 from django.contrib.postgres.fields import ArrayField
 
 
+
 ## creating a shop model for the seller. The AUTH_USER_MODEL is used to link the seller to the user who actually
 ## created the shop or sold the product.
 
@@ -28,6 +29,11 @@ class Shop(models.Model):
     def __str__(self):
         return str(self.Shop_Name)
 
+    def indexing(self):
+        ShopDocument.init()
+        doc = ShopDocument(Name = self.Shop_Name, meta = {'id': self.id})
+        return doc.save()
+
     ##def Payment_Options(self)
     ##return None
 
@@ -44,9 +50,12 @@ class ProductCategory (models.Model):
         verbose_name= 'product_category'
         verbose_name_plural = 'categories'
         # i dont know wahts happening here
+    def indexing(self):
+        doc = CategoryDocument(Name = self.CategoryName, meta = {'id': self.id})
+        return doc.save()
 
 
-
+ 
 class Product(models.Model):
     shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True)
     #the category and product have a many to many relationship
@@ -71,6 +80,11 @@ class Product(models.Model):
 
     def __str__(self):
             return self.Name
+
+    def indexing(self):
+        ProductDocument.init()
+        doc = ProductDocument(ProductType = self.ProductType, Name = self.Name, Description = self.Description, meta = {'id' : self.id})
+        return doc.save()
 
 class Inventory (models.Model):
     shop = models.OneToOneField(Shop, on_delete= models.CASCADE, related_name = 'inventory', null = True)

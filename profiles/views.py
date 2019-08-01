@@ -68,6 +68,9 @@ def RegisterShop(request):
             message = messages.success(request, f'Congratulations your Shop, {Shop_Name} has been created. Start adding products! We have created an inventory for you')
             return redirect('my-shop')
     else:
+        this_account = get_object_or_404(Account, user = request.user)
+        if Shop.objects.filter(name = this_account).exists():
+            return redirect('my-shop')
         #if request.user.account.shop.all().exists():
             #return redirect('my-shop')
         RegisterShopForm = ShopForm()

@@ -29,10 +29,6 @@ class Basket(object):
     def CartList(self):
         cart_keys = self.basket.keys()
         product_ids = list(map(int, cart_keys))
-        BasketProductsList = []
-        BasketProducts = Product.objects.filter(id__in = product_ids)
-        for item in BasketProducts:
-            BasketProductsList.append(item)
         cart_values = self.basket.values()
         CartQuantities = []
         CartPrices = []
@@ -40,6 +36,6 @@ class Basket(object):
             CartQuantities.append(item['quantity'])
             CartPrices.append(item['Price'])
 
-        cart_list =list(zip(BasketProductsList, CartQuantities, CartPrices))
+        cart_list =list(zip(product_ids, CartQuantities, CartPrices))
         return cart_list
     #I need to add a functionality such that when a Shop owner deletes a product, it is removed from the basket.
