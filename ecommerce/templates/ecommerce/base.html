@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     <!DOCTYPE html>
     {%load static%}
     {% load javascript_settings_tags %}
@@ -100,10 +101,336 @@
   background: red;
   color: white;
 }
+=======
+<!DOCTYPE html>
+{%load static%}
+{% load javascript_settings_tags %}
+<script type="text/javascript">{% javascript_settings %}</script>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<style>
+
+    #searchbtn{
+        background-color:silver;
+    }
+    form.search button {
+        float: right;
+        width: 15px;
+        padding: 20px;
+        height:15px;
+        color: white;
+        font-size: 12px;
+        border: 1px solid grey;
+        border-left: none; /* Prevent double borders */
+        cursor: pointer;
+    }
+ 
+
+.ui-autocomplete{
+  width: 50px;
+
+}
+ul.ui-autocomplete.ui-menu{
+  list-style-type:none;
+  box-shadow: 1px 1px 1px 1px;
+
+  list-style-position:outside;
+}
+
+    body {
+        font-family: sans-serif;
+        margin-top: 150px;
+        margin-bottom: 150px;
+    }
+
+    
+   
+    .navbar {
+    width: 100%;
+     height
+    
+    }
+
+
+   
+
+    .nav-link {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    .image {
+        width: 20px;
+        height: 20px;
+        margin: 20px;
+        padding: 20px;
+    }
+
+    .TAS {
+        margin-bottom: 150px;
+    }
+
+
+
+    /*
+    color: black;
+    font-family: vardana, arial, Geneva,Arial Black,Monserrat;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgb(240,240,240);
+    margin-top:80px;
+    */
+
+
+    
+
+   
+
+    .nav-item {
+        margin-left:25px;
+        margin-right:25px;
+    }
+
+
+    
+   
+
+   
+    .desc {
+        margin-top: 65px;
+        font-family: 'Monserrat';
+        background-color: #D0DFDF;
+        color: black;
+        text-align: left;
+    }
+    /*{
+    margin-top: 100px;
+    font-family: 'Monserrat';
+    background-color: darkslategray;
+    color: white;
+    text-align:center;
+    border-radius:5px;
+}*/
+    .jumbotron {
+        padding: 5px 0px 5px 2px;
+        text-align: left;
+        border-radius: 7px;
+        background-color: #D0DFDF;
+    }
+
+    .container {
+        margin-top: 40px;
+        margin-bottom: 200px;
+    }
+
+    .btn-danger {
+        background-color: white;
+        color: red;
+    }
+
+    .btn-primary {
+        
+    }
+
+
+
+    /*img{
+
+
+    margin-top: 100px;
+    margin-left:-5px;
+    padding:5px;
+
+}
+button{
+    margin-right:21px;
+
+}*/
+    .fig {
+        background-color: #D0DFDF;
+    }
+
+    .TAS {
+        margin-bottom: 50px;
+    }
+
+
+
+    /*{
+    margin:0;
+    padding:0;
+    list-style:none;
+    text-decoration:none;
+}
+.topdiv{
+    position:fixed;
+    top:0px;
+    width:100%;
+    height:80px;
+    display:block;
+    color:whitesmoke;
+    background:darkslategrey;
+
+}
+.logo_container{
+    height:100%;
+    display:table;
+    float:left;
+
+}
+.grey {
+    background-color: darkslategrey;
+}
+
+    .logo_container h1 {
+        color: white;
+        height: 100%;
+        display: table-cell;
+        vertical-align:middle;
+        font-family:'Montserrat';
+        font-size:32px;
+        font-weight:200;
+    }
+    .logo_container h1 span {
+       font-weight:800;
+    }
+
+
+div#bottomdiv {
+    position:static;
+    bottom: 0px;
+    width: 100%;
+    height: 280px;
+    color: whitesmoke;
+    background: darkslategrey;
+    margin-top:50px;
+
+
+}
+.inner_footer{
+    width:1000px;
+    height:100%;
+    display:block;
+    margin:0 auto;
+
+
+}
+.checkout{
+    float:left;
+    height:100%;
+}
+.checkout a{
+    height:100%;
+    display:table;
+    float:left;
+    padding:0px 25px;
+
+}
+.checkout a li{
+    display:table-cell;
+    vertical-align:baseline;
+    text-align:center;
+    height:67%;
+    color:white;
+    font-family:'Montserrat';
+    font-size:16px;
+
+}
+
+h2 {
+ text-decoration:;
+ font-size:1.2em;
+
+}
+.inner_header{
+    width:1000px;
+    height:100%;
+    display:block;
+    margin: 0 auto;
+
+}
+.navigation{
+    float:right;
+    height:100%;
+}
+    .navigation a {
+        float: left;
+        height: 100%;
+        display: table;
+        padding: 0px 20px;
+    }
+.navigation a:last-child{
+    padding-right:0;
+}
+        .navigation a li {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100%;
+            color: white;
+            font-family: 'Montserrat';
+            font-size: 16px;
+        }
+
+
+
+*/
+
+    #search {
+        border: 1px solid black;
+        border-right:none;
+        font-size: 16px;
+        padding: 10px;
+        outline: none;
+        width: 430px;
+        -webkit-border-top-left-radius: 10px;
+        -webkit-border-bottom-left-radius: 10px;
+        -moz-border-top-left-radius: 10px;
+        -moz-border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+    #searchbtn {
+        border: 1px solid black;
+        font-size: 16px;
+        padding: 10px;
+        background: #808080;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+        -webkit-border-top-right-radius: 10px;
+        -webkit-border-bottom-right-radius: 10px;
+        -moz-border-top-right-radius: 10px;
+        -moz-border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+
+</style>
+<body>
+    <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapse_target">
+>>>>>>> 039ccc5deb09e6c5618cfd1950c0a8efeecf0554
 
 
 
 
+<<<<<<< HEAD
         .desc {
             margin-top: 65px;
             font-family: 'Monserrat';
@@ -250,6 +577,97 @@
                                                 <options value="none"> Add </options>
                                             </select>
                                         </li>
+=======
+            <h4>#NO<span class="navbar-text">NAME</span></h4>
+            <div class="nav-item">
+                <div class="search-container">
+                    <form class="search" method="GET" action="{%url 'search' %}">
+                        <input id="search" type="text" placeholder="Search..." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()" O /><input id="searchbtn" type="submit" value="Search" />
+                        <div id='display'></div>
+                    </form>
+
+
+                </div>
+            </div>
+
+                
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
+                                Sell
+                                <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" arial-labellby="dropdown_target">
+                                <a class="dropdown-item" href="{% url 'my-shop' %}">Add Shop</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">My Shops</a>
+
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{% url 'categories' %}">
+                                Buy
+                                <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu" arial-labellby="dropdown_target">
+                                <a class="dropdown-item">Cars</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">Hotels</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">Laptops</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item">Accessories</a>
+
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{%url 'my-cart' %}">My Basket<i id='read'></i></a>
+                            <span class="caret"></span>
+
+
+                            <div class="dropdown-menu" arial-labelby="dropdown_target">
+                                <ul>
+
+                                    <li>
+                                        <select id="dynamic-select">
+                                            <options value="none"> Add </options>
+                                        </select>
+                                    </li>
+
+                                </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sign-up'%}">Sign Up</a>
+                        </li>
+
+
+
+                    </ul>
+
+                
+
+
+           
+
+
+
+        </div>
+</nav>
+    <div class="container" style="margin-top:100px; margin-bottom:100px;">
+
+>>>>>>> 039ccc5deb09e6c5618cfd1950c0a8efeecf0554
 
                                     </ul>
                             </li>
