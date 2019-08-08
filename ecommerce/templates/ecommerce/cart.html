@@ -2,13 +2,29 @@
 
 {% block content %}
 {% load ecommerce_extras_filters %}
+<head>
 
+    <title>Cart</title>
+
+</head>
     <form method="POST" action="" enctype="multipart/form-data">
       {%csrf_token%}
       {% zip_longest formset.forms goods as items %}
       {{formset.management_form}}
       {%for form, good in items %}
-<table id="TableRow">
+      <style>
+      table {
+        width: 60%;
+        border-top: 1px solid black;
+
+      }
+      tr, td, th,{
+        border:none;
+      }
+
+        </style>
+        <table>
+<tr> <table id="TableRow">
 <!--<style>
 table {
     border : 1px none #808080;
@@ -18,50 +34,65 @@ table {
 </style>-->
 
     {{good.Name}}
-<style>
-table {
-  width: 100%;
-  background: #b2baaf;
-}
 
-  </style>
 
 <tr>
-  <td>
+  <th>
   <ul style=" list-style:none; ">
-  <li>{{good.image}</li>
+
   {%with good.images.all|first as default%}
   <li><img class="images"src="{{default.AddImage.url}}" style="width:50px; height:40px;"></li>
   {%endwith%}
   </ul>
-    </td>
-<td> {{good.Price}}
-<td>
+    </th>
+    <td>
+     Product Description
+   </td>
+<td> R {{good.Price}}</td>
 
-   {{form}}
+<tr>
 
+<td> In stock</td>
+
+<td></td>
+
+ <td>Quantity: {{form.quantity}}</td>
+ <td>
+ <a href="{%url 'cart-item-delete' good.id %}"><input type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
  </td>
-
-  <tr>
- <td><a href="{%url 'cart-item-delete' good.id %}"><input type="button" value="Delete" onclick="deleteRow(this)" action=""> <a>
- </td>
- </tr>
- </tr>
+</tr>
 
 
+</table> </tr>
 
-</table>
-
-<br/>
+<br/> <br/>
 <script src="https://code.jQuery.com/jQuery-3.4.1.js"> </script>
 
 
 {%endfor%}
+<tr> <table>
+  <th>
+    Summary of orders:
+    </th>
 
+
+  <td>Total: </td> <td>{{form.quantity}}</td>
+<td>
+
+ <a href="#"><input type="button" value="Reset Cart" onclick="deleteRow(this)" action=""> <a></td>  </tr>
+<tr> </table> <!-- DELETE ALL-->
+
+  <tr>
 <button type="submit" class="btn btn-primary">Proceed to checkout</button>
-  </form>
+</tr>
 
+
+
+
+
+  </form>
   <script>
+
 
 
    var k=(0);
@@ -82,7 +113,7 @@ table {
 
       document.getElementById('id_quantity').innerhtml= dataHtml;
 */
-    
+
 
 /*  window.onload() => {
     replaceID

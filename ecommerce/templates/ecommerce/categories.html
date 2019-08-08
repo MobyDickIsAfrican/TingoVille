@@ -1,6 +1,13 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
+{%load static%}
+<head>
+
+    <title>Categories</title>
+
+</head>
+
 
 <style>
 ul {
@@ -17,6 +24,16 @@ table
 td{
   width: 25%;
 }
+.prod{
+  transition-delay: 2s;
+}
+  .prod:hover{
+
+    width:220px;
+     height:200px;
+     margin:5px;
+     padding:10px;
+   }
 </style>
 
 <div class="row">
@@ -24,7 +41,9 @@ td{
   <div class="three column">
     <ul style=" style-list: none;">
   <li>{{item.CategoryName}}</li>
-  <li><img src="{{item.image.url}}"></li>
+  <li class="prod"><a href="{%url 'category-products' item.id%}"><img src="{{item.image.url}}"></a></li>
+</li>
+
   </ul>
 </div>
   {%if forloop.counter|divisibleby:3 %}
@@ -33,5 +52,7 @@ td{
   {% endif %}
   {% endfor %}
   </div>
+
+  
 
 {% endblock %}

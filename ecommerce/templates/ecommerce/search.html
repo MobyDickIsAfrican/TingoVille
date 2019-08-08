@@ -1,6 +1,11 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
+<head>
+
+    <title>Search results</title>
+
+</head>
 {%for t in catqueryset%}
 <div>
 <a href="{% url 'category-products' t.id %}"><p>{{t.Name}}</p>

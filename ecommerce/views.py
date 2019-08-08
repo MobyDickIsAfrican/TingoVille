@@ -116,10 +116,10 @@ def Cart(request):
         CartContents = cart.CartList()
         initial = []
         for i in range(len(CartContents)):
-            item = CartContents[i][0]
+            item_id = CartContents[i][0]
             quantity = CartContents[i][1]
             price = CartContents[i][2]
-            initial.append({'quantity': quantity, 'FormId': item.id})
+            initial.append({'quantity': quantity, 'FormId': item_id})
         CartAddFormFormSet = formset_factory(CartAddForm)
         formset = CartAddFormFormSet(request.POST)
         trolley = cart.basket
@@ -127,7 +127,7 @@ def Cart(request):
         for form in formset.forms:
             if form.is_valid():
                 item = CartContents[i][0]
-                trolley[str(item.id)]['quantity'] = form.cleaned_data['quantity']
+                trolley[str(item_id)]['quantity'] = form.cleaned_data['quantity']
                 i += 1
         request.session['cart'] = trolley
         request.session.modified = True

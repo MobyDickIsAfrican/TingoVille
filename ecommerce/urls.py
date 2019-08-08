@@ -19,7 +19,7 @@ urlpatterns = [
     path('search/', views.Searching, name ='search'),
     path('ajax_search/', views.AjaxSearch, name = 'ajax-search'),
     path('ajax_accept_order/', views.AjaxAccept, name = 'ajax-accept')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 #for development environment
 
 def javascript_settings():

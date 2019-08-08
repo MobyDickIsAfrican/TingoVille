@@ -1,7 +1,11 @@
 {% extends 'ecommerce/base.html' %}
 
 {% block content %}
+<head>
 
+    <title>Sorted Products</title>
+
+</head>
 <style>
 ul {
   list-style: none;
@@ -22,6 +26,12 @@ img {
   {%with item.images.all|first as default%}
   <li><img src="{{default.AddImage.url}}"></li>
   {%endwith%}
+  <li id="price"> {{price}} </li>
+  <li id="Add">
+      <button type="button" onclick="addOption()" class="btn btn-success">
+          Add to Basket
+      </button>
+  </li>
   </ul>
 </div>
   {%if forloop.counter|divisibleby:3 %}

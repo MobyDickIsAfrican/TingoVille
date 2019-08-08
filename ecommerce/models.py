@@ -55,7 +55,7 @@ class ProductCategory (models.Model):
         return doc.save()
 
 
- 
+
 class Product(models.Model):
     shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True)
     #the category and product have a many to many relationship

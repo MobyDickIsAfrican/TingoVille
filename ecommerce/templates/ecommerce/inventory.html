@@ -2,6 +2,11 @@
 
 {% block content %}
 {% load ecommerce_extras_filters %}
+<head>
+
+    <title>Inventory</title>
+
+</head>
 <h1> Pending Orders </h1>
 <div>
     <table >
@@ -80,7 +85,7 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
           <td>{{pros.Stock}} </td>
              <td>
                <form method= "POST">
-                  {%csrf_token%} {{form.quantity}} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%} 
+                  {%csrf_token%} {{form.quantity}} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%}
                <button type="submit" class="btn btn-primary">Submit
                </button>
              </form>
