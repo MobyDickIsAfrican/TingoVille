@@ -205,13 +205,19 @@ def AjaxView(request):
         data = json.dumps(data)
         return HttpResponse(data)
 
+""" This Ajax call is to determine the number of items in the basket. A try and except block is used to
+prevent an internal server error should the user not have a basket"""
 def AddToCartAjax(request):
     if request.is_ajax():
         if request.method == 'GET':
-            cart= request.session['cart']
-            num = len(cart)
-            data = json.dumps({'num':num})
-            return HttpResponse(data)
+            try:
+                cart= request.session['cart']
+                num = len(cart)
+                data = json.dumps({'num':num})
+                return HttpResponse(data)
+            except Exception:
+                data = json.dumps({'num':0})
+                return HttpResponse(data)
 
 
 

@@ -13,6 +13,8 @@ from django.forms import formset_factory
 from .forms import QuantityForm
 from django.urls import reverse
 from .models import ProgressBar
+import logging
+from datetime import datetime
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -35,22 +37,35 @@ class Login_session(object):
     def __call__(self, LoginView):
         @wraps(LoginView)
         def Inner(request, *args, **kwargs):
-            self.vars = request.session['cart']
-            back_up_session = {}
-            for key, var in self.vars.items():
-                try:
-                    back_up_session[key] = var
-                except KeyError:
-                    pass
-            response = LoginView(request, *args, **kwargs)
-            for key2, value in back_up_session.items():
-                request.session[key2] = value
-            return response
+            try:
+                self.vars = request.session['cart']
+                back_up_session = {}
+                for key, var in self.vars.items():
+                    try:
+                        back_up_session[key] = var
+                    except KeyError:
+                        pass
+                response = LoginView(request, *args, **kwargs)
+                for key2, value in back_up_session.items():
+                    request.session[key2] = value
+                return response
+            except Exception:
+                request.session['cart'] = {}
+                return LoginView(request, *args, **kwargs)
         return Inner
 
 @method_decorator(Login_session(vars), name='dispatch')
 class LoginView(auth_views.LoginView):
-    pass
+    def CheckLogin(self):
+        if self.request.method == 'POST':
+            logging.basicConfig(filename = 'UserLogin.log', level = logging.INFO, format = '%(message)s')
+            date = datetime.now()
+            username = self.request.POST['username']
+            logging.info(f'{username}, {date}')
+    def form_valid(self, form):
+        self.CheckLogin()
+        return super(LoginView, self).form_valid(form)
+
 
 @login_required
 #need to build a custom decorator to check if a user does not already have a shop.
