@@ -103,8 +103,8 @@ class Inventory (models.Model):
         product_id = item.id
         name = item.Name
         stock = obj.quantity
-        #attribute = obj.colour
-        order_message = f'An order has been placed for {stock} red {name}s '
+        attribute = obj.attribute
+        order_message = f'An order has been placed for {stock} {attribute} {name}s '
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
         self.PendingOrderIds.append(cart_id)

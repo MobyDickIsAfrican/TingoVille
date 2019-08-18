@@ -1,394 +1,394 @@
+<!DOCTYPE html>
+   {%load static%}
+   {% load javascript_settings_tags %}
+   <script type="text/javascript">{% javascript_settings %}</script>
+   <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+       <meta charset="utf-8" />
+       <title>Homepage</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+      #searchbtn{
+          background-color:silver;
+      }
+      form.search button {
+          float: right;
+          width: 15px;
+          padding: 20px;
+          height:15px;
+          color: white;
+          font-size: 12px;
+          border: 1px solid grey;
+          border-left: none; /* Prevent double borders */
+          cursor: pointer;
+      }
+
+
+  .ui-autocomplete{
+    width: 50px;
+
+  }
+  ul.ui-autocomplete.ui-menu{
+    list-style-type:none;
+    box-shadow: 1px 1px 1px 1px;
+
+    list-style-position:outside;
+  }
+
+      body {
+          font-family: sans-serif;
+          margin-top: 150px;
+          margin-bottom: 150px;
+      }
+
+
+
+      .navbar {
+      width: 100%;
+       height
+
+      }
+
+
+
+
+
+      .image {
+          width: 20px;
+          height: 20px;
+          margin: 20px;
+          padding: 20px;
+      }
+
+      .TAS {
+          margin-bottom: 150px;
+      }
+      .nav-item {
+          margin-left:25px;
+          margin-right:25px;
+      }
+
+      .desc {
+          margin-top: 65px;
+          font-family: 'Monserrat';
+          background-color: #D0DFDF;
+          color: black;
+          text-align: left;
+      }
+      /*{   }*/
+      .jumbotron {
+          padding: 5px 0px 5px 2px;
+          text-align: left;
+          border-radius: 7px;
+          background-color: #D0DFDF;
+      }
+
+      .container {
+          margin-top: 40px;
+          margin-bottom: 200px;
+      }
+
+      .btn-danger {
+          background-color: white;
+          color: red;
+      }
+
+      .btn-primary {
+
+      }
+
+      .fig {
+          background-color: #D0DFDF;
+      }
+
+      .TAS {
+          margin-bottom: 50px;
+      }
+
+
+      #search {
+          border: 1px solid black;
+          border-right:none;
+          font-size: 16px;
+          padding: 10px;
+          outline: none;
+          width: 430px;
+          -webkit-border-top-left-radius: 10px;
+          -webkit-border-bottom-left-radius: 10px;
+          -moz-border-top-left-radius: 10px;
+          -moz-border-bottom-left-radius: 10px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+      }
+      #searchbtn {
+          border: 1px solid black;
+          font-size: 16px;
+          padding: 10px;
+          background: #808080;
+          font-weight: bold;
+          cursor: pointer;
+          outline: none;
+          -webkit-border-top-right-radius: 10px;
+          -webkit-border-bottom-right-radius: 10px;
+          -moz-border-top-right-radius: 10px;
+          -moz-border-bottom-right-radius: 10px;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+      }
+
+          #searchbtn{
+              background-color:silver;
+          }
+          form.search button {
+              float: right;
+              width: 15px;
+              padding: 20px;
+              height:15px;
+              color: white;
+              font-size: 12px;
+              border: 1px solid grey;
+              border-left: none; /* Prevent double borders */
+              cursor: pointer;
+          }
+          .carousel-inner img {
+              width: 100%;
+              height: 100%;
+            }
+
+      .ui-autocomplete{
+        width: 50px;
+
+      }
+      ul.ui-autocomplete.ui-menu{
+        list-style-type:none;
+        box-shadow: 1px 1px 1px 1px;
+
+        list-style-position:outside;
+      }
+
+          body {
+              font-family: sans-serif;
+              margin-top: 150px;
+              margin-bottom: 150px;
+              background-color: #e6f1fc;
+          }
+
+
+
+          .navbar {
+          width: 100%;
+           height
+
+          }
+
+
+
+
+          .nav-link {
+              margin-left: 25px;
+              margin-right: 25px;
+              background-position: fixed;
+          }
+
+          .image {
+              width: 20px;
+              height: 20px;
+              margin: 20px;
+              padding: 20px;
+          }
+
+          .TAS {
+              margin-bottom: 150px;
+          }
+
+
+
+
+          .nav-item {
+              margin-left:5px;
+              margin-right:5px;
+          }
+
+  .nav-link .badge{
+    position: relative;
+    top: -10px;
+    right:-10px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+  }
+
+  .desc {
+      margin-top: 65px;
+      font-family: 'Monserrat';
+      background-color: #D0DFDF;
+      color: black;
+      text-align: left;
+  }
+
+  .jumbotron {
+      padding: 5px 0px 5px 2px;
+      text-align: left;
+      border-radius: 7px;
+      background-color: #D0DFDF;
+  }
+
+  .container {
+      margin-top: 40px;
+      margin-bottom: 200px;
+  }
+
+  .btn-danger {
+      background-color: white;
+      color: red;
+  }
+
+  .btn-primary {
+
+  }
+
+
+  .fig {
+      background-color: #D0DFDF;
+  }
+
+  .TAS {
+      margin-bottom: 50px;
+  }
+
+
+
+
+  #search {
+      border: 1px solid black;
+      border-right:none;
+      font-size: 16px;
+      padding: 10px;
+      outline: none;
+      width: 350px;
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-bottom-left-radius: 10px;
+      -moz-border-top-left-radius: 10px;
+      -moz-border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+  }
+  #searchbtn {
+      border: 1px solid black;
+      font-size: 16px;
+      padding: 10px;
+      background: #808080;
+      font-weight: bold;
+      cursor: pointer;
+      outline: none;
+      -webkit-border-top-right-radius: 10px;
+      -webkit-border-bottom-right-radius: 10px;
+      -moz-border-top-right-radius: 10px;
+      -moz-border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+  }
 
-    <!DOCTYPE html>
-    {%load static%}
-    {% load javascript_settings_tags %}
-    <script type="text/javascript">{% javascript_settings %}</script>
-    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="utf-8" />
-        <title>Homepage</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-       <style>
-       #searchbtn{
-           background-color:silver;
-       }
-       form.search button {
-           float: right;
-           width: 15px;
-           padding: 20px;
-           height:15px;
-           color: white;
-           font-size: 12px;
-           border: 1px solid grey;
-           border-left: none; /* Prevent double borders */
-           cursor: pointer;
-       }
-
-
-   .ui-autocomplete{
-     width: 50px;
-
-   }
-   ul.ui-autocomplete.ui-menu{
-     list-style-type:none;
-     box-shadow: 1px 1px 1px 1px;
-
-     list-style-position:outside;
-   }
-
-       body {
-           font-family: sans-serif;
-           margin-top: 150px;
-           margin-bottom: 150px;
-       }
-
-
-
-       .navbar {
-       width: 100%;
-        height
-
-       }
-
-
-
-
-
-       .image {
-           width: 20px;
-           height: 20px;
-           margin: 20px;
-           padding: 20px;
-       }
-
-       .TAS {
-           margin-bottom: 150px;
-       }
-       .nav-item {
-           margin-left:25px;
-           margin-right:25px;
-       }
-
-       .desc {
-           margin-top: 65px;
-           font-family: 'Monserrat';
-           background-color: #D0DFDF;
-           color: black;
-           text-align: left;
-       }
-       /*{   }*/
-       .jumbotron {
-           padding: 5px 0px 5px 2px;
-           text-align: left;
-           border-radius: 7px;
-           background-color: #D0DFDF;
-       }
-
-       .container {
-           margin-top: 40px;
-           margin-bottom: 200px;
-       }
-
-       .btn-danger {
-           background-color: white;
-           color: red;
-       }
-
-       .btn-primary {
-
-       }
-
-       .fig {
-           background-color: #D0DFDF;
-       }
-
-       .TAS {
-           margin-bottom: 50px;
-       }
-
-
-       #search {
-           border: 1px solid black;
-           border-right:none;
-           font-size: 16px;
-           padding: 10px;
-           outline: none;
-           width: 430px;
-           -webkit-border-top-left-radius: 10px;
-           -webkit-border-bottom-left-radius: 10px;
-           -moz-border-top-left-radius: 10px;
-           -moz-border-bottom-left-radius: 10px;
-           border-top-left-radius: 10px;
-           border-bottom-left-radius: 10px;
-       }
-       #searchbtn {
-           border: 1px solid black;
-           font-size: 16px;
-           padding: 10px;
-           background: #808080;
-           font-weight: bold;
-           cursor: pointer;
-           outline: none;
-           -webkit-border-top-right-radius: 10px;
-           -webkit-border-bottom-right-radius: 10px;
-           -moz-border-top-right-radius: 10px;
-           -moz-border-bottom-right-radius: 10px;
-           border-top-right-radius: 10px;
-           border-bottom-right-radius: 10px;
-       }
-
-           #searchbtn{
-               background-color:silver;
-           }
-           form.search button {
-               float: right;
-               width: 15px;
-               padding: 20px;
-               height:15px;
-               color: white;
-               font-size: 12px;
-               border: 1px solid grey;
-               border-left: none; /* Prevent double borders */
-               cursor: pointer;
-           }
-           .carousel-inner img {
-               width: 100%;
-               height: 100%;
-             }
-
-       .ui-autocomplete{
-         width: 50px;
-
-       }
-       ul.ui-autocomplete.ui-menu{
-         list-style-type:none;
-         box-shadow: 1px 1px 1px 1px;
-
-         list-style-position:outside;
-       }
-
-           body {
-               font-family: sans-serif;
-               margin-top: 150px;
-               margin-bottom: 150px;
-               background-color: #e6f1fc;
-           }
-
-
-
-           .navbar {
-           width: 100%;
-            height
-
-           }
-
-
-
-
-           .nav-link {
-               margin-left: 25px;
-               margin-right: 25px;
-               background-position: fixed;
-           }
-
-           .image {
-               width: 20px;
-               height: 20px;
-               margin: 20px;
-               padding: 20px;
-           }
-
-           .TAS {
-               margin-bottom: 150px;
-           }
-
-
-
-
-           .nav-item {
-               margin-left:5px;
-               margin-right:5px;
-           }
-
-   .nav-link .badge{
-     position: relative;
-     top: -10px;
-     right:-10px;
-     padding: 5px 10px;
-     border-radius: 50%;
-     background: red;
-     color: white;
-   }
-
-   .desc {
-       margin-top: 65px;
-       font-family: 'Monserrat';
-       background-color: #D0DFDF;
-       color: black;
-       text-align: left;
-   }
-
-   .jumbotron {
-       padding: 5px 0px 5px 2px;
-       text-align: left;
-       border-radius: 7px;
-       background-color: #D0DFDF;
-   }
-
-   .container {
-       margin-top: 40px;
-       margin-bottom: 200px;
-   }
-
-   .btn-danger {
-       background-color: white;
-       color: red;
-   }
-
-   .btn-primary {
-
-   }
-
-
-   .fig {
-       background-color: #D0DFDF;
-   }
-
-   .TAS {
-       margin-bottom: 50px;
-   }
-
-
-
-
-   #search {
-       border: 1px solid black;
-       border-right:none;
-       font-size: 16px;
-       padding: 10px;
-       outline: none;
-       width: 350px;
-       -webkit-border-top-left-radius: 10px;
-       -webkit-border-bottom-left-radius: 10px;
-       -moz-border-top-left-radius: 10px;
-       -moz-border-bottom-left-radius: 10px;
-       border-top-left-radius: 10px;
-       border-bottom-left-radius: 10px;
-   }
-   #searchbtn {
-       border: 1px solid black;
-       font-size: 16px;
-       padding: 10px;
-       background: #808080;
-       font-weight: bold;
-       cursor: pointer;
-       outline: none;
-       -webkit-border-top-right-radius: 10px;
-       -webkit-border-bottom-right-radius: 10px;
-       -moz-border-top-right-radius: 10px;
-       -moz-border-bottom-right-radius: 10px;
-       border-top-right-radius: 10px;
-       border-bottom-right-radius: 10px;
-   }
 
 
 
 
+  </style>
+   </head>
+ <body>
+       <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
+       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+           <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+               <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="collapse_target">
 
-   </style>
-    </head>
-  <body>
-        <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="collapse_target">
 
 
 
+               <h4><a href="{% url 'home' %}">#NO<span class="navbar-text">NAME</span><a></h4> </br>
+               <div class="nav-item">
+                   <div class="search-container">
+                       <form class="search" method="GET" action="{%url 'search' %}">
+                           <input id="search" type="text" placeholder="Search..." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()" O /><input id="searchbtn" type="submit" value="Search" />
+                           <div id='display'></div>
+                       </form>
 
-                <h4><a href="{% url 'home' %}">#NO<span class="navbar-text">NAME</span><a></h4> </br>
-                <div class="nav-item">
-                    <div class="search-container">
-                        <form class="search" method="GET" action="{%url 'search' %}">
-                            <input id="search" type="text" placeholder="Search..." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()" O /><input id="searchbtn" type="submit" value="Search" />
-                            <div id='display'></div>
-                        </form>
 
+                   </div>
+               </div>
 
-                    </div>
-                </div>
 
+                       <ul class="navbar-nav">
 
-                        <ul class="navbar-nav">
 
+                           <li class="nav-item dropdown">
+                               <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
+                                   Sell
+                                   <span class="caret"></span>
+                               </a>
+                               <div class="dropdown-menu" arial-labellby="dropdown_target">
+                                   <a class="dropdown-item" >Add Shop</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item" href="{% url 'my-shop' %}">My Shops</a>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
-                                    Sell
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="dropdown-menu" arial-labellby="dropdown_target">
-                                    <a class="dropdown-item" >Add Shop</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{% url 'my-shop' %}">My Shops</a>
 
+                               </div>
+                           </li>
+                           <li class="nav-item dropdown">
+                               <a class="nav-link dropdown-toggle" href="{% url 'categories' %}">
+                                   Buy
+                                   <span class="caret"></span>
+                               </a>
+                               <div class="dropdown-menu" arial-labellby="dropdown_target">
+                                   <a class="dropdown-item">Cars</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item">Hotels</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item">Laptops</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a class="dropdown-item">Accessories</a>
 
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{% url 'categories' %}">
-                                    Buy
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="dropdown-menu" arial-labellby="dropdown_target">
-                                    <a class="dropdown-item">Cars</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item">Hotels</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item">Laptops</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item">Accessories</a>
+                               </div>
 
-                                </div>
+                           </li>
 
-                            </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{%url 'my-cart' %}">My Basket<i id='read'></i></a>
+                           <span class="caret"></span>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{%url 'my-cart' %}">My Basket<i id='read'></i></a>
-                            <span class="caret"></span>
 
+                           <div class="dropdown-menu" arial-labelby="dropdown_target">
+                               <ul>
 
-                            <div class="dropdown-menu" arial-labelby="dropdown_target">
-                                <ul>
+                                   <li>
+                                       <select id="dynamic-select">
+                                           <options value="none"> Add </options>
+                                       </select>
+                                   </li>
 
-                                    <li>
-                                        <select id="dynamic-select">
-                                            <options value="none"> Add </options>
-                                        </select>
-                                    </li>
+                               </ul>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'login' %}">Login</a>
 
-                                </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                       </li>
 
-                        </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'sign-up'%}">Sign Up</a>
+                       </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'sign-up'%}">Sign Up</a>
-                        </li>
 
 
+                   </ul>
 
-                    </ul>
 
 
 
@@ -396,18 +396,15 @@
 
 
 
-
-        </div>
+       </div>
 </nav>
 
 
 
 
-    {% block content %}
+   {% block content %}
 
-    {% endblock %}
-
-
+   {% endblock %}
 
 
 
@@ -415,115 +412,117 @@
 
 
 
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Privacy & Policy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">More</a>
-                </li>
-            </ul>
-        </nav>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-                  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-                  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-                  <script src="https://code.jquery.com"></script>
-                  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        {% block custom_js %}
-        <script>
-
-          $(document).ready(function(){
-              $.ajax({
-           url: configuration['ecommerce']['ajax_cart'],
-           cache: false,
-           type: "GET",
-           success: function(data){
-             var dis=JSON.parse(data);
-             console.log(dis.num);
-             var badge=dis.num;
-            document.getElementById('read').innerHTML=dis.num;
-           }
-        });
-      });
 
 
-          </script>
-    <script>
-    function findme(){
-      var x=document.getElementById('q').value;
-      console.log(x);
-      $(document).ready(function(){
-          $.ajax({
-       url: configuration['ecommerce']['ajax_search'],
-       cache: false,
-       type: "POST",
-       dataType:'JSON',
-       data: {'SearchedItem': x},
-       success: function(data){
-         console.log("postcomplete")
-          $(document).ready(function(){
+       <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
+           <ul class="navbar-nav">
+               <li class="nav-item">
+                   <a class="nav-link" href="#">About Us</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="#">Contact</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="#">Privacy & Policy</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="#">More</a>
+               </li>
+           </ul>
+       </nav>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                 integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+                 <script src="https://code.jquery.com"></script>
+                 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+       {% block custom_js %}
+       <script>
+
+         $(document).ready(function(){
              $.ajax({
-          url: configuration['ecommerce']['ajax_search'],
+          url: configuration['ecommerce']['ajax_cart'],
           cache: false,
           type: "GET",
-          success: function (data) {
-          var thing=JSON.parse(data);
-          var size=thing.length;
-    console.log(thing)
-    $( function() {
-      var Searches= [];
-      var item;
-      for (var i=0; i<size; i++){
-      item=thing[i].Name;
-      Searches.push(item);
-     }
-       $( '#q' ).autocomplete({
-         source: Searches
+          success: function(data){
+            var dis=JSON.parse(data);
+            console.log(dis.num);
+            var badge=dis.num;
+           document.getElementById('read').innerHTML=dis.num;
+          }
        });
-         } );
-
-        /*  for (var i=0; i<size; i++){
-            var name=thing[i].Name;
-            var id=thing[i].id;
-            var type=thing[i].type;
-            var url=thing[i].url;
-            var par=document.createElement("P");
-            var tex=document.createTextNode(name);
-            par.appendChild(tex);
-            document.getElementById('display').appendChild(par);
-
-          }*/
-
-         }
-
-             });
-         });
+     });
 
 
-
-       },
-       beforeSend: function(xhr, settings){
-           xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-       }
-
-               });
-          });
+         </script>
+   <script>
+   function findme(){
+     var x=document.getElementById('q').value;
+     console.log(x);
+     $(document).ready(function(){
+         $.ajax({
+      url: configuration['ecommerce']['ajax_search'],
+      cache: false,
+      type: "POST",
+      dataType:'JSON',
+      data: {'SearchedItem': x},
+      success: function(data){
+        console.log("postcomplete")
+         $(document).ready(function(){
+            $.ajax({
+         url: configuration['ecommerce']['ajax_search'],
+         cache: false,
+         type: "GET",
+         success: function (data) {
+         var thing=JSON.parse(data);
+         var size=thing.length;
+   console.log(thing)
+   $( function() {
+     var Searches= [];
+     var item;
+     for (var i=0; i<size; i++){
+     item=thing[i].Name;
+     Searches.push(item);
     }
+      $( '#q' ).autocomplete({
+        source: Searches
+      });
+        } );
+
+       /*  for (var i=0; i<size; i++){
+           var name=thing[i].Name;
+           var id=thing[i].id;
+           var type=thing[i].type;
+           var url=thing[i].url;
+           var par=document.createElement("P");
+           var tex=document.createTextNode(name);
+           par.appendChild(tex);
+           document.getElementById('display').appendChild(par);
+
+         }*/
+
+        }
+
+            });
+        });
 
 
-    </script>
+
+      },
+      beforeSend: function(xhr, settings){
+          xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+      }
+
+              });
+         });
+   }
+
+
+   </script>
 
 
 {%endblock%}
 
-        </body>
-        </html>
+       </body>
+       </html>

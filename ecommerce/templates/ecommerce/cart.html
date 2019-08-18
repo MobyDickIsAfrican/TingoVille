@@ -5,7 +5,7 @@
 <head>
 
     <title>Cart</title>
-
+{{image_id}}
 </head>
     <form method="POST" action="" enctype="multipart/form-data">
       {%csrf_token%}
@@ -58,7 +58,7 @@ table {
 
  <td>Quantity: {{form.quantity}}</td>
  <td>
- <a href="{%url 'cart-item-delete' good.id %}"><input type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
+ <a href="{%url 'cart-item-delete' form.FormId.value %}"><input type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
  </td>
 </tr>
 
@@ -76,7 +76,7 @@ table {
     </th>
 
 
-  <td>Total: </td> <td>{{form.quantity}}</td>
+  <td>Total:R {{cost}} </td> <td>{{form.quantity}}</td>
 <td>
 
  <a href="#"><input type="button" value="Reset Cart" onclick="deleteRow(this)" action=""> <a></td>  </tr>

@@ -1,24 +1,21 @@
 {% extends 'ecommerce/base.html' %}
 {% load javascript_settings_tags %}
-
-
-
 {% load crispy_forms_tags %}
 {% block content %}
 <head>
 
     <title>Product Description</title>
-
+{{var1}}
 </head>
 <div  class="container">
        <div class="row">
 
            <div class="col-md-6 col-xs-4">
              {%with item.images.all|first as default%}
-               <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;">
+               <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;margin-bottom:5px;">
                {%endwith%}
                {%for x in item.images.all%}
-                <img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:100px;">
+                <img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:20px;">
                {%endfor%}
 
                <div >
@@ -26,8 +23,8 @@
                    {% csrf_token %}
                    <p>{{QuantityForm}}</p>
                    {{variable}}
-                   <button class="btn btn-primary btn-xs  col-xs-6">Buy Now</button>
-                   <button  type=""class="btn btn-danger btn-xs col-xs-6" value="" >    Add to Basket></button>
+
+                   <button  type=""class="btn btn-danger btn-xs col-xs-6" value="" >Add to Basket</button>
                    </form>
                    <h4 class="desc"><small>DESCRIPTION:</small></h4>
                      <div class="fig jumbotron">

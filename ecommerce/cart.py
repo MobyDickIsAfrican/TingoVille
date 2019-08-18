@@ -7,20 +7,20 @@ class Basket(object):
         if not self.basket:
             self.basket = self.session['cart'] = {}
 
-    def AddToBasket(self, item, quantity= 1):
-        itemid = str(item.id)
-        if itemid not in self.basket:
-        	self.basket[itemid] = {'quantity': quantity, 'Price': str(item.Price)}
+    def AddToBasket(self, attribute_id, item, quantity= 1):
+        attribute_id = str(attribute_id)
+        if attribute_id not in self.basket:
+        	self.basket[attribute_id] = {'quantity': quantity, 'Price': str(item.Price), 'item_id': item.id}
         else:
-        	self.basket[itemid]['quantity'] = quantity
+        	self.basket[attribute_id]['quantity'] = quantity
 
     def UpdateQuantity(self, item, quantity):
 #the quantity will be a QuantityForm
-    	self.basket[str(item.id)]['quantity'] = quantity
+    	self.basket[str(attribute_id)]['quantity'] = quantity
 
-    def Remove(self, item):
-    #the remove option will also be a form
-    	del self.basket[str(item.id)]
+    def Remove(self, attribute_id):
+        #the remove option will also be a form
+        del self.basket[str(attribute_id)]
 
     def save(self):
         self.session['cart'] = self.basket
@@ -28,14 +28,16 @@ class Basket(object):
         return self.session['cart']
     def CartList(self):
         cart_keys = self.basket.keys()
-        product_ids = list(map(int, cart_keys))
+        Attribute_ids = list(map(int, cart_keys))
         cart_values = self.basket.values()
         CartQuantities = []
         CartPrices = []
+        Item_ids = []
         for item in cart_values:
             CartQuantities.append(item['quantity'])
             CartPrices.append(item['Price'])
+            Item_ids.append(item['item_id'])
 
-        cart_list =list(zip(product_ids, CartQuantities, CartPrices))
+        cart_list =list(zip(Item_ids, CartQuantities, CartPrices, Attribute_ids))
         return cart_list
     #I need to add a functionality such that when a Shop owner deletes a product, it is removed from the basket.

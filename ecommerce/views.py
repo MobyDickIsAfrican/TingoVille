@@ -1,4 +1,4 @@
-from .models import Shop, Product, ProductCategory, ShoppingCartOrder, OrderItem, Inventory
+from .models import Shop, Product, ProductCategory, ShoppingCartOrder, OrderItem, Inventory, ProductImage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import CartAddForm
@@ -32,7 +32,7 @@ def Home(request):
 
         PopularityList.append((c, sum))
     PopularCategories = sorted(PopularityList, key = keyfunc, reverse = True)
-    PopularCategoryList =PopularCategories[:7]
+    PopularCategoryList =PopularCategories[:3]
 
     #orderting the products by most bought
     PopularProducts = []
@@ -61,10 +61,15 @@ def ProductPage(request, id):
     item = get_object_or_404(Product, id = id)
     i = item.images.all().count()
     if request.method == 'POST':
+        attr_id = int(request.session['item'])
+        attribute = ProductImage.objects.get(attr_id)
+        #create pop up view to notify user the item is out of stock
+        #if attribute.Stock < 1:
+        #return 
         QuantityForm = CartAddForm(request.POST)
         if QuantityForm.is_valid():
             Cart = Basket(request)
-            Cart.AddToBasket(item = item, quantity = QuantityForm.cleaned_data['quantity'])
+            Cart.AddToBasket(attribute_id = attr_id, item = item, quantity = QuantityForm.cleaned_data['quantity'])
             request.session['cart'] = Cart.session['cart']
             request.session.modified = True
             message = messages.success(request, 'Contratulations, your product has been added to your cart')
@@ -103,13 +108,20 @@ def Cart(request):
                 item_id = CartContents[i][0]
                 quantity = CartContents[i][1]
                 price = CartContents[i][2]
-                initial.append({'quantity': quantity, 'FormId': item_id})
+                attribute_id = CartContents[i][3]
+                initial.append({'quantity': quantity, 'FormId': attribute_id})
 
             formset = CartAddFormFormSet(initial = initial)
             goods = [Product.objects.get(id = x[0])for x in CartContents]
             size = len(CartContents)
-            image_id = request.session['item']
-            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id}
+            image_id = int(request.session['item'])
+            cost = 0
+            for vars in trolley.values():
+                cost = cost + int(vars['quantity'])*float(vars['Price'])
+                request.session['cost'] = cost
+                request.session.modified = True
+            cost = request.session['cost']
+            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id, 'cost': cost}
             return render(request, 'ecommerce/cart.html', context)
 
     elif request.method == 'POST':
@@ -119,7 +131,8 @@ def Cart(request):
             item_id = CartContents[i][0]
             quantity = CartContents[i][1]
             price = CartContents[i][2]
-            initial.append({'quantity': quantity, 'FormId': item_id})
+            attribute_id = int(CartContents[i][3])
+            initial.append({'quantity': quantity, 'FormId': attribute_id})
         CartAddFormFormSet = formset_factory(CartAddForm)
         formset = CartAddFormFormSet(request.POST)
         trolley = cart.basket
@@ -127,7 +140,7 @@ def Cart(request):
         for form in formset.forms:
             if form.is_valid():
                 item = CartContents[i][0]
-                trolley[str(item_id)]['quantity'] = form.cleaned_data['quantity']
+                trolley[str(attribute_id)]['quantity'] = form.cleaned_data['quantity']
                 i += 1
         request.session['cart'] = trolley
         request.session.modified = True
@@ -139,7 +152,8 @@ def CartItemDelete(request, id):
         trolley = cart.basket
         if not trolley:
             return redirect('my-cart')
-        cart.Remove(Product.objects.get(id = id))
+        id = id
+        cart.Remove(id)
         request.session['cart'] = trolley
         request.session.modified = True
         return redirect('my-cart')
@@ -147,6 +161,7 @@ def CartItemDelete(request, id):
 
 @login_required
 def Checkout(request):
+    trolley = request.session['cart']
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         details = {}
@@ -155,11 +170,10 @@ def Checkout(request):
             details['Suburb'] = form.cleaned_data['Suburb']
             details['City'] = form.cleaned_data['City']
             details['ZipCode'] = form.cleaned_data['ZipCode']
-            trolley = request.session['cart']
             cart_account = get_object_or_404(Account, user = request.user)
             shoppingcart = ShoppingCartOrder.objects.create(Owner = cart_account)
             for key, value in trolley.items():
-                orderitem = OrderItem.objects.create(product = Product.objects.get(id = int(key)), quantity = value['quantity'])
+                orderitem = OrderItem.objects.create(product = Product.objects.get(id = int(value['item_id'])), quantity = value['quantity'], attribute = ProductImage.objects.get(id =int(key)).name)
                 shoppingcart.CartOrder.add(orderitem.id)
             shoppingcart.save()
             cart_id = shoppingcart.id
@@ -180,7 +194,12 @@ def Checkout(request):
             return redirect('account')
     else:
         form = CheckoutForm()
-    context = {'form': form}
+        cost = 0
+        for vars in trolley.values():
+            cost = cost + int(vars['quantity'])*float(vars['Price'])
+            request.session['cost'] = cost
+            request.session.modified = True
+    context = {'form': form, 'cost': cost}
     return render(request, 'ecommerce/checkout.html', context)
 
 def AjaxView(request):
@@ -190,8 +209,8 @@ def AjaxView(request):
         data = request.POST
         image_id = data['id']
         var1 = data['var1']
+        #var1 = request.session['var1']
         #if var1 == request.session['var1']:
-            #here i am violating my rule of only calling the calling the session by Basket(request)
         request.session['item'] = image_id
         request.session.modified = True
         return HttpResponse(data)
