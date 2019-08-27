@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegisterForm, ProductForm, ShopForm, ProductImageForm, ProductImageFormset
+from .forms import UserRegisterForm, ProductForm, ShopForm, ProductImageForm, ProductImageFormset, UpdateImageFormset
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from ecommerce.models import ProductImage, ShoppingCartOrder, Inventory, Product, Shop
+from ecommerce.models import ProductImage, ShoppingCartOrder, Inventory, Product, Shop, compress
 from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 from django.utils.decorators import method_decorator
@@ -15,6 +15,7 @@ from django.urls import reverse
 from .models import ProgressBar
 import logging
 from datetime import datetime
+
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -117,7 +118,8 @@ def RegisterProduct(request):
             x = RegisterProductForm.save()
             for form in Imageformset:
                 name = form.cleaned_data.get('name')
-                image = form.cleaned_data.get('AddImage')
+                img = form.cleaned_data.get('AddImage')
+                image = compress(img)
                 stock = form.cleaned_data.get('Stock')
                 if name and image:
                     ProductImage(name = name, AddImage =image, Stock = stock, image = x).save()
@@ -156,6 +158,31 @@ def AccountView(request):
 
     else:
         return render(request, 'profiles/account-none.html')
+
+@login_required
+@user_passes_test(TestProduct, login_url ='register-shop')
+def UpdateProduct(request, id):
+    product_instance = Product.objects.get(id = id)
+    queryset = product_instance.images.all()
+    if request.method == 'POST':
+        RegisterProductForm = ProductForm(request.POST)
+        Imageformset = UpdateImageFormset(request.POST, request.FILES)
+        u = RegisterProductForm.is_valid()
+        v = Imageformset.is_valid()
+        if u and v:
+            MyProduct = RegisterProductForm.save()
+            for form in Imageformset:
+                name = form.cleaned_data.get('name')
+                image = form.cleaned_data.get('AddImage')
+                stock = form.cleaned_data.get('Stock')
+                form.save()
+            message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
+            return redirect('my-shop')
+    else:
+        RegisterProductForm = ProductForm(request.GET or None, instance = product_instance)
+        Imageformset = UpdateImageFormset(request.GET or None, queryset = queryset)
+    context = {'RegisterProductForm':RegisterProductForm, 'Imageformset':Imageformset}
+    return render(request, 'profiles/update-product.html', context)
 
 @login_required
 @user_passes_test(TestProduct, login_url ='register-shop')

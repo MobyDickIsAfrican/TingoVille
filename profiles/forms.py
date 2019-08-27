@@ -4,7 +4,7 @@ from django import forms
 from ecommerce.models import Shop, Product
 import itertools
 from django.core.exceptions import ValidationError
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 from ecommerce.models import ProductImage
 
 class UserRegisterForm(UserCreationForm):
@@ -20,7 +20,7 @@ class UserRegisterForm(UserCreationForm):
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ['Shop_Name', 'Description', 'Street_Address', 'Suburb', 'City', 'ZipCode']
+        fields = ['Shop_Name', 'Description', 'Street_Address', 'Suburb', 'City', 'ZipCode', 'Type']
 
 
 class ProductForm(forms.ModelForm):
@@ -65,6 +65,7 @@ class ProductImageForm(forms.ModelForm):
         fields = ['AddImage', 'name', 'Stock']
 
 ProductImageFormset = formset_factory(ProductImageForm, extra =1)
+UpdateImageFormset = modelformset_factory(ProductImage, fields = ('AddImage', 'name', 'Stock'))
 
 class QuantityForm(forms.Form):
     quantity = quantity = forms.IntegerField(initial = 0)

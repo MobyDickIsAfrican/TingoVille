@@ -4,7 +4,18 @@ from django.utils import timezone
 from datetime import datetime, date
 from profiles.models import Account
 from django.contrib.postgres.fields import ArrayField
+from io import BytesIO
+from PIL import Image
+from django.core.files import File
+import os
+from django.urls import reverse
 
+def compress(image):
+    im = Image.open(image)
+    im_io = BytesIO()
+    im.save(im_io, 'JPEG', quality = 10)
+    new_image = File(im_io, name = image.name)
+    return new_image
 
 
 ## creating a shop model for the seller. The AUTH_USER_MODEL is used to link the seller to the user who actually
@@ -22,6 +33,8 @@ class Shop(models.Model):
     City = models.CharField(max_length = 30, blank = False, default = 'Johannesburg')
     ZipCode = models.CharField(max_length = 30, blank =True)
     created = models.DateTimeField(auto_now_add = True, blank = True)
+    STORE_CHOICES = (("CASUAL", "Casual Seller"), ("PROFESSIONAL", "Professional"))
+    Type = models.CharField(max_length = 50, choices = STORE_CHOICES, null = True)
 
     #add cool customiseable stuff for the seller to make shop feel organic.
 
@@ -207,6 +220,7 @@ class ProductImage(models.Model):
     Stock = models.IntegerField(default = 1)
     name = models.CharField(max_length = 200, default = 'write here')
     ToBeDelivered = models.IntegerField(default = 0)
+    #need to manually insert the number of items delivered in django admin
     Delivered = models.IntegerField(default = 0)
     Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
 
@@ -214,6 +228,22 @@ class ProductImage(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        self.ToBeDelivered = self.ToBeDelivered - self.Delivered
-        self.Delivered = 0
-        super(ProductImage, self).save(*args, **kwargs)
+        '''this is to delete productimages or products for casual sellers when the stock runs out'''
+        if self.Stock == 0:
+            pro = self.image
+            store = pro.shop
+            if store.Type == 'Casual Seller':
+                #if there is only one productimage, delete the product
+                if pro.images.all().count() == 1:
+                    return pro.delete()
+                else:
+                    return self.delete()
+        else:
+            self.ToBeDelivered = self.ToBeDelivered - self.Delivered
+            self.Delivered = 0
+            #img = self.AddImage
+            #content = img.read()
+            #size = os.stat(os.listdir(img.path)).st_size
+            #if (size/1000) > 100:
+            #self.AddImage = compress(img)
+            return super(ProductImage, self).save(*args, **kwargs)

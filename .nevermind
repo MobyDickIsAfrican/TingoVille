@@ -103,3 +103,39 @@ ELASTICSEARCH_DSL={
         'hosts': 'localhost:9200'
     },
 }
+
+"""mysite URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from profiles import views as pro_views
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('sign-up/', pro_views.SignUp, name = 'sign-up'),
+    path('login/',pro_views.LoginView.as_view(template_name = 'profiles/login.html'), name ='login'),
+    path('logout/',auth_views.LogoutView.as_view(template_name = 'profiles/logout.html'), name = 'logout'),
+    path('account/', pro_views.AccountView, name = 'account'),
+    path('register-shop/', pro_views.RegisterShop, name = 'register-shop'),
+    path('my-shop/register-product/', pro_views.RegisterProduct, name = 'register-product'),
+    path('my-shop/update-product/product/<int:id>/', pro_views.UpdateProduct, name = 'update-product'),
+    path('my-shop/inventory/<int:id>/', pro_views.InventoryView, name ='inventory'),
+    path('my-shop/inventory/<int:inventory_id>/shoppingcartorder/<int:cart_id>/orderitem/<int:order_id>/', pro_views.AcceptOrder, name = 'accept-order'),
+    path('account/track-order', pro_views.OrderTracker, name = 'track-order'),
+    path('', include('ecommerce.urls')),
+]
