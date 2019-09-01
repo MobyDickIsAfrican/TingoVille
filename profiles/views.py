@@ -165,16 +165,13 @@ def UpdateProduct(request, id):
     product_instance = Product.objects.get(id = id)
     queryset = product_instance.images.all()
     if request.method == 'POST':
-        RegisterProductForm = ProductForm(request.POST)
-        Imageformset = UpdateImageFormset(request.POST, request.FILES)
+        RegisterProductForm = ProductForm(request.POST, instance = product_instance)
+        Imageformset = UpdateImageFormset(request.POST, request.FILES, queryset = queryset)
         u = RegisterProductForm.is_valid()
         v = Imageformset.is_valid()
         if u and v:
             MyProduct = RegisterProductForm.save()
             for form in Imageformset:
-                name = form.cleaned_data.get('name')
-                image = form.cleaned_data.get('AddImage')
-                stock = form.cleaned_data.get('Stock')
                 form.save()
             message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
             return redirect('my-shop')

@@ -11,18 +11,59 @@
 </head>
 <style>
 
-.prod{
-  transition-delay: 2s;
-}
-  .prod:hover{
 
-    width:220px;
-     height:200px;
-     margin:5px;
-     padding:10px;
-   }
+
+
+
+.carousel-caption{
+  font:arial-black;
+  font-weight:bold;
+  font-size:2vw;
+  color:grey;
+  font-style:oblique;
+  bottom:-29px;
+  background:black;
+}
+.BUTTON_YZG {
+   -webkit-border-radius: 12px;
+   -moz-border-radius: 12px;
+   border-radius: 12px;
+   height: 8px;
+   line-height: 8px;
+   color: #99C624;
+   font-family: Arial;
+   width: 161px;
+   font-size: 17px;
+   font-weight: 600;
+   padding-top: 18px;
+   padding-bottom: 18px;
+   padding-left:18px;
+   padding-right:18px;
+   background-color: white;
+   text-shadow: -16px -61px 51px #000000;
+   border: solid #99C624 1px;
+   text-decoration: none;
+   display: inline-block;
+   cursor: pointer;
+}
+
+.BUTTON_YZG:hover {
+   background: #39393B;
+   text-decoration: none;
+}
+
+
+
+.container-fluid{
+
+}
+.carousel-slide{
+  margin-bottom:78px;
+}
+
   </style>
-<div id="demo" class="carousel slide" data-ride="carousel">
+<div id="demo" class="carousel slide" data-ride="carousel" style="font-family:arial;font-weight:600;">
+
   <ul class="carousel-indicators">
     <li data-target="#demo" data-slide-to="0" class="active"></li>
     <li data-target="#demo" data-slide-to="1"></li>
@@ -34,22 +75,21 @@
       <img src="{%static 'media/Category_image/download_1.jpg' %}" alt="Item Name" width="200" height="100">
 
       <div class="carousel-caption">
-        <h3>Item Name 1</h3>
-        <p>Product/description</p>
+
+        <p>Save 50%</p>
       </div>
     </div>
     <div class="carousel-item">
       <img src="{%static 'media/Category_image/download_1.jpg' %}"  width="200" height="100">
       <div class="carousel-caption">
-        <h3>Item Name 2</h3>
-        <p>Product/description</p>
+      <p>Discounts up to 75%</p>
       </div>
     </div>
     <div class="carousel-item">
       <img src="{%static 'media/Category_image/download_1.jpg' %}" alt="Item Name 3" width="200" height="100">
       <div class="carousel-caption">
-        <h3>Item name 3</h3>
-        <p>Product/description</p>
+
+        <p>Hurry up!</p>
       </div>
     </div>
   </div>
@@ -63,94 +103,93 @@
 
     <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
     <!--<h1  style="color:#0c0e29; margin-top:100px; margin-bottom:20px;">Popular Categories</h1> -->
-    {%for cat, num in  PopularCategoryList %}
-    <table class="category" style="align-content:center;">
-    <th>{{cat.CategoryName}}</th>
+    <div style="overflow-x:auto;margin-bottom:200px;" style="font-family:arial;">
+    <div class="container" style="align-content:middle;">
+
+     <table class="category" style="align-content:center;margin-top:50px;">
+        {%for cat, num in  PopularCategoryList %}
+    <th style="text-align:center;font-weight:850;">{{cat.CategoryName}}</th>
     <tr>
      {%for pro in cat.products.all %}
      <td>
-       <ul style="list-style:none;">
-
+       <ul style="list-style:none;text-align:center;">
+     <div class="container-fluid">
   {%with pro.images.all|first as default%}
-     <li class="prod"> <img class ="images" style="width:200px; height:190px; margin:5px; padding:0px;" src="{{default.AddImage.url}}"  > </li>
-<li> {{pro.Name}}</li>
-     {%endwith%}
 
-      <li id="price"> R {{pro.Price}} </li>
+     <li class="prod"> <img class =" images" style="width:200px; height:190px; margin:5px; padding:0px;" src="{{default.AddImage.url}}"  > </li>
+<li style="text-align:center;font-weight:450;"> {{pro.Name}}</li>
+     {%endwith%}
+     </div>
+
+      <li style="text-align:center;font-weight:450;" id="price">R{{pro.Price}} </li>
       <li id="Add">
-          <button type="button" onclick="addOption()" class="btn btn-success">
+          <button type="button" onclick="addOption()" class="BUTTON_YZG">
               Add to Basket
           </button>
       </li>
-      <li id="SeeMore"><a href="{% url 'product-page' pro.id %}">Product Description</a></li>
+      <li style="text-align:center;font-weight:450; id="SeeMore"><a href="{% url 'product-page' pro.id %}">Product Description</a></li>
 
   </ul>
 
     </td>
     {%endfor%}
      </tr>
+     {%endfor%}
      </table>
-    {%endfor%}
+
+
+</div>
 
 
 
+<div class="container" style="align-content:middle;">
 
-
-    <table>
-
-      <th>{{cat.CategoryName}}</th>
-          {%for good in Fresh%}
-      <tr>
-      <td>
-    <ul style="list-style:none;">
-      {%if good.images.all%}
-
+<table>
+<th style="text-align:center;font-weight:850;">{{cat.CategoryName}}</th>
+{%for good in Fresh%}
+<tr>
+<td>
+<ul style="list-style:none;text-align:center;">
+{%if good.images.all%}
 {%with good.images.all|first as default1%}
-     <li class="prod"> <img class ="images" style="width:200px; height:190px; margin:5px; padding:0px;" src="{{default1.AddImage.url}}"></li>
-     {%endwith%}
-     <li>{{good.Name}}</li>
-       <li id="price"> R {{pro.Price}} </li>
-       <li id="Add">
-           <button type="button" onclick="addOption()" class="btn btn-success">
-               Add to Basket
-           </button>
-       </li>
-       <li id="SeeMore"><a href="{% url 'product-page' good.id %}">Product Description</a></li>
-
-   </ul>
-     {%endif%}
+<li class="prod"> <img class ="images" style="width:200px; height:190px; margin:5px; padding:0px;" src="{{default1.AddImage.url}}"></li>
+{%endwith%}
+<li style="text-align:center;font-weight:450;">{{good.Name}}</li>
+<li style="text-align:center;font-weight:450;"id="price"> R {{pro.Price}} </li>
+<li id="Add">
+<button type="button" onclick="addOption()" class="BUTTON_YZG">
+Add to Basket
+</button>
+</li>
+<li style="text-align:center;font-weight:450;"id="SeeMore"><a href="{% url 'product-page' good.id %}">Product Description</a></li>
+</ul>
+{%endif%}
 </td>
 {%endfor%}
 </tr>
-
-  </table>
-
-
+</table>
+</div>
 
 
-
-
-
-    <h2>Trending</h2>
-    <table>
+    <div class="container" style="align-content:middle;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Trending</h2>
+    <table style="text-align:center;">
       <tr>
     {%for good, num in PopularList%}
     <td>
-  <ul style="list-style:none; margin-bottom:100px;">
-
-
+  <ul style="list-style:none; margin-bottom:100px;text-align:center;">
    {%with good.images.all|first as default2%}
    <li class="prod"> <img class ="images" style="width:200px; height:190px; margin:5px; padding:00px;" src="{{default2.AddImage.url}}"  > </li>
    {%endwith%}
 
-    <li>{{good.Name}}</li>
-      <li id="price"> R {{pro.Price}} </li>
+    <li style="text-align:center;font-weight:450;">{{good.Name}}</li>
+      <li style="text-align:center;font-weight:450;" id="price"> R {{pro.Price}} </li>
    <li id="Add">
-       <button type="button" onclick="addOption()" class="btn btn-success">
+       <button type="button" onclick="addOption()" class="BUTTON_YZG">
            Add to Basket
        </button>
    </li>
-   <li id="SeeMore"><a href="{% url 'product-page' good.id %}">Product Description</a></li>
+   <li style="text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' good.id %}">Product Description</a></li>
 
 </ul>
 </td>
@@ -161,25 +200,10 @@
 
 
 
+</div>
 
 
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Privacy & Policy</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">More</a>
-        </li>
-    </ul>
-</nav>
+</div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
           integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"

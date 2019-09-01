@@ -62,10 +62,10 @@ def ProductPage(request, id):
     i = item.images.all().count()
     if request.method == 'POST':
         attr_id = int(request.session['item'])
-        attribute = ProductImage.objects.get(attr_id)
+        attribute = ProductImage.objects.get(id = attr_id)
         #create pop up view to notify user the item is out of stock
         #if attribute.Stock < 1:
-        #return 
+        #return
         QuantityForm = CartAddForm(request.POST)
         if QuantityForm.is_valid():
             Cart = Basket(request)
