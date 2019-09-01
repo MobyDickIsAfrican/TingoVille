@@ -62,6 +62,7 @@ def ProductPage(request, id):
     i = item.images.all().count()
     if request.method == 'POST':
         attr_id = int(request.session['item'])
+        sizes = request.session['item_size']
         attribute = ProductImage.objects.get(id = attr_id)
         #create pop up view to notify user the item is out of stock
         #if attribute.Stock < 1:
@@ -69,7 +70,7 @@ def ProductPage(request, id):
         QuantityForm = CartAddForm(request.POST)
         if QuantityForm.is_valid():
             Cart = Basket(request)
-            Cart.AddToBasket(attribute_id = attr_id, item = item, quantity = QuantityForm.cleaned_data['quantity'])
+            Cart.AddToBasket(attribute_id = attr_id, item = item, sizes = sizes, quantity = QuantityForm.cleaned_data['quantity'])
             request.session['cart'] = Cart.session['cart']
             request.session.modified = True
             message = messages.success(request, 'Contratulations, your product has been added to your cart')
@@ -80,10 +81,19 @@ def ProductPage(request, id):
     else:
         QuantityForm = CartAddForm(initial = {'FormId': 1})
         Description = item.Description
+        data = {}
+        for pro in item.images.all():
+            if pro.sizes:
+                size_data = pro.sizes.split()
+                size_clone = [x.strip() for x in size_data]
+                data[str(pro.id)] = {"stock": pro.Stock, "sizes": size_clone}
+            else:
+                data[str(pro.id)] = {"stock": pro.Stock, "sizes": None}
         #if request.is_ajax():
             #var2 = request.session['item']
             #variable = var2
-        context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description }
+        data = json.dumps(data)
+        context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description, 'ProductSize': data }
         return render(request, 'ecommerce/product-page.html', context)
 
 def Cart(request):
@@ -238,7 +248,26 @@ def AddToCartAjax(request):
                 data = json.dumps({'num':0})
                 return HttpResponse(data)
 
+def AjaxSize(request):
+        #return the item id, and the hash of the session_id using request.session.session_key
 
+    if request.method == 'POST':
+        data = request.POST
+        size = data['id']
+        #var1 = request.session['var1']
+        #if var1 == request.session['var1']:
+        request.session['item_size'] = size
+        request.session.modified = True
+        return HttpResponse(data)
+    if request.method == 'GET':
+        v = request.session.session_key
+        var1 = hash(v)
+        #here i am violating my rule of only calling the calling the session by Basket(request)
+        request.session['var1'] = var1
+        request.session.modified = True
+        data = {'var1': var1}
+        data = json.dumps(data)
+        return HttpResponse(data)
 
 
 

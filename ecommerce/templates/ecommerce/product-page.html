@@ -7,6 +7,14 @@
     <title>Product Description</title>
 {{var1}}
 <style>
+
+  .mydiv div{
+    display:inline-block;
+    width:500px;
+    min-height:50px;
+    height:auto;
+    margin-top:0px;
+  }
   .desc {
         margin-top: 65px;
         font-family: 'Monserrat';
@@ -49,38 +57,43 @@
 
 </head>
 <div  class="container">
-  <table>
-    <tr>
-      <col>
-        {%with item.images.all|first as default%}
-        <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:-35px;margin-bottom:5px;">
-        {%endwith%}
-        {%for x in item.images.all%}
-        <img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:5px;margin-left:15px;">
-        {%endfor%}
-        </col>
-      <col>
-      <div><h4 class="pro" style="margin-top:100px;">{{item.Name}} </h4></div>
-      <hr />
-      <div><p>{{item.Price}}</p>
-      <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
-      {% csrf_token %}
-      <p>{{QuantityForm}}</p>
-      {{variable}}
-      </div>
-      <button  type="" class="BUTTON_YZG" value="" >Add to Basket</button>
-      </form>
-       <div><h4><small>DESCRIPTION:</small></h4>
-       <p>{{Description}}</p>
-       </div>
-        </col>
+<table>
+<tr>
+<div class="mydiv">
+<div>
+{%with item.images.all|first as default%}
+<img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:-550px;margin-bottom:-150px;">
+{%endwith%}
+</div>
+<div>
+<div><h4 class="pro" style="margin-top:-18px; margin-bottom:0px;">{{item.Name}}</h4></div>
+<hr style="margin-top:0px; margin-bottom:5px;" />
+<h6>Colour:</h6>
+{%for x in item.images.all%}
+<img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:3px;margin-left:1px;margin-bottom:7px;">
+{%endfor%}
+<h6 style="margin-bottom:2px;">Price:</h6>
+<div style="margin-top:7px;"><p>R {{item.Price}}</p></div>
+<form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
+{% csrf_token %}
+<p>{{QuantityForm}}</p>
+{{variable}}
+<div style="margin-top:5px;"><h4><small>DESCRIPTION:</small></h4>
+<p>{{Description}}</p>
 
 
 
+</div>
+
+<button  style="margin-top:-650px;"type="submit" class="BUTTON_YZG" value="" >Add to Basket</button>
+</form>
 
 
-      </tr>
-  </table>
+
+</div>
+</div>
+</tr>
+</table>
 
 
 
@@ -107,11 +120,12 @@ var id=[];
 var y='{{x.id}}';
 id.push(y);
 {%endfor%}
-var x=id[0];
-console.log(x);
+var dv = '{{ProductSize|safe}}';
+console.log(dv);
 var p;
 $(this).on("click",function(){
-console.log(4);
+  var target=event.target;
+  var x=target.id;
 $(document).ready(function(){
 $.ajax({
 url: configuration['ecommerce']['ajax_view'],
@@ -121,6 +135,7 @@ success: function(data){
 p=data;
 var thing=JSON.parse(p);
 console.log(thing.var1);
+console.log(x);
 var t=thing.var1;
 $(document).ready(function(){
 $.ajax({
@@ -233,10 +248,13 @@ xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
 </script>
 
 <script type=text/javascript>
+  var y='IneverChange';
 $(document).on("click", ".img-responsive", function() {
 var x= $(this).attr("id");
 var myImgSrc = document.getElementById(x).src;
-document.getElementById('IneverChange').src = myImgSrc;
+document.getElementById(y).src = myImgSrc;
+document.getElementById(y).id=x;
+y=x;
       });
 
 

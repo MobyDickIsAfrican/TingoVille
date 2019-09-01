@@ -62,10 +62,10 @@ class ProductImageForm(forms.ModelForm):
 
     class Meta:
         model = ProductImage
-        fields = ['AddImage', 'name', 'Stock']
+        fields = ['AddImage', 'name', 'Stock', 'sizes']
 
 ProductImageFormset = formset_factory(ProductImageForm, extra =1)
-UpdateImageFormset = modelformset_factory(ProductImage, fields = ('AddImage', 'name', 'Stock'))
+UpdateImageFormset = modelformset_factory(ProductImage, fields = ('AddImage', 'name', 'Stock', 'sizes'))
 
 class QuantityForm(forms.Form):
     quantity = quantity = forms.IntegerField(initial = 0)

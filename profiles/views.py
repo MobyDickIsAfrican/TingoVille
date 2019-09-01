@@ -121,8 +121,9 @@ def RegisterProduct(request):
                 img = form.cleaned_data.get('AddImage')
                 image = compress(img)
                 stock = form.cleaned_data.get('Stock')
+                sizes = form.cleaned_data.get('sizes')
                 if name and image:
-                    ProductImage(name = name, AddImage =image, Stock = stock, image = x).save()
+                    ProductImage(name = name, AddImage =image, Stock = stock, image = x, sizes = sizes).save()
             message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
             return redirect('my-shop')
     else:

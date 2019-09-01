@@ -223,6 +223,7 @@ class ProductImage(models.Model):
     #need to manually insert the number of items delivered in django admin
     Delivered = models.IntegerField(default = 0)
     Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
+    sizes = models.CharField(max_length = 100, null = True)
 
     def __str__(self):
         return self.name

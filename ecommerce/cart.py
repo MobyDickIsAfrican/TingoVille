@@ -7,12 +7,14 @@ class Basket(object):
         if not self.basket:
             self.basket = self.session['cart'] = {}
 
-    def AddToBasket(self, attribute_id, item, quantity= 1):
+    def AddToBasket(self, attr, item, sizes, quantity= 1):
         attribute_id = str(attribute_id)
-        if attribute_id not in self.basket:
-        	self.basket[attribute_id] = {'quantity': quantity, 'Price': str(item.Price), 'item_id': item.id}
+        pro = ProductImage.objects.get(id = attr)
+        if pro.sizes:
+            size_data = sizes
         else:
-        	self.basket[attribute_id]['quantity'] = quantity
+            size_data = None
+        self.basket[attribute_id] = {'quantity': quantity, 'Price': str(item.Price), 'item_id': item.id, "size": size_data}
 
     def UpdateQuantity(self, item, quantity):
 #the quantity will be a QuantityForm
