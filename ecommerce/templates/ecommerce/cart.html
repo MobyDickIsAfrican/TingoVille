@@ -1,39 +1,30 @@
 {% extends 'ecommerce/base.html' %}
-
 {% block content %}
 {% load ecommerce_extras_filters %}
 <head>
-
-    <title>Cart</title>
-{{image_id}}
-</head>
-    <form method="POST" action="" enctype="multipart/form-data">
-      {%csrf_token%}
-      {% zip_longest formset.forms goods as items %}
-      {{formset.management_form}}
-      {%for form, good in items %}
-      <style>
-      table {
-        width: 60%;
-        border-top: 1px solid black;
-
-      }
-      tr, td, th,{
-        border:none;
-      }
-
-        </style>
-        <table>
-<tr> <table id="TableRow">
-<!--<style>
+<title>Cart</title>
+<style>
 table {
-    border : 1px none #808080;
-    border-width : 60%
-    padding : 20px;
-}
-</style>-->
+  width: 60%;
+  border-top: 1px solid black;
 
-    {{good.Name}}
+}
+tr, td, th,{
+  border:none;
+}
+
+</style>
+</head>
+    <form id='form' method="POST" action="" enctype="multipart/form-data">
+      {%csrf_token%}
+      {% zip_longest formset.forms goods sizes colours as items %}
+      {{formset.management_form}}
+      {%for form, good, sizevar, colourvar in items %}
+
+        <table>
+      <tr> <table id="TableRow">
+    <div class="nameofpro" id='{{good.Name}}'>{{good.Name}}
+    <div>{{sizevar}} , {{colourvar}}</div>
 
 
 <tr>
@@ -48,7 +39,8 @@ table {
     <td>
      Product Description
    </td>
-<td> R {{good.Price}}</td>
+<td  class="Price" id='{{good.Name}}'> {{good.Price}}</td>
+
 
 <tr>
 
@@ -56,7 +48,10 @@ table {
 
 <td></td>
 
- <td>Quantity: {{form.quantity}}</td>
+ <td id='quantity'><div >Quantity:</div>
+    <div id='{{good.Name}}'>{{form.quantity}}</div></td>
+
+ </div>
  <td>
  <a href="{%url 'cart-item-delete' form.FormId.value %}"><input type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
  </td>
@@ -76,7 +71,7 @@ table {
     </th>
 
 
-  <td>Total:R {{cost}} </td> <td>{{form.quantity}}</td>
+  <td id='cost'>Total:R {{cost}} </td> <td>{{form.quantity}}</td>
 <td>
 
  <a href="#"><input type="button" value="Reset Cart" onclick="deleteRow(this)" action=""> <a></td>  </tr>
@@ -91,40 +86,27 @@ table {
 
 
   </form>
+
   <script>
+  $("#nameofpro").on("change", function(e){
+    console.log(2);
+    var quantityid=e.target.id;
+    var parentNodeId=e.target.parentNode.id;
+    var price;
+    var quantity;
+    $(".Price").ready(function(){
+     price=document.getElementById(parentNodeId).value;
+    });
+    quantity=document.getElementById(quantityid).value;
+    var total=price*quantity;
+    document.getElementById('cost').innerHTML=total;
+    console.log(quantity);
 
 
-
-   var k=(0);
-   h='id_quantity';
-
-    /* var two = $('#id_quantity').serializeArray() ;*/
-    /*for(i=0; i<{{size}}; i++){
-      if(h==='id_quantity'){
-        var two= document.getElementById(h).value;
-        k=(two)+(k);
-        r='changed';
-        document.getElementById(h).setAttribute('id',r);
-      }
-
-      /*
-      dataHtml= '';
-      dataHtml += ' <input type="number" name="quantity" value="2" required id="'k'">'
-
-      document.getElementById('id_quantity').innerhtml= dataHtml;
-*/
-
-
-/*  window.onload() => {
-    replaceID
-  };
-    console.log('Javascript is working')*/
-
-
-console.log(k);
-
+  });
 
 
     </script>
+
 
 {% endblock %}

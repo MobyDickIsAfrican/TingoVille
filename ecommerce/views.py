@@ -63,14 +63,14 @@ def ProductPage(request, id):
     if request.method == 'POST':
         attr_id = int(request.session['item'])
         sizes = request.session['item_size']
-        attribute = ProductImage.objects.get(id = attr_id)
+        colour = ProductImage.objects.get(id = attr_id).name
         #create pop up view to notify user the item is out of stock
         #if attribute.Stock < 1:
         #return
         QuantityForm = CartAddForm(request.POST)
         if QuantityForm.is_valid():
             Cart = Basket(request)
-            Cart.AddToBasket(attribute_id = attr_id, item = item, sizes = sizes, quantity = QuantityForm.cleaned_data['quantity'])
+            Cart.AddToBasket(attr= attr_id, item = item, sizes = sizes, colour = colour, quantity = QuantityForm.cleaned_data['quantity'])
             request.session['cart'] = Cart.session['cart']
             request.session.modified = True
             message = messages.success(request, 'Contratulations, your product has been added to your cart')
@@ -84,7 +84,7 @@ def ProductPage(request, id):
         data = {}
         for pro in item.images.all():
             if pro.sizes:
-                size_data = pro.sizes.split()
+                size_data = pro.sizes.split(',')
                 size_clone = [x.strip() for x in size_data]
                 data[str(pro.id)] = {"stock": pro.Stock, "sizes": size_clone}
             else:
@@ -126,12 +126,16 @@ def Cart(request):
             size = len(CartContents)
             image_id = int(request.session['item'])
             cost = 0
+            sizes = []
+            colours = []
             for vars in trolley.values():
                 cost = cost + int(vars['quantity'])*float(vars['Price'])
                 request.session['cost'] = cost
                 request.session.modified = True
+                sizes.append(vars['size'])
+                colours.append(vars['colour'])
             cost = request.session['cost']
-            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id, 'cost': cost}
+            context = {'CartContents': CartContents, 'size': size, 'formset': formset, 'goods': goods, 'image_id': image_id, 'cost': cost, 'trolley': trolley, 'sizes': sizes, 'colours': colours}
             return render(request, 'ecommerce/cart.html', context)
 
     elif request.method == 'POST':

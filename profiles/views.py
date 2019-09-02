@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegisterForm, ProductForm, ShopForm, ProductImageForm, ProductImageFormset, UpdateImageFormset
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from ecommerce.models import ProductImage, ShoppingCartOrder, Inventory, Product, Shop, compress
+from ecommerce.models import ProductImage, ShoppingCartOrder, Inventory, Product, Shop, compress, OrderItem
 from django.contrib.auth import views
 from django.contrib.auth import views as auth_views
 from django.utils.decorators import method_decorator
@@ -152,9 +152,18 @@ def AccountView(request):
             cost = item.TotalCost()
             costs.append(cost)
         AccountDetails = list(zip(query, dates, numbers, Delivery_Dates, costs))
-        user_account.Processed()
+        messages = user_account.ProcessedOrders
+        notifications = []
+        for item in messages:
+            order_id = item[1]
+            order = OrderItem.objects.get(id = order_id)
+            number = order.quantity
+            attribute = order.attribute
+            pro_name = order.product.Name
+            notification = f'Your order for {number} {attribute} {pro_name} is being processed'
+            notifications.append(notification)
         user_account.CheckProcessedFully()
-        context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails}
+        context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails, 'notifications': notifications}
         return render(request, 'profiles/account.html', context)
 
     else:
@@ -248,5 +257,10 @@ def OrderTracker(request):
     user = request.user
     user_account = get_object_or_404(Account, user = user)
     progress_bar_queryset = user_account.progressbars.all()
-    context = {'progress_bar_queryset': progress_bar_queryset}
+    Refs = []
+    for item in progress_bar_queryset:
+        cart = ShoppingCartOrder.objects.get(id = item.cart_id)
+        Ref = cart.ReferenceNumber()
+        Refs.append(Ref)
+    context = {'progress_bar_queryset': progress_bar_queryset, 'Refs': Refs}
     return render(request, 'ecommerce/track-order.html', context)

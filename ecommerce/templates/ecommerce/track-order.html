@@ -1,19 +1,35 @@
 {% extends 'ecommerce/base.html' %}
 {% block content %}
+{% load ecommerce_extras_filters %}
 <head>
 
     <title>Track order</title>
 
 </head>
-{%for item in progress_bar_queryset%}
 
-
-
+{% zip_longest progress_bar_queryset Refs as items %}
+{%for item, number in  items%}
+<div id='{{item.id}}a'></div>
 <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+  <div id='{{item.id}}'class="progress-bar" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{number}} </div>
 </div>
 
 
+<script>
+  $(document).ready(function(){
+    var progress=document.getElementById('{{item.id}}').style.width;
+    if(progress=="40%"){
+      document.getElementById('{{item.id}}a').innerHTML="Your order is on its way to our warehouse";
+    }
+    else if(progress=="1%"){
+      document.getElementById('{{item.id}}a').innerHTML="Your order is being processed";
+    }
+
+  });
+
+
+  </script>
 
 {%endfor%}
+
 {%endblock%}

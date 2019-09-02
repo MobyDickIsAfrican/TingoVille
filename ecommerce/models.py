@@ -147,11 +147,17 @@ class Inventory (models.Model):
                 self.PendingObjectId.pop(num)
                 p = Product.objects.get(id = y)
                 string_list = w.split()
-                quantity = int(string_list[::-1][2])
+                for s in string_list:
+                    try:
+                        var = int(s)
+                        break
+                    except:
+                        continue
+                quantity = var
                 attribute = string_list[::-1][1]
                 for item in p.images.all():
                     if item.name == attribute:
-                        item.ToBeDelivered = p.ToBeDelivered + quantity
+                        item.ToBeDelivered = item.ToBeDelivered + quantity
                         item.Stock = item.Stock - quantity
                         item.save(update_fields = ['ToBeDelivered'])
                         break
@@ -169,7 +175,7 @@ class OrderItem(models.Model):
     #we us a related_name so that we can be able to track how many orders a particular product has, before completion of order
     #a product is created once, but the quantity can be changed
     #OrderExists = models.BooleanField(default = False)
-    #I think this should be true
+    #I think this should be true 
     quantity = models.IntegerField(default = 1)
     attribute = models.CharField(default = 'Default', max_length = 200,)
     #auto_now is true, as product is added to the cart

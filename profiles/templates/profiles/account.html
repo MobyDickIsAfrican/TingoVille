@@ -21,7 +21,14 @@ table {
 <td>{{Delivery_Date}}</td>
 <td>{{cost}}</td>
           </tr>
+          {%endfor%}
 </table>
-{%endfor%}
 
+{% for note in notifications%}
+<div class="container">
+<ul>
+<li style="list-style:none">{{note}}</li>
+</ul>
+</div>
+{%endfor%}
 {% endblock %}

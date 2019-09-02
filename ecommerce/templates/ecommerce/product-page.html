@@ -7,6 +7,20 @@
     <title>Product Description</title>
 {{var1}}
 <style>
+ul#insert li{
+  list-style:square outside none;
+  display:inline-block;
+  margin-left:5px;
+  margin-right:-2px;
+  background-color:black;
+  width:8%;
+  padding:5px 5px 2px 3px;
+  color:white;
+  border-radius:8px 8px 8px 8px;
+}
+ul#insert li:hover{
+  background-color:grey;
+}
 
   .mydiv div{
     display:inline-block;
@@ -80,16 +94,17 @@
 {{variable}}
 <div style="margin-top:5px;"><h4><small>DESCRIPTION:</small></h4>
 <p>{{Description}}</p>
-
-
-
-</div>
-
-<button  style="margin-top:-650px;"type="submit" class="BUTTON_YZG" value="" >Add to Basket</button>
-</form>
-
-
-
+<div style="margin-right:25px;"id='size'>
+  <hr />
+  <div class="vertical-inline">
+  <ul id='insert'></ul>
+  <div id='stock'></div>
+  </div>
+  <hr />
+  </div>
+  </div>
+  <button  style="margin-top:-650px;"type="submit" class="BUTTON_YZG" value="" >Add to Basket</button>
+ </form>
 </div>
 </div>
 </tr>
@@ -113,7 +128,32 @@
 
 
 
-<script type="text/javascript">{% javascript_settings %}</script>
+<script type="text/javascript">{% javascript_settings %}
+  var q=0;
+
+  $('#insert').on('click',function(e){
+
+    var childId=e.target.id;
+    q=childId;
+
+  console.log("size id:"+q);
+  $(document).ready(function(){
+  $.ajax({
+  url: configuration['ecommerce']['ajax_size'],
+  cache: false,
+  type: "POST",
+  data: {'id': q},
+  success: function (data) {
+  console.log(q);
+
+  },
+  beforeSend: function(xhr, settings){
+  xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+              }
+                 });
+             });
+  });
+</script>
 <script type="text/javascript">
 var id=[];
 {%for x in item.images.all%}
@@ -122,10 +162,35 @@ id.push(y);
 {%endfor%}
 var dv = '{{ProductSize|safe}}';
 console.log(dv);
+var g=JSON.parse(dv);
+var keys=Object.keys(g);
 var p;
-$(this).on("click",function(){
+
+$(".img-responsive").on("click",function(){
+  document.getElementById('insert').innerHTML='';
   var target=event.target;
   var x=target.id;
+  r=x;
+  var f=g[x];
+  var t=f.sizes;
+  var stock=f.stock;
+  console.log(stock);
+  var i=0;
+  t.forEach(function(item){
+    var e=t[i];
+    $('#insert').append(
+    $("<li/>").attr('id',e)
+  );
+    document.getElementById(e).innerHTML=item;
+    ++i;
+  });
+   if(stock>0){
+   document.getElementById('stock').innerHTML="in-stock";
+   }
+   else{
+      document.getElementById('stock').innerHTML="out-of-stock";
+   }
+
 $(document).ready(function(){
 $.ajax({
 url: configuration['ecommerce']['ajax_view'],
@@ -145,6 +210,7 @@ type: "POST",
 data: {'id': x, 'var1':t},
 success: function (data) {
 console.log('success');
+
 },
 beforeSend: function(xhr, settings){
 xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));

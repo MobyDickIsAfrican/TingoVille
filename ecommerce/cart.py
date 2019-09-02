@@ -1,4 +1,4 @@
-from .models import Product
+from .models import Product, ProductImage
 
 class Basket(object):
     def __init__(self, request):
@@ -7,14 +7,15 @@ class Basket(object):
         if not self.basket:
             self.basket = self.session['cart'] = {}
 
-    def AddToBasket(self, attr, item, sizes, quantity= 1):
-        attribute_id = str(attribute_id)
+    def AddToBasket(self, attr, item, sizes, colour, quantity= 1):
+        attribute_id = str(attr)
         pro = ProductImage.objects.get(id = attr)
+        colour = pro.name
         if pro.sizes:
             size_data = sizes
         else:
             size_data = None
-        self.basket[attribute_id] = {'quantity': quantity, 'Price': str(item.Price), 'item_id': item.id, "size": size_data}
+        self.basket[attribute_id] = {'quantity': quantity, 'Price': str(item.Price), 'item_id': item.id, "size": size_data, 'colour':colour}
 
     def UpdateQuantity(self, item, quantity):
 #the quantity will be a QuantityForm
