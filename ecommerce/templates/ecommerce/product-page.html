@@ -3,10 +3,22 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <head>
-
-    <title>Product Description</title>
+<title>Product Description</title>
 {{var1}}
 <style>
+  .column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
 ul#insert li{
   list-style:square outside none;
   display:inline-block;
@@ -21,23 +33,19 @@ ul#insert li{
 ul#insert li:hover{
   background-color:grey;
 }
-
-  .mydiv div{
+.mydiv{
     display:inline-block;
-    width:500px;
-    min-height:50px;
-    height:auto;
-    margin-top:0px;
-  }
-  .desc {
+}
+
+.desc {
         margin-top: 65px;
         font-family: 'Monserrat';
         background-color: #D0DFDF;
         color: black;
         text-align: left;
-    }
+}
 
-  .BUTTON_YZG {
+.BUTTON_YZG {
      -webkit-border-radius: 12px;
      -moz-border-radius: 12px;
      border-radius: 12px;
@@ -60,10 +68,10 @@ ul#insert li:hover{
      cursor: pointer;
   }
 
-  .BUTTON_YZG:hover {
+.BUTTON_YZG:hover {
      background: #39393B;
      text-decoration: none;
-  }
+}
 
   </style>
 
@@ -71,48 +79,95 @@ ul#insert li:hover{
 
 </head>
 <div  class="container">
-<table>
-<tr>
-<div class="mydiv">
-<div>
-{%with item.images.all|first as default%}
-<img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:-550px;margin-bottom:-150px;">
-{%endwith%}
+  <div class="row">
+  <div class="column">{%with item.images.all|first as default%}
+  <table>
+    <tr id='1'>
+      <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:10px;margin-bottom:5px;">
+      {%endwith%}
+      </tr>
+      <tr id='2'>
+        <div style="margin-top:5px;margin-top:110px;"><h4><small>DESCRIPTION:</small></h4></div>
+        <p>{{Description}}</p>
+        </tr>
+
+  </table>
+
+
 </div>
-<div>
-<div><h4 class="pro" style="margin-top:-18px; margin-bottom:0px;">{{item.Name}}</h4></div>
-<hr style="margin-top:0px; margin-bottom:5px;" />
-<h6>Colour:</h6>
-{%for x in item.images.all%}
-<img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:3px;margin-left:1px;margin-bottom:7px;">
-{%endfor%}
-<h6 style="margin-bottom:2px;">Price:</h6>
-<div style="margin-top:7px;"><p>R {{item.Price}}</p></div>
+  <div class="column">
+    <table>
+      <tr  id='3'>
+        <h4 class="pro" style="margin-top:0px; margin-bottom:5px;">{{item.Name}}</h4>
+        <hr style="margin-top:0px; margin-bottom:5px;" />
+  </tr>
+  <tr id='4'>
+  <h6 style="margin-bottom:5px;margin-top:10px;">Colour:<h6>
+  {%for x in item.images.all%}
+  <img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:3px;margin-left:1px;margin-bottom:7px;">
+  {%endfor%}
+  </tr>
+
+  <tr id='5'>
+    <div style="float:left;"id='stock'></div>
+    <ul id='insert'></ul>
+    </tr>
+<tr id='6'>
+
+<div style="margin-top:7px;margin-bottom:50px;"><p>R {{item.Price}}</p></div>
+</tr>
+
 <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
 {% csrf_token %}
-<p>{{QuantityForm}}</p>
-{{variable}}
-<div style="margin-top:5px;"><h4><small>DESCRIPTION:</small></h4>
-<p>{{Description}}</p>
-<div style="margin-right:25px;"id='size'>
-  <hr />
-  <div class="vertical-inline">
-  <ul id='insert'></ul>
-  <div id='stock'></div>
-  </div>
-  <hr />
-  </div>
-  </div>
-  <button  style="margin-top:-650px;"type="submit" class="BUTTON_YZG" value="" >Add to Basket</button>
- </form>
-</div>
-</div>
-</tr>
+<table>
+
+
+  <div style="margin-bottom:-70px;"><input type="submit" class="BUTTON_YZG" value="Add to Basket" /></div>
+  <div style="margin-top:-80px;">{{QuantityForm}}{{variable}}</div>
+
+
 </table>
 
+</form>
 
 
 
+
+
+      </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   </div>
+</div>
+
+
+
+
+
+
+
+
+</div>
 
 
 
@@ -130,21 +185,18 @@ ul#insert li:hover{
 
 <script type="text/javascript">{% javascript_settings %}
   var q=0;
-
-  $('#insert').on('click',function(e){
-
-    var childId=e.target.id;
-    q=childId;
-
-  console.log("size id:"+q);
-  $(document).ready(function(){
-  $.ajax({
-  url: configuration['ecommerce']['ajax_size'],
-  cache: false,
-  type: "POST",
-  data: {'id': q},
-  success: function (data) {
-  console.log(q);
+$('#insert').on('click',function(e){
+var childId=e.target.id;
+q=childId;
+console.log("size id:"+q);
+$(document).ready(function(){
+$.ajax({
+url: configuration['ecommerce']['ajax_size'],
+cache: false,
+type: "POST",
+data: {'id': q},
+success: function (data) {
+console.log(q);
 
   },
   beforeSend: function(xhr, settings){
@@ -185,7 +237,7 @@ $(".img-responsive").on("click",function(){
     ++i;
   });
    if(stock>0){
-   document.getElementById('stock').innerHTML="in-stock";
+   document.getElementById('stock').innerHTML="in-stock and available sizes:";
    }
    else{
       document.getElementById('stock').innerHTML="out-of-stock";
@@ -223,7 +275,10 @@ xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
          }
 
                  });
-            });
+});
+
+
+
       });
 
      /*if(p !== null){

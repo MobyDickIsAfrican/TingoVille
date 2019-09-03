@@ -4,6 +4,81 @@
 <head>
 <title>Cart</title>
 <style>
+  .column {
+  float: left;
+  width: 20%;
+}
+.column1{
+  float:left;
+  width:33%
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.BUTTON_SHC {
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+height: 30px;
+line-height: 13px;
+color: #000000;
+font-family: Arial;
+width: 131px;
+font-size: 20px;
+font-weight: 400;
+padding: 12px;
+background-color: #99C624;
+border: solid #337FED 0px;
+text-decoration: none;
+display: inline-block;
+cursor: pointer;
+}
+
+.BUTTON_WTE {
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+height: 30px;
+line-height: 15px;
+color: #FFFFFF;
+font-family: Open Sans;
+width: 76px;
+font-size: 16px;
+font-weight: 100;
+padding: 10px;
+background-color: #F50515;
+border: solid #337FED 0px;
+text-decoration: none;
+display: inline-block;
+cursor: pointer;
+  }
+.BUTTON_ETG {
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
+height: 35px;
+line-height: 25px;
+color: #FFFFFF;
+font-family: Arial;
+width: 329px;
+font-size: 20px;
+font-weight: 600;
+padding: 7px;
+background-color: #03080D;
+border: solid #337FED 1px;
+text-decoration: none;
+display: inline-block;
+cursor: pointer;
+  }
+
+.BUTTON_ETG:hover {
+background: #13ED6A;
+text-decoration: none;
+  }
 table {
   width: 60%;
   border-top: 1px solid black;
@@ -14,78 +89,100 @@ tr, td, th,{
 }
 
 </style>
-</head>
-    <form id='form' method="POST" action="" enctype="multipart/form-data">
-      {%csrf_token%}
-      {% zip_longest formset.forms goods sizes colours as items %}
-      {{formset.management_form}}
-      {%for form, good, sizevar, colourvar in items %}
-
-        <table>
-      <tr> <table id="TableRow">
-    <div class="nameofpro" id='{{good.Name}}'>{{good.Name}}
-    <div>{{sizevar}} , {{colourvar}}</div>
 
 
-<tr>
-  <th>
-  <ul style=" list-style:none; ">
+<div  class="container">
+<table style="width:100%;">
+  <form id='form' method="POST" action="" enctype="multipart/form-data">
+  {%csrf_token%}
+  {% zip_longest formset.forms goods sizes colours as items %}
+  {{formset.management_form}}
+  {%for form, good, sizevar, colourvar in items %}
+<tr style="width:100%;">
 
+<td style="width:20%">
   {%with good.images.all|first as default%}
-  <li><img class="images"src="{{default.AddImage.url}}" style="width:50px; height:40px;"></li>
+  <div><img class="images"src="{{default.AddImage.url}}" style="width:50px; height:40px;"></div>
   {%endwith%}
-  </ul>
-    </th>
-    <td>
-     Product Description
-   </td>
-<td  class="Price" id='{{good.Name}}'> {{good.Price}}</td>
+  <div id='{{good.Name}}a'>In stock</div>
+  </td>
+
+<td style="width:20%">
+  <div id='{{good.Name}}c'>
+  {{sizevar}} , {{colourvar}}
+  </div>
+    </td>
+
+    <td style="width:20%">
+      {{good.Price}}
+      </td>
 
 
-<tr>
-
-<td> In stock</td>
-
-<td></td>
-
- <td id='quantity'><div >Quantity:</div>
-    <div id='{{good.Name}}'>{{form.quantity}}</div></td>
-
- </div>
- <td>
- <a href="{%url 'cart-item-delete' form.FormId.value %}"><input type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
- </td>
-</tr>
+      <td style="width:20%">
+        {{form.quantity}}
+        </td>
 
 
-</table> </tr>
+        <td style="width:20%">
+          <a href="{%url 'cart-item-delete' form.FormId.value %}"><input class="BUTTON_WTE" type="button" value="Remove" onclick="deleteRow(this)" action=""> <a>
+          </td>
+        </tr>
+  {%endfor%}
+   <tr>
+     <td>
+         Summary of orders:
+       </td>
 
-<br/> <br/>
-<script src="https://code.jQuery.com/jQuery-3.4.1.js"> </script>
+       <td>
+          Total:R {{cost}}
+         </td>
 
 
-{%endfor%}
-<tr> <table>
-  <th>
-    Summary of orders:
-    </th>
-
-
-  <td id='cost'>Total:R {{cost}} </td> <td>{{form.quantity}}</td>
-<td>
-
- <a href="#"><input type="button" value="Reset Cart" onclick="deleteRow(this)" action=""> <a></td>  </tr>
-<tr> </table> <!-- DELETE ALL-->
-
-  <tr>
-<button type="submit" class="btn btn-primary">Proceed to checkout</button>
-</tr>
+         <td>
+             {{form.quantity}}
+           </td>
 
 
 
+       <td>
+
+         <a href="#"><input class="BUTTON_SHC"type="button" value="Empty" onclick="deleteRow(this)" action="">
+           </td>
+     </tr>
+
+     <tr>
 
 
-  </form>
+       </tr>
+
+
+</table>
+ <button type="submit" class="BUTTON_ETG">Proceed to checkout</button>
+</div>
+
+</form>
+<!--<div id='1'class="row">
+<div class="column1">
+
+  </div>
+
+<div class="column1">
+     <span>
+
+       </span>
+        <span>
+          {{form.quantity}}
+          </span>
+    </div>
+
+    <div class="column1">
+<a href="#"><input class="BUTTON_SHC"type="button" value="Reset Cart" onclick="deleteRow(this)" action="">
+      </div>
+
+</div>
+<button type="submit" class="BUTTON_ETG">Proceed to checkout</button>
+
+</div>-->
 
   <script>
   $("#nameofpro").on("change", function(e){
