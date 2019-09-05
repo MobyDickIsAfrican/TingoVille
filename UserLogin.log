@@ -29,3 +29,26 @@ Traceback (most recent call last):
 KeyError: 'item'
 luvo, 2019-09-04 21:38:00.170382
 luvo, 2019-09-04 21:38:02.055046
+Mpumi, 2019-09-05 16:22:01.710157
+Forbidden (CSRF token missing or incorrect.): /sign-up/
+luvo, 2019-09-05 19:33:26.779973
+Internal Server Error: /my-shop/update-product/product/46/
+Traceback (most recent call last):
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\djangogirls\profiles\views.py", line 206, in UpdateProduct
+    ProductInlineformset = inlineformset_factory(Product, ProductImage)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\forms\models.py", line 1080, in inlineformset_factory
+    FormSet = modelformset_factory(model, **kwargs)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\forms\models.py", line 864, in modelformset_factory
+    "Calling modelformset_factory without defining 'fields' or "
+django.core.exceptions.ImproperlyConfigured: Calling modelformset_factory without defining 'fields' or 'exclude' explicitly is prohibited.
+luvo, 2019-09-05 21:38:07.031577

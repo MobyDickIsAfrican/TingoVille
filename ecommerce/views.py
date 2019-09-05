@@ -64,18 +64,21 @@ def ProductPage(request, id):
     i = item.images.all().count()
     if request.method == 'POST':
         attr_id = int(request.session['item'])
+        value = True
         try:
             sizes = request.session['item_size']
         except:
             if not ProductImage.objects.get(id = attr_id).sizes:
                 sizes = None
+                value = None
             else:
-                return render(request, 'ecommerce/product-size-select.html', context = {'some_flag': True})
+                value = False
         colour = ProductImage.objects.get(id = attr_id).name
         #create pop up view to notify user the item is out of stock
         #if attribute.Stock < 1:
         #return
         QuantityForm = CartAddForm(request.POST)
+        QuantityForm.Size = value
         if QuantityForm.is_valid():
             Cart = Basket(request)
             Cart.AddToBasket(attr= attr_id, item = item, sizes = sizes, colour = colour, quantity = QuantityForm.cleaned_data['quantity'])
@@ -93,21 +96,21 @@ def ProductPage(request, id):
         except:
             var = 1
         QuantityForm = CartAddForm(initial = {'FormId': 1})
-        Description = item.Description
-        data = {}
-        for pro in item.images.all():
-            if pro.sizes:
-                size_data = pro.sizes.split(',')
-                size_clone = [x.strip() for x in size_data]
-                data[str(pro.id)] = {"stock": pro.Stock, "sizes": size_clone}
-            else:
-                data[str(pro.id)] = {"stock": pro.Stock, "sizes": None}
-        #if request.is_ajax():
-            #var2 = request.session['item']
-            #variable = var2
-        data = json.dumps(data)
-        context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description, 'ProductSize': data }
-        return render(request, 'ecommerce/product-page.html', context)
+    Description = item.Description
+    data = {}
+    for pro in item.images.all():
+        if pro.sizes:
+            size_data = pro.sizes.split(',')
+            size_clone = [x.strip() for x in size_data]
+            data[str(pro.id)] = {"stock": pro.Stock, "sizes": size_clone}
+        else:
+            data[str(pro.id)] = {"stock": pro.Stock, "sizes": None}
+    #if request.is_ajax():
+        #var2 = request.session['item']
+        #variable = var2
+    data = json.dumps(data)
+    context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description, 'ProductSize': data }
+    return render(request, 'ecommerce/product-page.html', context)
 
 def Cart(request):
     cart = Basket(request)

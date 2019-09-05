@@ -117,7 +117,7 @@ class Inventory (models.Model):
         name = item.Name
         stock = obj.quantity
         attribute = obj.attribute
-        order_message = f'An order has been placed for {stock} {attribute} {name}s '
+        order_message = f'{name}, {stock}, {attribute}'
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
         self.PendingOrderIds.append(cart_id)
@@ -175,7 +175,7 @@ class OrderItem(models.Model):
     #we us a related_name so that we can be able to track how many orders a particular product has, before completion of order
     #a product is created once, but the quantity can be changed
     #OrderExists = models.BooleanField(default = False)
-    #I think this should be true 
+    #I think this should be true
     quantity = models.IntegerField(default = 1)
     attribute = models.CharField(default = 'Default', max_length = 200,)
     #auto_now is true, as product is added to the cart

@@ -71,3 +71,12 @@ class QuantityForm(forms.Form):
     quantity = quantity = forms.IntegerField(initial = 0)
     FormId = forms.IntegerField(widget = forms.HiddenInput(), required = False)
     ProductId = forms.IntegerField(widget = forms.HiddenInput(), required = False)
+
+class CheckoutSignUpForm(UserCreationForm):
+    email = forms.EmailField()
+    contact = forms.IntegerField()
+    #need to validate that the contact is a valid phone number
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'contact','password1', 'password2', ]

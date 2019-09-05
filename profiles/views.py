@@ -15,7 +15,8 @@ from django.urls import reverse
 from .models import ProgressBar
 import logging
 from datetime import datetime
-
+from django.contrib.auth import authenticate, login
+from django.forms import inlineformset_factory
 #this sign up view will be rendered when the user goes directly to the sign up page.
 
 def SignUp(request):
@@ -25,12 +26,41 @@ def SignUp(request):
             SignUpForm.save()
             username = SignUpForm.cleaned_data.get('username')
             messsage = messages.success(request, f'Welcome {username}, Start Shopping by adding goods to your trolley')
+            new_user = authenticate(username=SignUpForm.cleaned_data['username'],
+                                    password=SignUpForm.cleaned_data['password1'],
+                                    email = SignUpForm.cleaned_data['email']
+                                    )
+            login(request, new_user)
             return redirect('home')
     else:
         SignUpForm = UserRegisterForm()
 
     context = {'SignUpForm': SignUpForm}
     return render(request, 'profiles/sign-up.html', context)
+
+ #The custom Authentication backend is used (['django.contrib.auth.backends.ModelBackend'])
+ #It does not provide protection against brute force attacks via any rate limiting mechanism.
+ #You may either implement your own rate limiting mechanismin a custom auth backend, or use
+ #the mechanisms provided by most Web servers. This is regrading the sign up views/'''
+
+def CheckoutSignUp(request):
+    if request.method == 'POST':
+        SignUpForm = UserRegisterForm(request.POST)
+        if SignUpForm.is_valid():
+            SignUpForm.save()
+            username = SignUpForm.cleaned_data.get('username')
+            messsage = messages.success(request, f'Welcome {username}, Enter You Shipping and Billing Details to place your order ')
+            new_user = authenticate(username=SignUpForm.cleaned_data['username'],
+                                    password=SignUpForm.cleaned_data['password1'],
+                                    email = SignUpForm.cleaned_data['email']
+                                    )
+            login(request, new_user)
+            return redirect('checkout')
+    else:
+        SignUpForm = UserRegisterForm()
+
+    context = {'SignUpForm': SignUpForm}
+    return render(request, 'profiles/checkout-sign-up.html', context)
 
 class Login_session(object):
     def __init__(self, vars):
@@ -173,21 +203,20 @@ def AccountView(request):
 @user_passes_test(TestProduct, login_url ='register-shop')
 def UpdateProduct(request, id):
     product_instance = Product.objects.get(id = id)
-    queryset = product_instance.images.all()
+    ProductInlineformset = inlineformset_factory(Product, ProductImage, ProductImageForm, fields = ('AddImage', 'name', 'Stock', 'sizes'), extra=0, can_delete=True)
     if request.method == 'POST':
         RegisterProductForm = ProductForm(request.POST, instance = product_instance)
-        Imageformset = UpdateImageFormset(request.POST, request.FILES, queryset = queryset)
+        Imageformset = ProductInlineformset(request.POST, request.FILES, instance = product_instance)
         u = RegisterProductForm.is_valid()
         v = Imageformset.is_valid()
         if u and v:
-            MyProduct = RegisterProductForm.save()
-            for form in Imageformset:
-                form.save()
-            message = messages.success(request, f'Congratulations, your product has been captured. You can now view your shop and inventory. To update your stock go to your Inventory')
+            RegisterProductForm.save()
+            Imageformset.save()
+            message = messages.success(request, f'Congratulations, your product has been updated')
             return redirect('my-shop')
     else:
         RegisterProductForm = ProductForm(request.GET or None, instance = product_instance)
-        Imageformset = UpdateImageFormset(request.GET or None, queryset = queryset)
+        Imageformset = ProductInlineformset(instance = product_instance)
     context = {'RegisterProductForm':RegisterProductForm, 'Imageformset':Imageformset}
     return render(request, 'profiles/update-product.html', context)
 
