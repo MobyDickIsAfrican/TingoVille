@@ -1,0 +1,35 @@
+{% extends 'ecommerce/base.html' %}
+{% block content %}
+
+{% if some_flag %}
+    <div id="some_flag" title="Some Flag">
+        <p>Some Text Here</p>
+    </div>
+{% endif %}
+
+<head>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(function() {
+                $( "#some_flag" ).dialog({
+                    modal: true,
+                    closeOnEscape: false,
+                    dialogClass: "no-close",
+                    resizable: false,
+                    draggable: false,
+                    width: 600,
+                    buttons: [
+                        {
+                            text: "OK",
+                            click: function() {
+                            $( this ).dialog( "close" );
+                            }
+                        }
+                    ]
+                });
+            });
+        });
+    </script>
+</head>
+
+{% endblock %}

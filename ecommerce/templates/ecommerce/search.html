@@ -1,38 +1,52 @@
 {% extends 'ecommerce/base.html' %}
-
 {% block content %}
 <head>
+<title>Search results</title>
+<style>
+.column {
+  float: left;
+  width: 50%;
+}
 
-    <title>Search results</title>
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  margin-bottom:15px;
 
+}
+tr{
+  margin-bottom:150px;
+}
+
+  </style>
 </head>
-{%for t in catqueryset%}
-<div>
-<a href="{% url 'category-products' t.id %}"><p>{{t.Name}}</p>
-{%if t.image%}
-<a href="{% url 'category-products' t.id %}"><img src="{{t.image.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;"></a>
-{%endif%}
+
+
+
+<div style="width:100%;"class="container">
+  {%for item in queryset%}
+<div style="width:100%;margin-bottom:150px;" class="row">
+  <div class="column">
+    {%with item.images.all|first as default%}
+    {%if default.AddImage%}
+    <a href="{% url 'product-page' item.id %}"><img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:30px;"></a>
+    {%endif%}
+      {%endwith%}
+    </div>
+
+    <div class="column">
+      <div style="width=100%;margin-bottom:25px;margin-top:8px;">
+        <a href="{% url 'product-page' item.id %}">{{item.Name}}</a>
+        </div>
+        <hr>
+        <div style="width=100%;">
+          R {{item.Price}}
+           </div>
+      </div>
+  </div>
 {%endfor%}
-
-{%for r in shopqueryset%}
-<div>
-<p>{{r.Name}}</p>
-</div>
-{%endfor%}
-
-{%for item in queryset%}
-<div>
-<a href="{% url 'product-page' item.id %}"><p>{{item.Name}}</p></a>
-{%with item.images.all|first as default%}
-{%if default.AddImage%}
-<a href="{% url 'product-page' item.id %}">  <img src="{{default.AddImage.url}}"id='IneverChange' class="img-responsive img-circle" style="width:200px;height:200px;margin-top:100px;"></a>
-{%endif%}
-  {%endwith%}
-<a href="{% url 'product-page' item.id %}"><p>{{item.Description}}</p></a>
-</div>
-{%endfor%}
-
-
-
+  </div>
 
 {% endblock %}

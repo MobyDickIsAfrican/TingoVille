@@ -13,3 +13,19 @@ user3, 2019-08-16 23:05:37.889409
 luvo, 2019-08-27 16:13:00.365508
 user1, 2019-08-27 18:58:36.835177
 user3, 2019-09-03 22:43:03.089699
+luvo, 2019-09-04 10:37:19.052698
+Internal Server Error: /product/91/
+Traceback (most recent call last):
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\exception.py", line 35, in inner
+    response = get_response(request)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\base.py", line 128, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\core\handlers\base.py", line 126, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\djangogirls\ecommerce\views.py", line 64, in ProductPage
+    attr_id = int(request.session['item'])
+  File "C:\Users\User\djangogirls\myvenv\lib\site-packages\django\contrib\sessions\backends\base.py", line 55, in __getitem__
+    return self._session[key]
+KeyError: 'item'
+luvo, 2019-09-04 21:38:00.170382
+luvo, 2019-09-04 21:38:02.055046

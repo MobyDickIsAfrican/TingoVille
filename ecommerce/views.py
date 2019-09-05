@@ -16,6 +16,8 @@ from elasticsearch_dsl import Search
 from django.urls import reverse
 from .tasks import OrderMessage
 from profiles.models import ProgressBar
+from django_popup_view_field.registry import registry_popup_view
+from .popups import SizePopupView
 
 
 def keyfunc(x):
@@ -62,7 +64,13 @@ def ProductPage(request, id):
     i = item.images.all().count()
     if request.method == 'POST':
         attr_id = int(request.session['item'])
-        sizes = request.session['item_size']
+        try:
+            sizes = request.session['item_size']
+        except:
+            if not ProductImage.objects.get(id = attr_id).sizes:
+                sizes = None
+            else:
+                return render(request, 'ecommerce/product-size-select.html', context = {'some_flag': True})
         colour = ProductImage.objects.get(id = attr_id).name
         #create pop up view to notify user the item is out of stock
         #if attribute.Stock < 1:
@@ -79,6 +87,11 @@ def ProductPage(request, id):
             return redirect('my-cart')
 
     else:
+        try:
+            del request.session['item_size']
+            request.session.modified = True
+        except:
+            var = 1
         QuantityForm = CartAddForm(initial = {'FormId': 1})
         Description = item.Description
         data = {}
@@ -223,6 +236,10 @@ def AjaxView(request):
         data = request.POST
         image_id = data['id']
         var1 = data['var1']
+        try:
+            del request.session['item_size']
+        except:
+            var = 1
         #var1 = request.session['var1']
         #if var1 == request.session['var1']:
         request.session['item'] = image_id
