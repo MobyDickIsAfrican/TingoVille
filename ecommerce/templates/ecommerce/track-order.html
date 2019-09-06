@@ -4,25 +4,41 @@
 <head>
 
     <title>Track order</title>
+<style>
+.progress{
+  margin-top:15px;
+  margin-bottom:50px;
+}
 
+
+  </style>
 </head>
-
+<div class="container">
+  <h2 style="text-align:center;margin-bottom:65px;">TRACK YOUR ORDERS</h2>
+  <table style="width:100%;">
+    <tr style="text-align:center;">
 {% zip_longest progress_bar_queryset Refs as items %}
+   </tr>
 {%for item, number in  items%}
-<div id='{{item.id}}a'></div>
+<tr style="width:100%;">
+  <td style="width:80%;">
+<h5><div style="text-align:center;font-family:Arial;font-weight:400;" id='{{item.id}}a'></div><h5>
 <div class="progress">
-  <div id='{{item.id}}'class="progress-bar" role="progressbar" style="width: {{item.progress}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{number}} </div>
+  <div id='{{item.id}}'class="progress-bar" role="progressbar" style="width: {{item.progress}}%;color:black;font-family:Fantasy;font-weight:500;height:60px;
+  padding-bottom:45px;padding-top:2px;text-align:center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{number}} </div>
 </div>
-
+  </td>
+</tr>
+</div>
 
 <script>
   $(document).ready(function(){
     var progress=document.getElementById('{{item.id}}').style.width;
     if(progress=="40%"){
-      document.getElementById('{{item.id}}a').innerHTML="Your order is on its way to our warehouse";
+      document.getElementById('{{item.id}}a').innerHTML="YOUR ORDER IS ON ITS WAY TO OUR WAREHOUSE";
     }
     else if(progress=="1%"){
-      document.getElementById('{{item.id}}a').innerHTML="Your order is being processed";
+      document.getElementById('{{item.id}}a').innerHTML="YOUR ORDER IS BEING PROCESSED";
     }
 
   });

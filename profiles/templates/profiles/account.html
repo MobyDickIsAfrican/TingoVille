@@ -1,19 +1,42 @@
 {% extends 'ecommerce/base.html' %}
 {% block content %}
-<h1>My Orders</h1>
+<h3>MY ORDERS</h3>
 <style>
+  h3{
+    margin-bottom:25px;
+    text-align:center;
+  }
 table {
   width: 100%;
-  background: #b2baaf;
+
 }
+th{
+  width:25%;
+  text-align:center;
+}
+tr{
+  width:100%;
+
+}
+td{
+  width:25%;
+  text-align:center;
+}
+
+
 </style>
-<table style="width=100%">
-  <tr>
+<div class="container">
+<table class="table"style="width=100%;">
+  <thead class="thead-dark">
+  <tr style="width=100%;">
   <th>Order Reference Number</th>
     <th>Order Date</th>
       <th>Delivery Date</th>
           <th>Total Cost</th>
+
           </tr>
+          </thead>
+          <hr />
             {%for item, date , number, Delivery_Date, cost in AccountDetails%}
             <tr>
 <td>{{number}}</td>
@@ -24,11 +47,19 @@ table {
           {%endfor%}
 </table>
 
+<div style="margin-top:15px;"class="container">
+  <h4>UPDATES:</h4>
+<table style="width:100%; background-color:initial;">
+
 {% for note in notifications%}
-<div class="container">
-<ul>
-<li style="list-style:none">{{note}}</li>
-</ul>
-</div>
+
+<tr style="width:100%;">
+  <td style="width:100%;text-align:left;">
+{{note}}
+     </td>
+
+</tr>
+
 {%endfor%}
+</table>
 {% endblock %}

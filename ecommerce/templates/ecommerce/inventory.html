@@ -5,9 +5,14 @@
 <head>
 
     <title>Inventory</title>
-
+<style>
+table{
+    font-family:Arial;
+  }
+  </style>
 </head>
-<h1> Pending Orders </h1>
+<div class="container">
+<h3 style="margin-bottom:20px;text-align:left;"> Pending Orders </h3>
 <div>
     <table >
     {%for message, product_id, cart_id, order_id, productquery in PendingQuerySet%}
@@ -25,7 +30,7 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
   </div>
 
   <div>
-  <h1> Accepted Orders <h2>
+  <h3 style="margin-bottom:20px;align-text:center;text-align:left;"> Accepted Orders </h3>
       <table>
       {%for message, product_id, userId, acceptedproductquery, objectid in AcceptedQuerySet%}
     <tr>
@@ -39,63 +44,78 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
 
 <div>
 
-  <h1> Feedback</h1>
-  <table style="width:60%;">
+  <h4   style="margin-bottom:20px;text-align:center;"> Feedback</h4>
+  <table class="table table-hover table-striped"style="width:100%; margin-bottom:25px;margin-top:25px;">
 
+<thead class="thead-dark">
+    <tr style="width:100%;">
 
-    <tr>
-
-<td>Product description</td> <td> To be delivered</td> <td> Delivered </td> <td> Returns</td><td> Sales</td>
-
+<th style="width:20%;">PRODUCT DESCRIPTION</th>
+<th style="width:20%;"> TO BE DELIVERED</th>
+<th style="width:20%;"> DELIVERED </th>
+<th style="width:20%;"> RETURNS</th>
+<th style="width:20%;"> SALES</th>
+  <hr />
 
 
       {% for item in products %}
       {%if item.orders.all %}
-     <tr>
+     <tr style="width:100%;">
         {%for pros in item.images.all%}
-        <td>{{pros.name}} {{item.Name}}</td>
-         <td>{{pros.ToBeDelivered}} </td>
-         <td>Yes </td>
-         <td> NO RETURN </td>
-         <td> {{pros.Sales}}</td>
-
+        <td style="width:20%;">{{pros.name}} {{item.Name}}</td>
+         <td style="width:20%;">{{pros.ToBeDelivered}} </td>
+         <td style="width:20%;">YES </td>
+         <td style="width:20%;"> NO RETURN </td>
+         <td style="width:20%;"> {{pros.Sales}}</td>
+     <vr />
         </tr>
         {%endfor%}
         {%endif%}
       {% endfor %}
+      </tr>
+      </thead>
         </table>
     </div>
     <div>
 
-      <h1> Inventory</h1>
-      <table style="width:60%;">
+      <h4  style="margin-bottom:20px;text-align:center;"> Inventory</h4>
+      <table class="table table-borderless"style="width:100%;">
 
+        <thead class="thead-light">
+        <tr style="width:100%;">
 
-        <tr>
-
-    <td>Product description</td> <td>Available stock</td> <td> New Stock</td>
+    <th style="width:25%;">PRODUCT DESCRIPTION</th>
+    <th style="width:25%;">AVAILABLE STOCK</th>
+    <th style="width:25%;"> NEW STOCK</th>
+    <th style="width:25%;"></th>
+    <hr />
 
 
           {% zip_longest QForms products as items %}
           {% for form, item in items %}
           {%for pros in item.images.all%}
-         <tr>
+         <tr style="width:100%;">
 
-            <td>{{pros.name}} {{item.Name}}</td>
-          <td>{{pros.Stock}} </td>
-             <td>
+            <td style="width:25%;">{{pros.name}} {{item.Name}}</td>
+          <td style="width:25%;">{{pros.Stock}} </td>
+             <td style="width:25%;">
                <form method= "POST">
-                  {%csrf_token%} {{form.quantity}} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%}
-               <button type="submit" class="btn btn-primary">Submit
+{%csrf_token%} {{form.quantity}} {%for hidden in form.hidden_fields %} {{hidden}} {%endfor%}
+              </td>
+               <td style="width:25%;"><button type="submit" class="btn btn-primary">UPDATE
                </button>
+               </td>
              </form>
-           </td>
+
 
 
             </tr>
             {%endfor%}
           {% endfor %}
+          </tr>
+          </thead>
             </table>
+        </div>
         </div>
 
     <script type="text/javascript">

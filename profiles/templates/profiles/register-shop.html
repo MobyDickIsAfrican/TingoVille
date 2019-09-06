@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<div class="container">
   <form method="post">
     {% csrf_token %}
     <div class="form-row">
@@ -16,7 +17,7 @@
           {{ RegisterShopForm.Type|as_crispy_field }}
         </div>
         </div>
-        
+
       <div class="form-row">
       <div class="form-group col-md-6 mb-0">
         {{ RegisterShopForm.Description|as_crispy_field }}
@@ -51,7 +52,8 @@
 
 
   <div class="form-row">
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Create</button>
     </div>
   </form>
+  </div>
 {% endblock %}

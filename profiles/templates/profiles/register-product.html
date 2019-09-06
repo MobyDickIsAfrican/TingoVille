@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+  <div class="container">
   <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     {{ Imageformset.management_form }}
@@ -33,6 +34,7 @@
 </div>
 </div>
   {% for form in Imageformset %}
+  
   <div class="row form-row spacer">
     <div class="col-2">
         {{form.name}}
@@ -70,6 +72,7 @@
     </div>
 </div>
 </form>
+</div>
 {% endblock %}
 <!--new form-->
 

@@ -117,7 +117,7 @@ class Inventory (models.Model):
         name = item.Name
         stock = obj.quantity
         attribute = obj.attribute
-        order_message = f'{name}, {stock}, {attribute}'
+        order_message = f'{name}, {stock}, {attribute}, size, ReferenceNumber'
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
         self.PendingOrderIds.append(cart_id)

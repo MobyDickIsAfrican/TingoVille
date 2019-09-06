@@ -52,3 +52,7 @@ Traceback (most recent call last):
     "Calling modelformset_factory without defining 'fields' or "
 django.core.exceptions.ImproperlyConfigured: Calling modelformset_factory without defining 'fields' or 'exclude' explicitly is prohibited.
 luvo, 2019-09-05 21:38:07.031577
+luvo, 2019-09-06 18:28:23.332750
+user3, 2019-09-06 18:32:25.080437
+user3, 2019-09-06 18:58:04.765668
+luvo, 2019-09-06 19:00:17.866975

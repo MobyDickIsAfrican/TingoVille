@@ -89,6 +89,7 @@ ul#insert li:hover{
       <tr id='2'>
         <div style="margin-top:5px;margin-top:110px;"><h4><small>DESCRIPTION:</small></h4></div>
         <p>{{Description}}</p>
+
         </tr>
 
   </table>
@@ -104,6 +105,7 @@ ul#insert li:hover{
   <tr id='4'>
   <h6 style="margin-bottom:5px;margin-top:10px;">Colour:<h6>
   {%for x in item.images.all%}
+
   <img src="{{x.AddImage.url}}" id='{{x.id}}' class="img-responsive" style="width:50px;height:50px;margin-top:3px;margin-left:1px;margin-bottom:7px;">
   {%endfor%}
   </tr>
@@ -119,15 +121,16 @@ ul#insert li:hover{
 
 <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
 {% csrf_token %}
+
 <table>
 
 
   <div style="margin-bottom:-70px;"><input type="submit" class="BUTTON_YZG" value="Add to Basket" /></div>
-  <div style="margin-top:-80px;">{{QuantityForm}}{{variable}}</div>
+  <div style="margin-top:-80px;">{{QuantityForm.quantity}} {{QuantityForm.FormId}}</div>
 
 
 </table>
-
+<div style="color:red;list-style:none;margin-top:-274px; float:left;">{{QuantityForm.non_field_errors}}</div>
 </form>
 
 
@@ -185,10 +188,17 @@ ul#insert li:hover{
 
 <script type="text/javascript">{% javascript_settings %}
   var q=0;
+  var childId=0;
+  var prev=2;
 $('#insert').on('click',function(e){
-var childId=e.target.id;
+document.getElementById(prev).style.backgroundColor="black";
+
+childId=e.target.id;
+
+document.getElementById(childId).style.backgroundColor="yellow";
+
 q=childId;
-console.log("size id:"+q);
+prev=q;
 $(document).ready(function(){
 $.ajax({
 url: configuration['ecommerce']['ajax_size'],

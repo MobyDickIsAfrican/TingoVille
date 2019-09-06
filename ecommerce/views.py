@@ -96,6 +96,11 @@ def ProductPage(request, id):
         except:
             var = 1
         QuantityForm = CartAddForm(initial = {'FormId': 1})
+    try:
+        del request.session['item_size']
+        request.session.modified = True
+    except:
+        var = 1
     Description = item.Description
     data = {}
     for pro in item.images.all():

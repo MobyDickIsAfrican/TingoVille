@@ -16,18 +16,19 @@ img {
 }
 
 </style>
-<h1> Shop by {{cats.CategoryName}}</h1>
+<div class="container">
+<h4 style="text-align:center;"> Shop by {{cats.CategoryName}}</h4>
 <div class="row">
 
   {%for item in pro%}
   <div class="three column">
-    <ul style=" style-list: none;">
-  <li>{{item.Name}}</li>
+    <ul style="style-list: none;">
+  <li style="margin-bottom:7px;font-weight:600;">{{item.Name}}</li>
   {%with item.images.all|first as default%}
-  <li><img src="{{default.AddImage.url}}"></li>
+  <li><img style="margin-top:5px;margin-bottom:8px;width:200px;height:200px;"src="{{default.AddImage.url}}"></li>
   {%endwith%}
-  <li id="price"> {{price}} </li>
-  <li id="Add">
+  <li style="margin-top:5px;"id="price"> R {{item.Price}} </li>
+  <li style="margin-top:10px;"id="Add">
       <button type="button" onclick="addOption()" class="btn btn-success">
           Add to Basket
       </button>
@@ -40,5 +41,5 @@ img {
   {% endif %}
   {% endfor %}
   </div>
-
+</div>
 {% endblock %}
