@@ -12,9 +12,9 @@ __init__.py
 media
 .env
 .nevermind
-requirements.txt
+.txt
 udo journalctl -u gunicorn
 ecommerce/migrations
 profiles/migrations
 .gitignore
-UserLogin.log
+.log
