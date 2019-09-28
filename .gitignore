@@ -1,0 +1,20 @@
+.pyc
+*~
+__pycache__
+venv
+db.postgres
+db.sqlite3
+static
+.DS_Store
+wsgi.py
+urls.py
+__init__.py
+media
+.env
+.nevermind
+requirements.txt
+udo journalctl -u gunicorn
+ecommerce/migrations
+profiles/migrations
+.gitignore
+UserLogin.log
