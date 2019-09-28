@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .pyc
 *~
 __pycache__
@@ -18,3 +19,25 @@ ecommerce/migrations
 profiles/migrations
 .gitignore
 .log
+=======
+.pyc
+*~
+__pycache__
+venv
+db.postgres
+db.sqlite3
+static
+.DS_Store
+wsgi.py
+urls.py
+__init__.py
+media
+.env
+.nevermind
+requirements.txt
+udo journalctl -u gunicorn
+ecommerce/migrations
+profiles/migrations
+.gitignore
+UserLogin.log
+>>>>>>> 5bbe5d92d0b4838875cb0a0e600768f12331505e
