@@ -14,4 +14,7 @@ media
 .nevermind
 requirements.txt
 udo journalctl -u gunicorn
-migrations
+ecommerce/migrations
+profiles/migrations
+.gitignore
+UserLogin.log
