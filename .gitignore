@@ -11,10 +11,10 @@ urls.py
 __init__.py
 media
 .env
-.nevermind
-.txt
+*.nevermind
+*.txt
 udo journalctl -u gunicorn
 ecommerce/migrations
 profiles/migrations
-.gitignore
-.log
+*.gitignore
+*.log
