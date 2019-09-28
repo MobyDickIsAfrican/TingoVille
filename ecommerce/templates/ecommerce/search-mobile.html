@@ -31,17 +31,17 @@ tr{
   <div class="column">
     {%with item.images.all|first as default%}
     {%if default.AddImage%}
-    <a href="{% url 'product-page' item.id %}"><img src="{{default.AddImage.url}}"id='IneverChange' class="img-fluid img-thumbnail" style="width:400px;height:400px;margin-top:30px; margin-right:25px;"></a>
+    <a href="{% url 'product-page' item.id %}"><img src="{{default.AddImage.url}}"id='IneverChange' class="img-fluid img-thumbnail" style="width:200px;height:200px;margin-top:30px; margin-right:25px;"></a>
     {%endif%}
       {%endwith%}
     </div>
 
     <div class="column">
-      <div style="width=100%;margin-bottom:25px;margin-top:8px;margin-left:15px;margin-top:28px;font-weight:500;font-size:30px;">
+      <div style="width=100%;margin-bottom:25px;margin-top:8px;margin-left:15px;margin-top:28px;">
         <a href="{% url 'product-page' item.id %}">{{item.Name}}</a>
         </div>
         <hr style="margin-left:15px;">
-        <div style="width:100%;margin-left:15px;font-weight:500;font-size:30px;">
+        <div style="width:100%;margin-left:15px;">
           R {{item.Price}}
            </div>
       </div>

@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+from elasticsearch import Elasticsearch, RequestsHttpConnection
 import os
+from decouple import config
 
 if os.name == 'nt':
     import platform
@@ -30,11 +31,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ '67.207.89.17', 'tingoville.com']
 
 
 # Application definition
@@ -52,7 +55,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.gis',
     'javascript_settings',
-    'django_popup_view_field'
+    'django_popup_view_field',
+    'django_user_agents'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -88,6 +93,17 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 
 # Password validation
@@ -126,21 +142,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), 'djangogirls/ecommerce/static/']
-STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'ecommerce/static/media')
-#STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_URL = '/static/'
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CART_SESSION_ID = 'cart'
-
+elastic_user = config('ELASTIC_USER')
+elastic_password = config('ELASTIC_PASSWORD')
+HTTP_AUTH = (elastic_user, elastic_password)
+HOST = 'https://ffcd3e3b18044df0840092ef06563ca1.eu-west-2.aws.cloud.es.io:9243/'
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': HOST,
+        'port': 9243,
+        'use_ssl': True,
+        'http_auth': HTTP_AUTH,
+        'connection_class': RequestsHttpConnection
+
+
+
+
     },
 }
 
 CELERY_BROKER_URL = 'amqp://localhost'
+USER_AGENTS_CACHE = None

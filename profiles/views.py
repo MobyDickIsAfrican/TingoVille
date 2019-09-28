@@ -96,6 +96,18 @@ class LoginView(auth_views.LoginView):
     def form_valid(self, form):
         self.CheckLogin()
         return super(LoginView, self).form_valid(form)
+    #check to see if the user is coming from having submitted checkout button,
+    #if yes the sign up button will redirect to the checkout
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            from_checkout = self.request.session['checkout']
+        except:
+            from_checkout = False
+        self.request.session['checkout'] = False
+        self.request.session.modified = True
+        context["from_checkout"] = from_checkout
+        return context
 
 
 @login_required
@@ -183,17 +195,23 @@ def AccountView(request):
             costs.append(cost)
         AccountDetails = list(zip(query, dates, numbers, Delivery_Dates, costs))
         messages = user_account.ProcessedOrders
+        cancel_message = user_account.CancelledOrders
         notifications = []
         for item in messages:
-            order_id = item[1]
-            order = OrderItem.objects.get(id = order_id)
-            number = order.quantity
-            attribute = order.attribute
-            pro_name = order.product.Name
-            notification = f'Your order for {number} {attribute} {pro_name} is being processed'
-            notifications.append(notification)
+            try:
+                order_id = item[1]
+                order = OrderItem.objects.get(id = order_id)
+                number = order.quantity
+                attribute = order.attribute
+                pro_name = order.product.Name
+                notification = f'Your order for {number} {attribute} {pro_name} is being processed'
+                notifications.append(notification)
+            except:
+                var = 'random'
         user_account.CheckProcessedFully()
-        context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails, 'notifications': notifications}
+        user_account.CancelledOrders = []
+        user_account.ProcessedOrders = []
+        context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails, 'notifications': notifications, 'cancel_message':cancel_message}
         return render(request, 'profiles/account.html', context)
 
     else:
@@ -222,16 +240,21 @@ def UpdateProduct(request, id):
 
 @login_required
 @user_passes_test(TestProduct, login_url ='register-shop')
-def InventoryView(request, id):
+def InventoryView(request):
     this_user = request.user
     this_account = get_object_or_404(Account, user = this_user)
     this_shop = get_object_or_404(Shop, name = this_account)
     id = this_shop.inventory.id
     inventory = Inventory.objects.get(id = id)
     acceptedproducts =[]
+    #inventory.PendingOrders = []
+    #inventory.PendingProductIds = []
+    #inventory.PendingOrderIds = []
+    #inventory.PendingObjectId = []
+    #inventory.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId'])
     for p in Product.objects.filter(id__in = inventory.AcceptedProductIds):
         acceptedproducts.append(p.id)
-    PendingQuerySet = zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, inventory.PendingObjectId, Product.objects.filter(id__in = inventory.PendingProductIds))
+    PendingQuerySet = list(zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, inventory.PendingObjectId, Product.objects.filter(id__in = inventory.PendingProductIds)))
     AcceptedQuerySet = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, acceptedproducts, inventory.AcceptedObjectId))
     shop = inventory.shop
     QForms = []
@@ -239,10 +262,12 @@ def InventoryView(request, id):
     #inventory.PendingProductIds = []
     #inventory.PendingOrderIds = []
     #inventory.save(update_fields = ['PendingOrders', 'PendingProductIds', 'PendingOrderIds'])
+    items = []
     for item in shop.product_set.all():
         for item2 in item.images.all():
             form = QuantityForm(initial = {'FormId': item.id, 'ProductId': item2.id})
             QForms.append(form)
+            items.append(item2)
     if request.method == 'GET':
         var = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, inventory.AcceptedObjectId))
         if len(var) > 0:
@@ -254,7 +279,7 @@ def InventoryView(request, id):
                 inventory.save(update_fields = ['AcceptedOrders', 'AcceptedProductIds', 'AcceptedUsersIds', 'AcceptedObjectId'])
         shop = inventory.shop
         products = shop.product_set.all()
-        context = {'products': products, 'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet, 'inventory': inventory}
+        context = {'QForms': QForms, 'PendingQuerySet': PendingQuerySet, 'AcceptedQuerySet': AcceptedQuerySet, 'inventory': inventory, 'items': items}
         return render(request, 'ecommerce/inventory.html', context)
     if request.method == 'POST':
         for form in QForms:
@@ -268,7 +293,7 @@ def InventoryView(request, id):
                 pro = p.images.get(id = product_id)
                 pro.Stock = pro.Stock + quantity
                 pro.save(update_fields = ['Stock'])
-                return redirect('inventory', id = inventory.id)
+                return redirect('inventory')
                 # i need to add Stock form field to the Register - Product template.
 
 @login_required
@@ -279,7 +304,7 @@ def AcceptOrder(request, inventory_id ,cart_id, order_id):
     account_user = cart.Owner
     inventory.Approve(order_id)
     account_user.Message(cart_id, order_id)
-    return redirect('inventory', id = inventory_id)
+    return redirect('inventory')
 
 @login_required
 def OrderTracker(request):
@@ -293,3 +318,19 @@ def OrderTracker(request):
         Refs.append(Ref)
     context = {'progress_bar_queryset': progress_bar_queryset, 'Refs': Refs}
     return render(request, 'ecommerce/track-order.html', context)
+
+@login_required
+@user_passes_test(TestProduct, login_url ='register-shop')
+def DeclineOrder(request, order_id, cart_id):
+    instance = OrderItem.objects.get(id = order_id)
+    product = instance.product
+    shop = product.shop
+    inventory_id = get_object_or_404(Inventory, shop = shop).id
+    product_name = product.Name
+    cart = ShoppingCartOrder.objects.get(id = cart_id)
+    user_account = cart.Owner
+    user_account.Declined(product_name)
+    inventory = Inventory.objects.get(id = inventory_id)
+    inventory.Remove(order_id)
+    #instance.delete()
+    return redirect('inventory')

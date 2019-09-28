@@ -72,7 +72,7 @@ class ProductCategory (models.Model):
 class Product(models.Model):
     shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True)
     #the category and product have a many to many relationship
-    category = models.ForeignKey(ProductCategory, related_name = 'products', on_delete = models.CASCADE, null = True, blank = True)
+    category = models.ForeignKey(ProductCategory, related_name = 'products', on_delete = models.CASCADE, null = True)
     ##there should be an autocorrect and option to choose from relevent search options added
     #inventory = models.ForeignKey(Inventory, on_delete = models.SET_NULL) v
     Name = models.CharField(max_length = 200, default = 'write here')
@@ -82,6 +82,7 @@ class Product(models.Model):
     #image = models.ImageField(upload_to = 'Product_image', blank = True)
     #change made here
     Description = models.TextField(default = 'follow the campus shop guides for creating your description')
+    Resale = models.BooleanField(default = False)
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
 
@@ -101,11 +102,11 @@ class Product(models.Model):
 
 class Inventory (models.Model):
     shop = models.OneToOneField(Shop, on_delete= models.CASCADE, related_name = 'inventory', null = True)
-    PendingOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
+    PendingOrders = ArrayField(models.CharField(blank = True, max_length = 255), default = list,  blank = True)
     PendingOrderIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     PendingProductIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     PendingObjectId = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
-    AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list,  blank = True)
+    AcceptedOrders = ArrayField(models.CharField(blank = True, max_length = 255), default = list,  blank = True)
     AcceptedUsersIds = ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
     AcceptedProductIds = ArrayField(models.IntegerField(blank = True), default = list, blank = True)
     AcceptedObjectId =  ArrayField(models.IntegerField(blank = True), default = list,  blank = True)
@@ -117,7 +118,9 @@ class Inventory (models.Model):
         name = item.Name
         stock = obj.quantity
         attribute = obj.attribute
-        order_message = f'{name}, {stock}, {attribute}, size, ReferenceNumber'
+        size = obj.size
+        Ref = ShoppingCartOrder.objects.get(id = cart_id).ReferenceNumber()
+        order_message = f'{name}; {attribute}; {stock}; {size}; {Ref}'
         self.PendingOrders.append(order_message)
         self.PendingProductIds.append(product_id)
         self.PendingOrderIds.append(cart_id)
@@ -132,7 +135,7 @@ class Inventory (models.Model):
                 self.PendingOrders.pop(num)
                 self.PendingOrderIds.pop(num)
                 self.PendingProductIds.pop(num)
-                self.PendingObjectId.pop(position)
+                self.PendingObjectId.pop(num)
                 return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId'])
             num += 1
 
@@ -146,15 +149,10 @@ class Inventory (models.Model):
                 product_id = self.PendingProductIds.pop(num)
                 self.PendingObjectId.pop(num)
                 p = Product.objects.get(id = y)
-                string_list = w.split()
-                for s in string_list:
-                    try:
-                        var = int(s)
-                        break
-                    except:
-                        continue
-                quantity = var
-                attribute = string_list[::-1][1]
+                var = w.split(';')
+                string_list = [x.strip() for x in var]
+                quantity = int(string_list[2])
+                attribute = string_list[1]
                 for item in p.images.all():
                     if item.name == attribute:
                         item.ToBeDelivered = item.ToBeDelivered + quantity
@@ -178,6 +176,7 @@ class OrderItem(models.Model):
     #I think this should be true
     quantity = models.IntegerField(default = 1)
     attribute = models.CharField(default = 'Default', max_length = 200,)
+    size = models.CharField(max_length = 100, null = True)
     #auto_now is true, as product is added to the cart
     Date_Added = models.DateTimeField(auto_now_add = True)
 
@@ -222,7 +221,7 @@ class ShoppingCartOrder(models.Model):
 
 class ProductImage(models.Model):
     image = models.ForeignKey(Product, on_delete = models.CASCADE, null = True, related_name = 'images')
-    AddImage = models.ImageField(upload_to = 'Product_image', blank = False)
+    AddImage = models.ImageField(upload_to = 'Product_image', null = True)
     Stock = models.IntegerField(default = 1)
     name = models.CharField(max_length = 200, default = 'write here')
     ToBeDelivered = models.IntegerField(default = 0)

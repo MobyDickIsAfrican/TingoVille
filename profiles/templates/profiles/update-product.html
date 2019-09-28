@@ -36,6 +36,12 @@
 
       <div class="form-row">
       <div class="form-group col-md-6 mb-0">
+        {{ RegisterProductForm.category|as_crispy_field }}
+      </div>
+    </div>
+
+      <div class="form-row">
+      <div class="form-group col-md-6 mb-0">
         {{ RegisterProductForm.ProductType|as_crispy_field }}
       </div>
     </div>
@@ -46,6 +52,11 @@
     </div>
   </div>
 
+  <div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+      {{ RegisterProductForm.Resale|as_crispy_field }}
+    </div>
+  </div>
 
 
 <div class="form-row">
@@ -106,7 +117,7 @@
 {% endfor %}
 <div class="row spacer">
     <div >
-        <button class="btn btn-xs btn-primary">Create</button>
+        <button class="btn btn-xs btn-primary">Update</button>
     </div>
 </div>
 </form>

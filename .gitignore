@@ -1,9 +1,17 @@
 .pyc
 *~
 __pycache__
-myvenv
+venv
 db.postgres
 db.sqlite3
-/static
+static
 .DS_Store
-mysite
+wsgi.py
+urls.py
+__init__.py
+media
+.env
+.nevermind
+requirements.txt
+udo journalctl -u gunicorn
+migrations

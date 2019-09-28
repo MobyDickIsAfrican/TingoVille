@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from ecommerce.models import Shop, Product
+from ecommerce.models import Shop, Product, ProductCategory
 import itertools
 from django.core.exceptions import ValidationError
 from django.forms import formset_factory, modelformset_factory
@@ -9,12 +9,15 @@ from ecommerce.models import ProductImage
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    contact = forms.IntegerField()
+    First_Name = forms.CharField()
+    Last_Name = forms.CharField()
+    contact = forms.CharField()
+    Age = forms.IntegerField()
     #need to validate that the contact is a valid phone number
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'contact','password1', 'password2', ]
+        fields = ['username', 'email', 'contact', 'Age', 'First_Name', 'Last_Name','password1', 'password2',]
 
 #allow users to register their shops. this will need to be restricted
 class ShopForm(forms.ModelForm):
@@ -24,9 +27,10 @@ class ShopForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset = ProductCategory.objects.all())
     class Meta:
         model = Product
-        fields = ['Name', 'ProductType', 'Price', 'Description' ]
+        fields = ['Name', 'ProductType', 'Price', 'Description', 'category', 'Resale']
         '''
     def clean_Description(self):
         descriptiondata = self.cleaned_data['Description']

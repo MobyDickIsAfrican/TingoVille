@@ -56,3 +56,164 @@ luvo, 2019-09-06 18:28:23.332750
 user3, 2019-09-06 18:32:25.080437
 user3, 2019-09-06 18:58:04.765668
 luvo, 2019-09-06 19:00:17.866975
+luvo, 2019-09-10 15:39:11.057692
+
+luvo, 2019-09-14 13:08:13.378010
+MpumiD, 2019-09-14 19:07:26.042899
+Internal Server Error: /register-shop/
+Traceback (most recent call last):
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/luvo/djangogirls/profiles/views.py", line 137, in RegisterShop
+    return render(request, 'profiles/register-shop.html', context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 987, in render
+    output = self.filter_expression.resolve(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 698, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 113, in as_crispy_field
+    helper = getattr(field.form, 'helper', None)
+AttributeError: 'str' object has no attribute 'form'
+Internal Server Error: /register-shop/
+Traceback (most recent call last):
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/luvo/djangogirls/profiles/views.py", line 137, in RegisterShop
+    return render(request, 'profiles/register-shop.html', context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/shortcuts.py", line 36, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 904, in render_annotated
+    return self.render(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 987, in render
+    output = self.filter_expression.resolve(context)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/template/base.py", line 698, in resolve
+    new_obj = func(obj, *arg_vals)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/crispy_forms/templatetags/crispy_forms_filters.py", line 113, in as_crispy_field
+    helper = getattr(field.form, 'helper', None)
+AttributeError: 'str' object has no attribute 'form'
+GET https://b5fc48c72aeb47f5b430c06c02ed26ed.eu-west-2.aws.cloud.es.io:9243/products/_search [status:200 request:0.736s]
+GET https://b5fc48c72aeb47f5b430c06c02ed26ed.eu-west-2.aws.cloud.es.io:9243/categories/_search [status:200 request:0.081s]
+GET https://b5fc48c72aeb47f5b430c06c02ed26ed.eu-west-2.aws.cloud.es.io:9243/shops/_search [status:200 request:0.084s]
+luvo, 2019-09-14 19:27:13.316398
+luvo, 2019-09-15 14:50:44.298747
+luvo, 2019-09-15 15:53:03.361578
+luvo, 2019-09-15 19:22:26.305340
+Not Found: /my-cart/checkout/
+Not Found: /product/5/undefined
+luvo, 2019-09-27 17:40:13.279251
+POST https://b5fc48c72aeb47f5b430c06c02ed26ed.eu-west-2.aws.cloud.es.io:9243/_bulk?refresh=true [status:410 request:0.344s]
+Internal Server Error: /my-shop/update-product/product/10/
+Traceback (most recent call last):
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/luvo/djangogirls/profiles/views.py", line 231, in UpdateProduct
+    RegisterProductForm.save()
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/forms/models.py", line 458, in save
+    self.instance.save()
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/db/models/base.py", line 741, in save
+    force_update=force_update, update_fields=update_fields)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/db/models/base.py", line 790, in save_base
+    update_fields=update_fields, raw=raw, using=using,
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/dispatch/dispatcher.py", line 175, in send
+    for receiver in self._live_receivers(sender)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django/dispatch/dispatcher.py", line 175, in <listcomp>
+    for receiver in self._live_receivers(sender)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django_elasticsearch_dsl/signals.py", line 57, in handle_save
+    registry.update(instance)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django_elasticsearch_dsl/registries.py", line 141, in update
+    doc().update(instance, **kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django_elasticsearch_dsl/documents.py", line 163, in update
+    self._get_actions(object_list, action), **kwargs
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/django_elasticsearch_dsl/documents.py", line 123, in bulk
+    return bulk(client=self._get_connection(), actions=actions, **kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/helpers/__init__.py", line 308, in bulk
+    for ok, item in streaming_bulk(client, actions, *args, **kwargs):
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/helpers/__init__.py", line 238, in streaming_bulk
+    **kwargs
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/helpers/__init__.py", line 124, in _process_bulk_chunk
+    raise e
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/helpers/__init__.py", line 120, in _process_bulk_chunk
+    resp = client.bulk("\n".join(bulk_actions) + "\n", *args, **kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/client/utils.py", line 84, in _wrapped
+    return func(*args, params=params, **kwargs)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/client/__init__.py", line 1541, in bulk
+    headers={"content-type": "application/x-ndjson"},
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/transport.py", line 353, in perform_request
+    timeout=timeout,
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/connection/http_requests.py", line 141, in perform_request
+    self._raise_error(response.status_code, raw_data)
+  File "/home/luvo/djangogirls/venv/lib/python3.6/site-packages/elasticsearch/connection/base.py", line 162, in _raise_error
+    status_code, error_message, additional_info
+elasticsearch.exceptions.TransportError: TransportError(410, '{"ok":false,"message":"Deleted deployment."}\n')
+user5, 2019-09-28 13:39:08.916902

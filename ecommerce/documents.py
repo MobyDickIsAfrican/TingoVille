@@ -5,8 +5,12 @@ from django.dispatch import receiver
 from django_elasticsearch_dsl import Document
 from django_elasticsearch_dsl.registries import registry
 from .models import Product, ProductCategory, Shop
+import certifi
+from django.conf import settings
+http_auth = settings.HTTP_AUTH
+host = settings.HOST
 
-connections.create_connection(hosts = ['localhost'], timeout = 10000)
+connections.create_connection(hosts = host, http_auth = http_auth, use_ssl=True, ca_certs=certifi.where())
 
 @registry.register_document
 class ProductDocument(Document):

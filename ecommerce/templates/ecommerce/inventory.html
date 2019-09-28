@@ -14,13 +14,16 @@ table{
 <div class="container">
 <h3 style="margin-bottom:20px;text-align:left;"> Pending Orders </h3>
 <div>
-    <table >
+    <table style="width:100%;">
+    <th style="width:80%;">Name, Colour, Quantity, Size, Reference Number:</th>
     {%for message, product_id, cart_id, order_id, productquery in PendingQuerySet%}
-    <tr>
-  <td>{{message}}</td>
-    <td><a href="{%url 'accept-order' inventory_id=inventory.id cart_id=cart_id order_id=order_id%}"><input id='accept' class="btn btn-success btn-xs  col-xs-6"
-type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
-    <td>  <button  id='decline' type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button></td>
+
+    <tr style="width:100%;">
+  <td style="width:80%;">{{message}}</td>
+    <td style="width:10%;"><a href="{%url 'accept-order' inventory_id=inventory.id cart_id=cart_id order_id=order_id%}"><input id='accept' class="btn btn-success btn-xs  col-xs-6"
+      type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
+          <td style="width:10%;"> <a href="{%url 'reject-order' order_id=order_id cart_id=cart_id %}"> <button  id='Decline' type=""class="btn btn-danger btn-xs col-xs-6" href=#> Decline </button></td></a>
+
 
     </tr>
     {% endfor %}
@@ -29,16 +32,6 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
     </table>
   </div>
 
-  <div>
-  <h3 style="margin-bottom:20px;align-text:center;text-align:left;"> Accepted Orders </h3>
-      <table>
-      {%for message, product_id, userId, acceptedproductquery, objectid in AcceptedQuerySet%}
-    <tr>
-      {{message}}
-      </tr>
-      {%endfor%}
-  </table>
-</div>
 
 
 
@@ -58,18 +51,16 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
   <hr />
 
 
-      {% for item in products %}
-      {%if item.orders.all %}
+      {% for pros in items %}
+      {%if pros.image.orders.all %}
      <tr style="width:100%;">
-        {%for pros in item.images.all%}
-        <td style="width:20%;">{{pros.name}} {{item.Name}}</td>
+        <td style="width:20%;">{{pros.name}} {{pros.image.Name}}</td>
          <td style="width:20%;">{{pros.ToBeDelivered}} </td>
          <td style="width:20%;">YES </td>
          <td style="width:20%;"> NO RETURN </td>
          <td style="width:20%;"> {{pros.Sales}}</td>
      <vr />
         </tr>
-        {%endfor%}
         {%endif%}
       {% endfor %}
       </tr>
@@ -91,12 +82,11 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
     <hr />
 
 
-          {% zip_longest QForms products as items %}
-          {% for form, item in items %}
-          {%for pros in item.images.all%}
+          {% zip_longest QForms items as Images %}
+          {% for form, pros in Images %}
          <tr style="width:100%;">
 
-            <td style="width:25%;">{{pros.name}} {{item.Name}}</td>
+            <td style="width:25%;">{{pros.name}} {{pros.image.Name}}</td>
           <td style="width:25%;">{{pros.Stock}} </td>
              <td style="width:25%;">
                <form method= "POST">
@@ -110,7 +100,7 @@ type="button" value="Accept" onclick="deleteRow(this)" action=""> <a></td>
 
 
             </tr>
-            {%endfor%}
+
           {% endfor %}
           </tr>
           </thead>

@@ -4,6 +4,7 @@
    {% load django_popup_view_field_tags %}
    <script type="text/javascript">{% javascript_settings %}</script>
    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  
    <head>
        <meta charset="utf-8" />
        <title>Homepage</title>
@@ -15,11 +16,23 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
        <style>
+	 =
 
-body {
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+  
+body,html {
+        height:100%
+		position:relative;
+        display: flex;
+        flex-direction: column;
         font-family: sans-serif;
-        margin-top: 150px;
-        margin-bottom: 150px;
+        margin-top: 75px;
+        margin-bottom:150px;
         background-color:	#f0f3f5;
         /*background-color: #e6f1fc;*/
 }
@@ -50,10 +63,22 @@ body {
    background: #39393B;
    text-decoration: none;
 }
+*{
+box-sizing:border-box;
+}
+*:before,*:after{
+box-sizing:border-box;
+}
 
 
+footer {
+      overflow:hidden;
+	  position:absolute;
+	  bottom:0;
+	  width:100%;
 
 
+}
 
 
 
@@ -142,6 +167,10 @@ body {
     border: none;
     cursor: pointer;
   }
+  .content{
+  position:relative
+  
+  }
 
   .topnav .search-container button:hover {
     background: #ccc;
@@ -163,20 +192,45 @@ body {
       border: 1px solid #ccc;
     }
   }
+ footer{
+ position:absolute;
+ bottom:0;
+ width:100%;
+ background-color:#333;
+ 
+ 
+ }
+.hash{
+min-height:100vh;
+overflow:hidden;
+display:block;
+position:relative;
+padding-bottom:100px;
 
-
+}
 
 
 
 
 
   </style>
+  
    </head>
+  
+   <script type="text/javascript"> //<![CDATA[
+  var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.trust-provider.com/" : "http://www.trustlogo.com/");
+  document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+//]]></script>
+<script language="JavaScript" type="text/javascript">
+  TrustLogo("https://www.positivessl.com/images/seals/positivessl_trust_seal_lg_222x54.png", "POSDV", "none");
+</script>
+
  <body>
   <!--Header starts here -->
-
-  <nav class="navbar navbar-expand-md navbar-expand-sm navbar-expand-lg navbar-expand-xl navbar-dark bg-dark fixed-top">
-
+  
+  <div class="container" style="height:100%;weight:100%;bottom:0;">
+   <div class="container">
+  <nav class="navbar navbar-expand-md navbar-expand-sm navbar-expand-lg navbar-expand-xl navbar-dark bg-dark fixed-top"style="margin-bottom:25px;">
   <!--we need this, so that the dropdown menu could work-->
   <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
   <span class="navbar-toggler-icon"></span>
@@ -184,17 +238,22 @@ body {
 
   <h4><a style="color:#99C624;" href="{% url 'home' %}">#NO<span class="navbar-text">NAME</span><a></h4>
     <div class="container" style="padding-top:0px;margin-top:-11px;">
-      <div class="topnav">
-  >
-  <div class="search-container">
-    <form action="{%url 'search' %}">
-      <input id="search" type="text" placeholder="Search.." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()">
-      <button id="searchbtn" type="submit"><i class="fa fa-search"></i></button>
+      <div class="topnav col-lg-12 col-md-12 col-sm-12 col-xs-12">
+     <form class=""action="{%url 'search' %}">
+	 <div class="form-horizontal">
+	 <input class=""id="search" type="text" placeholder="Search.." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()">
+      
+	  <button class="" id="searchbtn" type="submit"><i class="fa fa-search"></i></button>
+	 
+	  </div>
     </form>
+  
+ 
+  
+
   </div>
-</div>
-  </div>
-  <div class="collapse navbar-collapse" id="collapse_target">
+  
+  <div style="bottom:0; margin-bottom:0px;" class="collapse navbar-collapse" id="collapse_target">
   <!--  <form class="search" method="GET" action="{%url 'search' %}">
   <input id="search" type="text" placeholder="Search..." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()" O />
   <input id="searchbtn" type="submit" value="Search" />
@@ -204,20 +263,8 @@ body {
 
   <ul class="navbar-nav"style="align-content:left;margin-right:-125px;padding-right:0px;">
   <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
-  Sell
-  <span class="caret"></span>
-  </a>
-  <div class="dropdown-menu" arial-labellby="dropdown_target">
-  <a class="dropdown-item" >Add Shop</a>
-  <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="{% url 'my-shop' %}">My Shops</a>
-  </div>
-  </li>
-
-  <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" href="{% url 'categories' %}">
-  Buy
+  Shop By Category
   <span class="caret"></span>
   </a>
   <div class="dropdown-menu" arial-labellby="dropdown_target">
@@ -230,6 +277,20 @@ body {
   <a class="dropdown-item">Accessories</a>
   </div>
   </li>
+
+  <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
+  Sell
+  <span class="caret"></span>
+  </a>
+  <div class="dropdown-menu" arial-labellby="dropdown_target">
+    <a class="dropdown-item" href="{% url 'register-shop' %}">Add Shop</a>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="{% url 'my-shop' %}">My Shops</a>
+  </div>
+  </li>
+
+
 
   <li class="nav-item">
   <a class="nav-link" href="{%url 'my-cart' %}">My Basket<i id='read'></i></a>
@@ -257,34 +318,59 @@ body {
   </div>
 
   </nav>
-
+  </div>
+  </div>
+  
+<div class="container col-lg-12 col-md-12 col-sm-8 col-xs-8">
 
    <!--Header ends here -->
    {% block content %}
    {% endblock %}
+   <!-- Footer -->
+</div>
 
-<!--footer starts here-->
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
-<ul class="navbar-nav">
+  <!-- Footer Elements -->
+  <div class="hash col-lg-12 col-md-12 col-sm-12 col-xs-12"style="bottom:0;margin-bottom:-290px;">
+<footer style="bottom:0;margin-bottom:0px;"class="page-footer font-small special-color-dark pt-4">
+    <!-- Social buttons -->
+    <ul class="list-unstyled list-inline text-center">
+      <li class="list-inline-item">
+        <a class="btn-floating btn-fb mx-1">
+          <i class="fab fa-facebook-f"> </i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a class="btn-floating btn-tw mx-1">
+          <i class="fab fa-twitter"> </i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a class="btn-floating btn-gplus mx-1">
+          <i class="fab fa-google-plus-g"> </i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a class="btn-floating btn-li mx-1">
+          <i class="fab fa-linkedin-in"> </i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a class="btn-floating btn-dribbble mx-1">
+          <i class="fab fa-dribbble"> </i>
+        </a>
+      </li>
+    </ul>
+    <!-- Social buttons -->
+</footer>
+  </div>
+  <!-- Footer Elements -->
 
-<li class="nav-item">
-<a class="nav-link" href="#">About Us</a>
-</li>
+  
 
-<li class="nav-item">
-<a class="nav-link" href="#">Contact</a>
-</li>
 
-<li class="nav-item">
-<a class="nav-link" href="#">Privacy & Policy</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="#">More</a>
-</li>
-
-</ul>
-</nav
+<!-- Footer -->
+</div>
+ </div>
 <!--footer ends here-->
 
 

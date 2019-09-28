@@ -15,6 +15,7 @@ class Account(models.Model):
     # models.CASCADE deletes the account if the User is deleted
     ProcessedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
     SortedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
+    CancelledOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list, blank = True)
 
     def Message(self, cart_id, order_id):
         self.ProcessedOrders.append([cart_id, order_id])
@@ -39,6 +40,12 @@ class Account(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def Declined(self, product_name):
+        message = f'Sorry the supplier has cancelled your order for {product_name}'
+        return self.CancelledOrders.append(message)
+
+
 
 
 

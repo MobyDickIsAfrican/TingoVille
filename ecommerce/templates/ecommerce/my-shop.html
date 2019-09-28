@@ -4,7 +4,78 @@
 <head>
 
     <title>My shop</title>
+	<style>
+	.BUTTON_ETG {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+     border-radius: 0px;
+     height: 35px;
+     line-height: 25px;
+     color: white;
+     font-family: Arial;
+     width: 329px;
+     font-size: 20px;
+     font-weight: 600;
+     padding: 7px;
+     background-color: #1f2626;
+     border: solid #337FED 1px;
+     text-decoration: none;
+     display: inline-block;
+     cursor: pointer;
+  }
+
+   
+	
+	
+	
+	</style>
 
 </head>
+<div class="container">
+  
+  <table style="width:100%;">
+   <tr style="width:100%";>
+   <th style="width:100%;font-family:Arial; align-content:center;margin-bottom:7px;">
+    <a href="{% url 'inventory' %}"> <button  type=""class="btn BUTTON_ETG" href="{% url 'inventory' %}"> CHECK INVENTORY </button></a>
+
+   </th>
+   </tr>
+   <tr style="width:100%";>
+  <th style="width:100%;font-family:Arial;margin-bottom:7px;">Your Products</th>
+   </tr>
+  {%for item in items%}
+   
+
+    <tr style="width:100%;">
+      <td style="width:80%;">
+        {{item.Name}}
+        </td>
+
+        <td style="width:10%;margin-bottom:2px;margin-left:5px;">
+          <a href="{% url 'update-product' item.id %}"> <button  id='Update' type=""class="btn btn-primary btn-xs col-xs-6" href=#> Update </button></a>
+          </td>
+          <td style="width:10%;margin-bottom:2px;margin-left:5px;">
+          <a href=""> <button  id='Remove' type=""class="btn btn-danger btn-xs col-xs-6" href=#> Remove </button></a>
+            </td>
+
+     </tr>
+	 
+	 
+	 
+      
+{%endfor%}
+ <tr style="width:100%; margin-top:30px;align-content:center;">
+      <td style="width:80%;margin-bottom:2px;">
+      
+        </td>
+
+        
+          <td style="width:20%;margin-bottom:2px;">
+		   <a href="{% url 'register-product' %}"> <button type="" class="btn btn-success btn-xs col-xs-6" href="{% url 'register-product' %}"> ADD PRODUCT </button></a>
+            </td>
+
+     </tr>
+</table>
+  </div>
 
 {% endblock %}

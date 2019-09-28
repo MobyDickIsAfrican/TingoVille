@@ -22,13 +22,13 @@
 ul#insert li{
   list-style:square outside none;
   display:inline-block;
-  margin-left:5px;
-  margin-right:-2px;
+  margin-left:-15px;
+  margin-right:20px;
   background-color:black;
-  width:15%;
+  width:25%;
   padding:5px 5px 2px 3px;
   color:white;
-  border-radius:8px 8px 8px 8px;
+  border-radius:5px 5px 5px 5px;
 }
 ul#insert li:hover{
   background-color:grey;
@@ -84,12 +84,12 @@ ul#insert li:hover{
   
   <table>
     <tr id='1'>
-      <img src="{{default.AddImage.url}}"id='IneverChange' class="img-fluid img-circle" style="width:400px;height:400px;margin-top:10px;margin-bottom:5px;">
+      <img src="{{default.AddImage.url}}"id='IneverChange' class="img-fluid img-thumbnail" style="width:400px;height:200px;margin-top:53px;margin-bottom:5px;">
       {%endwith%}
       </tr>
-      <tr id='2'>
-        <div class="container"style="margin-top:5px;margin-top:110px;"><h4><small>DESCRIPTION:</small></h4></div>
-        <p>{{Description}}</p>
+      <tr id='2' style="margin-top:50px;">
+        <div class="container"style="margin-top:5px;margin-top:110px;margin-left:-14px;"><h4><small>DESCRIPTION:</small></h4></div>
+        <p style="margin-left:px;">{{Description}}</p>
 
         </tr>
 
@@ -114,13 +114,13 @@ ul#insert li:hover{
   </tr>
 
   <tr id='5'>
-    <div class="container"  style="float:left;"id='stock'></div>
+    <div class="container"  style="float:left;margin-left:-18px;"id='stock'></div>
 	
-    <ul id='insert'></ul>
+    <span><ul id='insert' style="margin-left:-27px;margin-bottom:35px;"></ul></span>
     </tr>
 <tr id='6'>
 
-<div class="container"  style="margin-top:7px;margin-bottom:50px;"><p>R {{item.Price}}</p></div>
+<div class="container"  style="margin-top:7px;margin-bottom:50px;margin-left:-15px;"><p>R {{item.Price}}</p></div>
 </tr>
 
 <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
@@ -129,8 +129,8 @@ ul#insert li:hover{
 <table style="width:100%;">
    <tr style="width:100%;">
 
-  <div class="container" style="margin-bottom:-70px;"><input type="submit" class="BUTTON_YZG" value="Add to Basket" /></div>
-  <div class="container" style="margin-top:-80px;">{{QuantityForm.quantity}} {{QuantityForm.FormId}}</div>
+  <div class="container" style="margin-bottom:-70px;margin-left:-18px;"><input type="submit" class="BUTTON_YZG" value="Add to Basket" /></div>
+  <div class="container" style="margin-top:-80px;margin-left:-18px;"><form class="form-control">{{QuantityForm.quantity}} {{QuantityForm.FormId}}</form></div>
    </tr>
    <tr style="width:100%;">
 

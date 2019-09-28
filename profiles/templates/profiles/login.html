@@ -4,6 +4,8 @@
 
 {% block content %}
 <div class="container">
+<table style="width:100%">
+<tr style="width:100%;">
   <form method="post">
     {% csrf_token %}
     <div class="form-row">
@@ -13,10 +15,25 @@
       </div>
       </div>
 
-
+</tr>
+<tr style="width:100%;" >
+<td style="width:10%;margin-left:0px;" >
   <div class="form-row">
     <button type="submit" class="btn btn-primary">Login</button>
+	{%if from_checkout%}
+    <a style="margin-left:8px;" href="{%url 'check-out-sign-up' %}"><input class="btn btn-secondary" type="button" value="Sign Up" onclick="deleteRow(this)" action=""> <a>
+      {%endif%}
+    {%if not from_checkout%}
+    <a style="margin-left:8px;" href="{%url 'sign-up' %}"><input class="btn btn-secondary" type="button" value="Sign Up" onclick="deleteRow(this)" action=""> <a>
+    {%endif%}
     </div>
-  </form>
-  </div>
+  
+  </td>
+  <td style="width:10%;margin-left:5px;" >
+ 
+	</td>
+	</form>
+	</tr>
+	</table>
+ </div>
 {% endblock %}
