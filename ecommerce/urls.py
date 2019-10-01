@@ -20,6 +20,12 @@ urlpatterns = [
     path('ajax_search/', views.AjaxSearch, name = 'ajax-search'),
     path('ajax_accept_order/', views.AjaxAccept, name = 'ajax-accept'),
     path('size-ajax/', views.AjaxSize, name = 'size-ajax'),
+    path('how-it-works/', views.HowItWorks, name = 'how-it-works'),
+    path('about/', views.About, name = 'about'),
+    path('returns/', views.Returns, name = 'return'),
+    path('terms/', views.Terms, name = 'terms'),
+    path('seller-help/', views.Help, name = 'help')
+    
 ]
 #for development environment
 

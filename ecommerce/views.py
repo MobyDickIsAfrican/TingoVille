@@ -21,6 +21,7 @@ from .popups import SizePopupView
 import certifi
 from django_user_agents.utils import get_user_agent
 from django.conf import settings
+from django.core.paginator import Paginator
 
 
 def keyfunc(x):
@@ -57,9 +58,12 @@ def Home(request):
             break
     Cat_1 = ProductCategory.objects.get(CategoryName = 'Resale Clothing - Women')
     Cat_2 = ProductCategory.objects.get(CategoryName = 'Resale Clothing - Men')
-    Women_Resale = Cat_1.products.all()
-    Men_Resale = Cat_2.products.all()
-    context = {'PopularCategoryList': PopularCategoryList, 'Fresh': Fresh, 'PopularList': PopularList, 'Women_Resale': Women_Resale, 'Men_Resale':Men_Resale }
+    Women_Resale = Cat_1.products.all()[:4]
+    Men_Resale = Cat_2.products.all()[:4]
+    query = query = ProductCategory.objects.all()
+    query_1 = query[:4]
+    query_2 = query[4:]
+    context = {'PopularCategoryList': PopularCategoryList, 'Fresh': Fresh, 'PopularList': PopularList, 'Women_Resale': Women_Resale, 'Men_Resale':Men_Resale, 'query_1': query_1,  'query_2': query_2}
     user_agent = get_user_agent(request)
     if user_agent.is_mobile:
         return render(request, 'ecommerce/Home-mobile.html', context)
@@ -134,7 +138,8 @@ def ProductPage(request, id):
         #var2 = request.session['item']
         #variable = var2
     data = json.dumps(data)
-    context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description, 'ProductSize': data }
+    shop = item.shop
+    context = {'QuantityForm': QuantityForm, 'item': item, 'Description': Description, 'ProductSize': data, 'shop': shop }
     user_agent = get_user_agent(request)
     if user_agent.is_mobile:
         return render(request, 'ecommerce/product-page-mobile.html', context)
@@ -333,11 +338,17 @@ def CategoryView(request):
     query = ProductCategory.objects.all()
 
     context = {'query': query}
+    user_agent = get_user_agent(request)
+    if user_agent.is_mobile:
+        return render(request, 'ecommerce/categories-mobile.html', context)
     return render(request, 'ecommerce/categories.html', context)
 
 def CategoryProducts(request, id):
     cats = ProductCategory.objects.get(id = id)
-    pro = cats.products.all()
+    pros = cats.products.all()
+    paginator = Paginator(pros, 2)
+    page = request.GET.get('page')
+    pro = paginator.get_page(page)
     context = {'cats': cats, 'pro': pro}
     return render(request, 'ecommerce/category-products.html', context)
 
@@ -427,3 +438,18 @@ def AjaxSearch(request):
             return HttpResponse(data)
 def AjaxAccept(request):
     pass
+
+def HowItWorks(request):
+    return render(request, 'ecommerce/howitworks.html', context= {})
+    
+def About(request):
+    return render(request, 'ecommerce/about.html', context= {})
+     
+def Returns(request):
+    return render(request, 'ecommerce/returns.html', context = {})
+ 
+def Terms(request):
+    return render(request, 'ecommerce/terms.html', context = {})
+
+def Help(request):
+    return render(request, 'ecommerce/seller-help.html', context = {})

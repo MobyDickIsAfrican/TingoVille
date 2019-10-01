@@ -17,22 +17,19 @@ img {
 
 </style>
 <div class="container">
-<h4 style="text-align:center;"> Shop by {{cats.CategoryName}}</h4>
+<h4 style="text-align:left;">{{cats.CategoryName}}</h4>
 <div class="row">
 
   {%for item in pro%}
   <div class="three column">
     <ul style="style-list: none;">
-  <li style="margin-bottom:7px;font-weight:600;">{{item.Name}}</li>
+  
   {%with item.images.all|first as default%}
-  <li><img style="margin-top:5px;margin-bottom:8px;width:200px;height:200px;"src="{{default.AddImage.url}}"></li>
+  <li><a href="{% url 'product-page' item.id %}"><img style="margin-top:5px;margin-bottom:8px;width:250px;height:260px;"src="{{default.AddImage.url}}"></a></li>
   {%endwith%}
-  <li style="margin-top:5px;"id="price"> R {{item.Price}} </li>
-  <li style="margin-top:10px;"id="Add">
-      <button type="button" onclick="addOption()" class="btn btn-success">
-          Add to Basket
-      </button>
-  </li>
+  <li style="margin-bottom:7px;text-align:center;font-weight:550;font-size:14px;"><a href="{% url 'product-page' item.id %}"style="text-decoration:none;color:black;">{{item.Name|truncatewords:4}}</a></li>
+  <li class="text-success lead"style="text-align:center;font-weight:550;font-size:14px;" id="price"> R {{item.Price}} </li>
+  
   </ul>
 </div>
   {%if forloop.counter|divisibleby:3 %}
@@ -42,4 +39,30 @@ img {
   {% endfor %}
   </div>
 </div>
+
+<div class="pagination">
+   <ul style ="list-style:none;"> 
+   <li>
+   <span class="step-links">
+        {% if pro.has_previous %}
+         
+            <a href="?page={{ pro.previous_page_number }}">Previous</a>
+			
+        {% endif %}
+
+
+        {% if pro.has_next %}
+            <a href="?page={{ pro.next_page_number }}">Next</a>
+			
+            <a href="?page={{ pro.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span></li>
+	</br>
+	       <li> <span class="current">
+            Page {{ pro.number }} of {{ pro.paginator.num_pages }}.
+        </span></li>
+		</ul>
+</div>
 {% endblock %}
+
+

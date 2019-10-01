@@ -1,20 +1,17 @@
 {% extends 'ecommerce/base.html' %}
-{% block content %}
 {% load ecommerce_extras_filters %}
 <head>
-
-    <title>Track order</title>
+<title>Track order</title>
 <style>
 .progress{
   margin-top:15px;
   margin-bottom:50px;
 }
-
-
-  </style>
+</style>
 </head>
+{% block content %}
 <div class="container">
-  <h2 style="text-align:center;margin-bottom:65px;">TRACK YOUR ORDERS</h2>
+  <h2 style="text-align:center;margin-bottom:25px;">TRACK YOUR ORDERS</h2>
   <table style="width:100%;">
     <tr style="text-align:center;">
 {% zip_longest progress_bar_queryset Refs as items %}
@@ -24,13 +21,15 @@
   <td style="width:80%;">
 <h5><div style="text-align:center;font-family:Arial;font-weight:400;" id='{{item.id}}a'></div><h5>
 <div class="progress">
-  <div id='{{item.id}}'class="progress-bar" role="progressbar" style="width: {{item.progress}}%;color:black;font-family:Fantasy;font-weight:500;height:60px;
-  padding-bottom:45px;padding-top:2px;text-align:center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{number}} </div>
+  <div id='{{item.id}}'class="progress-bar" role="progressbar" style="width: {{item.progress}}%;color:black;font-family:Fantasy;font-weight:500;height:15px;
+  padding-bottom:45px;padding-top:8px;text-align:center;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"> {{number}} </div>
 </div>
   </td>
 </tr>
+{%endfor%}
+</table>
 </div>
-
+{%endblock%}
 <script>
   $(document).ready(function(){
     var progress=document.getElementById('{{item.id}}').style.width;
@@ -46,6 +45,6 @@
 
   </script>
 
-{%endfor%}
 
-{%endblock%}
+
+

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
    {%load static%}
    {% load javascript_settings_tags %}
    {% load django_popup_view_field_tags %}
@@ -7,7 +8,7 @@
   
    <head>
        <meta charset="utf-8" />
-       <title>Homepage</title>
+       
        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -16,7 +17,118 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
        <style>
-	 =
+#footer{
+		left:0;
+		bottom: 0;
+		position:static;
+	}
+	 
+     .bg-grey {
+        background: #292929;
+     }
+     .logo-footer {
+        margin-bottom: 40px;
+     }
+     footer {
+            color: grey;
+            bottom: 0;
+            left: 0;
+            position: static;
+     }
+     footer p, a {
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+footer h6 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 40px;
+    position: relative;
+}
+footer h6:after {
+    position: absolute;
+    content: "";
+    background: grey;
+    width: 12%;
+    height: 1px;
+    left: 0;
+    bottom: -20px;
+}
+     .btn-footer {
+                 color: grey;
+             
+                text-decoration: none;
+                border: 1px solid;
+                border-radius: 43px;
+                font-size: 13px;
+                padding: 7px 30px;
+                line-height: 47px;
+     }
+     .btn-footer:hover {
+                
+                text-decoration: none;
+               
+     }
+    .form-footer input[type="text"] {
+        border: none;
+    border-radius: 16px 0 0 16px;
+    outline: none;
+    padding-left: 10px;
+    
+}
+::placeholder {
+    font-size: 10px;
+    padding-left: 10px;
+    font-style: italic;
+}
+ .form-footer input[type="button"] {
+    border: none;
+    background:#232323;
+        margin-left: -5px;
+    color: #fff;
+    outline: none;
+    border-radius: 0 16px 16px 0;
+    padding: 2px 12px;
+}
+     .social .fa {
+    color: grey;
+    font-size: 22px;
+    padding: 10px 15px;
+    background: #3c3c3c;
+}
+     footer ul li {
+    list-style: none;
+    display: block;
+}
+  footer ul  {
+   padding-left: 0;
+}
+footer ul  li a{
+  text-decoration: none;
+  color: grey;
+  text-decoration:none;
+}
+a:hover {
+    text-decoration: none;
+    color: #f5f5f5 !important;
+    
+}
+.logo-part {
+    border-right: 1px solid grey;
+    height: 100%;
+    }	   
+	.navbar{
+	 float:right;
+	 font-weight:500;
+	 font-size:16px;
+	}
+
+     
+       
+        
+      
+html{
+  height: 100%;
+}
 
 .content {
   flex: 1 0 auto;
@@ -25,15 +137,14 @@
   flex-shrink: 0;
 }
   
-body,html {
-        height:100%
-		position:relative;
+body {
+
         display: flex;
         flex-direction: column;
-        font-family: sans-serif;
-        margin-top: 75px;
-        margin-bottom:150px;
-        background-color:	#f0f3f5;
+        font-family: 'Signika', sans-serif;
+        margin-top: 150px;
+        margin-bottom: 150px;
+        background-color: #f0f3f5;
         /*background-color: #e6f1fc;*/
 }
 .BUTTON_YZG {
@@ -63,22 +174,10 @@ body,html {
    background: #39393B;
    text-decoration: none;
 }
-*{
-box-sizing:border-box;
-}
-*:before,*:after{
-box-sizing:border-box;
-}
 
 
-footer {
-      overflow:hidden;
-	  position:absolute;
-	  bottom:0;
-	  width:100%;
 
 
-}
 
 
 
@@ -89,8 +188,9 @@ footer {
         padding: 20px;
 }
 .nav-item {
-          margin-left:5px;
-          margin-right:5px;
+          margin-left:15px;
+          margin-right:15px;
+		  float:right;
 }
       /*{   }*/
 .
@@ -129,7 +229,7 @@ footer {
     padding: 5px 5px;
     border-radius: 55%;
     color: white;
-    background-color:#99C624;
+    background-color:;
   }
   * {box-sizing: border-box;}
 
@@ -167,10 +267,6 @@ footer {
     border: none;
     cursor: pointer;
   }
-  .content{
-  position:relative
-  
-  }
 
   .topnav .search-container button:hover {
     background: #ccc;
@@ -192,22 +288,7 @@ footer {
       border: 1px solid #ccc;
     }
   }
- footer{
- position:absolute;
- bottom:0;
- width:100%;
- background-color:#333;
- 
- 
- }
-.hash{
-min-height:100vh;
-overflow:hidden;
-display:block;
-position:relative;
-padding-bottom:100px;
 
-}
 
 
 
@@ -217,161 +298,186 @@ padding-bottom:100px;
   
    </head>
   
-   <script type="text/javascript"> //<![CDATA[
-  var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.trust-provider.com/" : "http://www.trustlogo.com/");
-  document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
-//]]></script>
-<script language="JavaScript" type="text/javascript">
-  TrustLogo("https://www.positivessl.com/images/seals/positivessl_trust_seal_lg_222x54.png", "POSDV", "none");
-</script>
+   
 
  <body>
-  <!--Header starts here -->
-  
-  <div class="container" style="height:100%;weight:100%;bottom:0;">
-   <div class="container">
+   <!--Header starts here -->
+  <div style="margin-top:0%; height:85%">
+
   <nav class="navbar navbar-expand-md navbar-expand-sm navbar-expand-lg navbar-expand-xl navbar-dark bg-dark fixed-top"style="margin-bottom:25px;">
+
   <!--we need this, so that the dropdown menu could work-->
   <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
   <span class="navbar-toggler-icon"></span>
   </button>
 
-  <h4><a style="color:#99C624;" href="{% url 'home' %}">#NO<span class="navbar-text">NAME</span><a></h4>
+  <h4><a class="text-success"style="font-size:20px;font-weight:600" href="{% url 'home' %}">Tingo<span>Ville</span><a></h4>
     <div class="container" style="padding-top:0px;margin-top:-11px;">
-      <div class="topnav col-lg-12 col-md-12 col-sm-12 col-xs-12">
-     <form class=""action="{%url 'search' %}">
-	 <div class="form-horizontal">
-	 <input class=""id="search" type="text" placeholder="Search.." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()">
-      
-	  <button class="" id="searchbtn" type="submit"><i class="fa fa-search"></i></button>
-	 
-	  </div>
-    </form>
-  
- 
+      <div class="topnav">
   
 
+</div>
   </div>
+  <div class="collapse navbar-collapse" id="collapse_target">
   
-  <div style="bottom:0; margin-bottom:0px;" class="collapse navbar-collapse" id="collapse_target">
-  <!--  <form class="search" method="GET" action="{%url 'search' %}">
-  <input id="search" type="text" placeholder="Search..." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()" O />
-  <input id="searchbtn" type="submit" value="Search" />
-  </form>
-  </div>
-</div>-->
 
   <ul class="navbar-nav"style="align-content:left;margin-right:-125px;padding-right:0px;">
   <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="{% url 'categories' %}">
+  <a class="nav-link" style="font-size:13px;"href="{% url 'categories' %}">
   Shop By Category
   <span class="caret"></span>
   </a>
-  <div class="dropdown-menu" arial-labellby="dropdown_target">
-  <a class="dropdown-item">Cars</a>
-  <div class="dropdown-divider"></div>
-  <a class="dropdown-item">Hotels</a>
-  <div class="dropdown-divider"></div>
-  <a class="dropdown-item">Laptops</a>
-  <div class="dropdown-divider"></div>
-  <a class="dropdown-item">Accessories</a>
-  </div>
+  
+  </li>
+  
+ 
+
+  <li class="nav-item">
+    <div class="search-container form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0" action="{%url 'search' %}">
+        <input  class="form-control mr-sm-2" id="search" type="text" placeholder="Search.." maxlength="70" autocomplete="on" name="q" id='q' oninput="findme()"style="width:80%;"aria-label="Search">
+        <button id="searchbtn" class="btn btn-outline-success my-2 my-sm-0" type=""><i class="fa fa-search"></i></button>
+      </form>
+    </div>
   </li>
 
-  <li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="dropdown_target" href="{% url 'my-shop' %}">
+  <li class="nav-item dropdown" style="margin-left:">
+  <div class="nav-link dropdown-toggle" style="font-size:13px;" data-toggle="dropdown" data-target="dropdown_target" >
   Sell
   <span class="caret"></span>
-  </a>
-  <div class="dropdown-menu" arial-labellby="dropdown_target">
+  </div>
+  <div style="width:60%;" class="dropdown-menu" arial-labellby="dropdown_target">
     <a class="dropdown-item" href="{% url 'register-shop' %}">Add Shop</a>
   <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="{% url 'my-shop' %}">My Shops</a>
+  <a class="dropdown-item" href="{% url 'my-shop' %}">My Shop</a>
+   <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="{% url 'help' %}">Help</a>
   </div>
   </li>
 
 
 
   <li class="nav-item">
-  <a class="nav-link" href="{%url 'my-cart' %}">My Basket<i id='read'></i></a>
-  <span class="caret"></span>
+  <a class="nav-link"style="font-size:13px;" href="{%url 'my-cart' %}">My Basket<i class="bg-success"id='read'></i></a>
+  <span class="caret "></span>
   <div class="dropdown-menu" arial-labelby="dropdown_target">
   <ul>
   <li>
   <select id="dynamic-select">
-  <options value="none"> Add </options>
+  
   </select>
   </li>
   </ul>
   </li>
-
-  <li class="nav-item">
-  <a class="nav-link" href="{% url 'login' %}">Login</a>
+  
+  {% if not user.is_authenticated %}
+<li class="nav-item">
+  <a class="nav-link"style="font-size:13px;" href="{% url 'login' %}">login</a>
   </li>
 
   <li class="nav-item">
-  <a class="nav-link" href="{% url 'sign-up'%}">Sign Up</a>
+  <a class="nav-link"style="font-size:13px;" href="{% url 'sign-up'%}"> Sign Up</a>
+  </li>
+{% endif%}
+
+{% if user.is_authenticated %}
+  <li class="nav-item">
+  <a class="nav-link"style="font-size:13px;" href="{% url 'logout' %}">Logout</a>
   </li>
 
+  <li class="nav-item dropdown">
+  <div class="nav-link dropdown-toggle" style="font-size:13px;" data-toggle="dropdown" data-target="dropdown_target" >
+  My Account
+  <span class="caret"></span>
+  </div>
+  <div style="width:60%;" class="dropdown-menu" arial-labellby="dropdown_target">
+    <a class="dropdown-item" href="{% url 'account'%}">My Orders</a>
+  <div class="dropdown-divider"></div>
+  <a class="dropdown-item" href="{% url 'track-order' %}">Track my Orders</a>
+  
+ 
+  </div>
+  </li>
+
+ 
+{% endif%}
+
+
+ 
   </ul>
 
   </div>
 
   </nav>
+  
+
+
+   <!--Header ends here -->
+  </div>
   </div>
   </div>
   
-<div class="container col-lg-12 col-md-12 col-sm-8 col-xs-8">
 
    <!--Header ends here -->
    {% block content %}
    {% endblock %}
    <!-- Footer -->
+   
+<footer class="container-fluid bg-grey py-5"style="margin-bottom:-950px;margin-top:100px;">
+<div class="container">
+   <div class="row">
+      <div class="col-md-6">
+         <div class="row">
+            <div class="col-md-6">
+               	<h4> TingoVille</h4>
+                  
+                  <p>01 Jorissen Street, University of the Witwatersrand</p>
+                  <p></p>
+               </div>
+           
+            <div class="col-md-6 px-4">
+               <a href="{% url 'how-it-works' %}" class=""> How it works</a><br>
+               <a href="#" class=""> Contact info</a>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="row">
+                  <div class="col-md-6">
+                     <ul>
+                        <li> <a href="{% url 'home' %}"> Home</a> </li>
+                        <li> <a href="{% url 'about' %}"> About us</a> </li>
+                     </ul>
+                  </div>
+                  <div class="col-md-6 px-4">
+                     <ul>
+                        <li> <a href="#"> Terms and conditions</a> </li>
+                        <li> <a href="#"> Privacy Policy</a> </li>
+                        <li> <a href="{% url 'return' %}"> Returns Policy</a> </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-6 ">
+               <h6> Social Networks</h6>
+               <div class="social">
+                  <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                  <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+               </div>
+             
+               <p></p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 </div>
 
-  <!-- Footer Elements -->
-  <div class="hash col-lg-12 col-md-12 col-sm-12 col-xs-12"style="bottom:0;margin-bottom:-290px;">
-<footer style="bottom:0;margin-bottom:0px;"class="page-footer font-small special-color-dark pt-4">
-    <!-- Social buttons -->
-    <ul class="list-unstyled list-inline text-center">
-      <li class="list-inline-item">
-        <a class="btn-floating btn-fb mx-1">
-          <i class="fab fa-facebook-f"> </i>
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="btn-floating btn-tw mx-1">
-          <i class="fab fa-twitter"> </i>
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="btn-floating btn-gplus mx-1">
-          <i class="fab fa-google-plus-g"> </i>
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="btn-floating btn-li mx-1">
-          <i class="fab fa-linkedin-in"> </i>
-        </a>
-      </li>
-      <li class="list-inline-item">
-        <a class="btn-floating btn-dribbble mx-1">
-          <i class="fab fa-dribbble"> </i>
-        </a>
-      </li>
-    </ul>
-    <!-- Social buttons -->
-</footer>
-  </div>
-  <!-- Footer Elements -->
-
-  
-
-
-<!-- Footer -->
+   
+   
+   
+   
 </div>
- </div>
-<!--footer ends here-->
 
 
 

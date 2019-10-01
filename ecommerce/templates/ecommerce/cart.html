@@ -2,7 +2,7 @@
 {% block content %}
 {% load ecommerce_extras_filters %}
 <head>
-<title>Cart</title>
+<title> My Basket</title>
 <style>
   .column {
   float: left;
@@ -96,7 +96,7 @@ tr, td, th,{
 </style>
 
 
-<div  class="container">
+<div  class="container" style="bottom:0;">
 <table style="width:100%;">
   <form id='form' method="POST" action="" enctype="multipart/form-data">
   {%csrf_token%}
@@ -150,8 +150,9 @@ tr, td, th,{
 
 
        <td>
-         <button style="font-size:8px;color:black;"class="btn BUTTON_SHC" onclick="deleteRow(this)"><i style="font-size:48px;color:black;"class="fa fa-trash-o"></i></button>
-
+	   <a href="{%url 'home' %}">
+         <input style="font-size:8px;color:black;"class="btn BUTTON_SHC" onclick="deleteRow(this)"><i style="font-size:48px;color:black;"class="fa fa-trash-o"></i>
+<a>
            </td>
      </tr>
 
@@ -163,9 +164,10 @@ tr, td, th,{
 
 </table>
  <button  type="submit" class="btn BUTTON_ETG">Proceed to checkout</button>
-</div>
+
 
 </form>
+</div>
 <!--<div id='1'class="row">
 <div class="column1">
 

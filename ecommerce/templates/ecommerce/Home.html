@@ -16,6 +16,7 @@
 
 
 .carousel-caption{
+margin-bottom:20px;
   font:arial-black;
   font-weight:bold;
   font-size:2vw;
@@ -23,7 +24,7 @@
   font-style:oblique;
   bottom:-29px;
   width:80%;
-  margin-left:-164px;
+  margin-left:-70px;
   background:black;
 }
 .BUTTON_YZG {
@@ -64,34 +65,34 @@
 }
 
   </style>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="demo" class="carousel slide" data-ride="carousel" style="font-family:arial;font-weight:600;height:40%;margin-bottom:100px;">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="demo" class="carousel slide" data-ride="carousel" style="font-family:arial;font-weight:600;height:60%;margin-bottom:100px;">
 
   <ul class="carousel-indicators">
     <li data-target="#demo" data-slide-to="0" class="active"></li>
     <li data-target="#demo" data-slide-to="1"></li>
     <li data-target="#demo" data-slide-to="2"></li>
   </ul>
-  <div class="carousel-inner col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+  <div class="carousel-inner col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="carousel-item active col-lg-12 col-md-12 col-sm-12 col-xs-12">
     {%load static%}
-      <img  class="img-fluid img-thumbnail"src="{%static 'media/Category_image/download_1.jpg' %}" alt="Item Name" style="height:450px;">
+      <img  class="img-fluid img-thumbnail"src="{%static 'media/Category_image/Accessories.jpg' %}" alt="Item Name" style="height:500px;">
 
       <div class="carousel-caption">
 
-        <p>Save 50%</p>
+        <p>Control your look</p>
       </div>
     </div>
     <div class="carousel-item col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <img  class="img-fluid img-thumbnail" src="{%static 'media/Category_image/download_1.jpg' %}" style="height:450px;">
+      <img  class="img-fluid img-thumbnail" src="{%static 'media/Category_image/Electronics.jpg' %}" style="height:500px;">
       <div class="carousel-caption">
-      <p>Discounts up to 75%</p>
+      <p>Open the world</p>
       </div>
     </div>
     <div class="carousel-item col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <img  class="img-fluid img-thumbnail" src="{%static 'media/Category_image/download_1.jpg' %}" alt="Item Name 3" style="height:450px;">
+      <img  class="img-fluid img-thumbnail" src="{%static 'media/Category_image/female.jpg' %}" alt="Item Name 3" style="height:500px;">
       <div class="carousel-caption">
 
-        <p>Hurry up!</p>
+        <p>Own your space</p>
       </div>
     </div>
   </div>
@@ -106,23 +107,114 @@
     <!--bg-info,bg-primary, bg-danger, bg-warning and bg-success-->
     <!--<h1  style="color:#0c0e29; margin-top:100px; margin-bottom:20px;">Popular Categories</h1> -->
     
-	<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
-    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Spring Deals: Women</h2>
+
+
+<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;"> Shop By </h2>
     <table style="text-align:center;width:100%;">
       <tr style="text-align:center;width:100%;">
-    {%for good in Women_Resale%}
+    {%for item in query_1%}
     <td>
-      {%if good.images.all %}
   <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
-  
-   {%with good.images.all|first as default1%}
-   <li class="prod"> <img class ="images img-fluid img-rounded" style="width:250px;height:250px;margin-top:80px;" src="{{default1.AddImage.url}}"  > </li>
+  <li class="lead"style="margin-bottom:10px;">{{item.CategoryName}}</li>
+   <li class="prod"> <a href="{%url 'category-products' item.id%}"><img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{item.image.url}}"  ></a> </li>
+   
+
+
+</ul>
+</td>
+{%endfor%}
+</tr>
+
+</table>
+
+</div>
+<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
+    <table style="text-align:center;width:100%;">
+      <tr style="text-align:center;width:100%;">
+    {%for item in query_2%}
+    <td>
+  <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
+  <li class="lead"style="margin-bottom:10px;">{{item.CategoryName}}</li>
+   <li class="prod"><a href="{%url 'category-products' item.id%}"> <img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{item.image.url}}"  ></a> </li>
+   
+
+
+</ul>
+</td>
+{%endfor%}
+</tr>
+
+</table>
+
+</div>
+
+	
+   <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="align-content:middle;height:15%;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Trending</h2>
+    <table style="text-align:center;width:100%">;
+      <tr style="text-align:center;width:100%;">
+    {%for good, num in PopularList%}
+    <td style="text-align:center;width:25%;">
+<ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
+   {%with good.images.all|first as default2%}
+   <li class="prod"><a href="{% url 'product-page' good.id %}"> <img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{default2.AddImage.url}}"  ></a> </li>
    {%endwith%}
 
 
-   <li style="text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' good.id %}">{{good.Name|truncatewords:4}}</a></li>
-   <li style="text-align:center;font-weight:450;" id="price"> R {{good.Price}} </li>
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;" id="SeeMore"><a href="{% url 'product-page' good.id %}"style="text-decoration:none;color:black;">{{good.Name|truncatewords:4}}</a></li>
+   <li class="text-success lead"style="text-align:center;font-weight:550;font-size:14px;" id="price"> R {{good.Price}} </li>
 
+</ul>
+</td>
+{%endfor%}
+</tr>
+
+</table>
+
+
+
+</div>
+
+<style>
+ul {
+  list-style: none;
+}
+img {
+  width: 250px;
+  height: 260px;
+}
+table
+{
+  width: 100%
+}
+td{
+  width: 25%;
+}
+.prod{
+ 
+}
+
+</style>
+
+
+
+  <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Fresh </h2>
+    <table style="text-align:center;width:100%">;
+       <tr style="text-align:center;width:100%;">
+    {%for F in Fresh%}
+    <td style="text-align:center;width:25%;">
+      {%if F.images.all %}
+  <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
+   {%with F.images.all|first as default1%}
+   <li class="prod"><a href="{% url 'product-page' F.id %}"> <img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{default1.AddImage.url}}"  ></a> </li>
+   {%endwith%}
+
+
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;" id="SeeMore"><a href="{% url 'product-page' F.id %}"style="text-decoration:none;color:black;">{{F.Name|truncatewords:4}}</a></li>
+   <li class="text-success lead"style="text-align:center;font-weight:550;font-size:14px;" id="price"> R {{F.Price}} </li>
+   
 </ul>
 </td>
 {%endif%}
@@ -134,8 +226,33 @@
 </div>
 
 
-	<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
-    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Spring Deals: Men</h2>
+
+<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;"> Women </h2>
+    <table style="text-align:center;width:100%;">
+      <tr style="text-align:center;width:100%;">
+    {%for good in Women_Resale%}
+    <td>
+      {%if good.images.all %}
+  <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
+  
+   {%with good.images.all|first as default1%}
+   <li class="prod"> <a href="{% url 'product-page' good.id %}"><img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{default1.AddImage.url}}"  > </li>
+   {%endwith%}
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' good.id %}"style="text-decoration:none;color:black;">{{good.Name|truncatewords:4}}</a></li>
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;text-align:center;font-weight:450;" id="price"> R {{good.Price}} </li>
+
+</ul>
+</td>
+{%endif%}
+{%endfor%}
+</tr>
+
+</table>
+
+</div>
+<div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
+    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;"> Men </h2>
     <table style="text-align:center;width:100%;">
       <tr style="text-align:center;width:100%;">
 	
@@ -144,10 +261,10 @@
     <td style="text-align:center;width:25%;">  
   <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
    {%with good.images.all|first as default1%}
-   <li class="{{good.Name|truncatewords:4}}" style=""> <img class ="images img-fluid img-thumbnail" style="width:250px;height:250px;margin-top:80px;" src="{{default1.AddImage.url}}"> </li>
+   <li class="{{good.Name|truncatewords:4}}" style=""><a href="{% url 'product-page' good.id %}"> <img class ="images img-fluid rounded" style="width:250px;height:250px;margin-top:20px;" src="{{default1.AddImage.url}}"></a> </li>
    {%endwith%}
-   <li style="text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' good.id %}">{{good.Name|truncatewords:4}}</a></li>
-   <li style="text-align:center;font-weight:450;" id="price"> R {{good.Price}} </li>
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;" id="SeeMore"><a href="{% url 'product-page' good.id %}"style="text-decoration:none;color:black;">{{good.Name|truncatewords:4}}</a></li>
+   <li class="text-success lead" style="text-align:center;font-weight:550;font-size:14px;" id="price"> R {{good.Price}} </li>
    </ul>
   </td>
 {%endif%}
@@ -159,71 +276,13 @@
 </div>
 
 
+  
 
 
-
-    <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="align-content:middle;height:15%;">
-    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Fresh</h2>
-    <table style="text-align:center;width:100%">;
-       <tr style="text-align:center;width:100%;">
-    {%for F in Fresh%}
-    <td style="text-align:center;width:25%;">
-      {%if F.images.all %}
-  <ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
-   {%with F.images.all|first as default1%}
-   <li class="prod"> <img class ="images img-fluid img-thumbnail" style="width:250px;height:250px;margin-top:80px;" src="{{default1.AddImage.url}}"  > </li>
-   {%endwith%}
+ 
+	
 
 
-   <li style="text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' F.id %}">{{F.Name|truncatewords:4}}</a></li>
-   <li style="text-align:center;font-weight:450;" id="price"> R {{F.Price}} </li>
-
-</ul>
-</td>
-{%endif%}
-{%endfor%}
-</tr>
-
-</table>
-
-</div>
-
-
-    <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="align-content:middle;height:15%;">
-    <h2 style="text-align:center;magin-bottom:50px;font-weight:450;">Trending</h2>
-    <table style="text-align:center;width:100%">;
-      <tr style="text-align:center;width:100%;">
-    {%for good, num in PopularList%}
-    <td style="text-align:center;width:25%;">
-<ul style="list-style:none; margin-bottom:100px;text-align:center;width:100%">
-   {%with good.images.all|first as default2%}
-   <li class="prod"> <img class ="images img-fluid img-thumbnail" style="width:250px;height:250px;margin-top:80px;" src="{{default2.AddImage.url}}"  > </li>
-   {%endwith%}
-
-
-   <li style="text-align:center;font-weight:450;" id="SeeMore"><a href="{% url 'product-page' good.id %}">{{good.Name|truncatewords:4}}</a></li>
-   <li style="text-align:center;font-weight:450;" id="price"> R {{good.Price}} </li>
-
-</ul>
-</td>
-{%endfor%}
-</tr>
-
-</table>
-
-
-
-</div>
-
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        </script>
-
-        <script src="https://code.jQuery.com/jquery-3.4.1.js"></script>
         <script>
 
             function getOption() {
