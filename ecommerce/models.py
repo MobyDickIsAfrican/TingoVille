@@ -36,7 +36,7 @@ class Shop(models.Model):
     created = models.DateTimeField(auto_now_add = True, blank = True)
     STORE_CHOICES = (("CASUAL", "Casual Seller"), ("PROFESSIONAL", "Professional"))
     Type = models.CharField(max_length = 50, choices = STORE_CHOICES, null = True)
-    image = models.ImageField(upload_to = 'Shop_image', blank = True)
+    image = models.ImageField(upload_to = 'Shop_image', blank = False, null = True)
     
 
     #add cool customiseable stuff for the seller to make shop feel organic.

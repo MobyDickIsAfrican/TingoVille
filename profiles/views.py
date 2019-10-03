@@ -35,8 +35,7 @@ def SignUp(request):
             messsage = messages.success(request, f'Welcome {username}, Start Shopping by adding goods to your trolley')
             new_user = authenticate(username=SignUpForm.cleaned_data['username'],
                                     password=SignUpForm.cleaned_data['password1'],
-                                    email = SignUpForm.cleaned_data['email']
-                                    )
+                                    email = SignUpForm.cleaned_data['email'])
             login(request, new_user)
             return redirect('home')
     else:
@@ -44,12 +43,7 @@ def SignUp(request):
 
     context = {'SignUpForm': SignUpForm}
     return render(request, 'profiles/sign-up.html', context)
-
- #The custom Authentication backend is used (['django.contrib.auth.backends.ModelBackend'])
- #It does not provide protection against brute force attacks via any rate limiting mechanism.
- #You may either implement your own rate limiting mechanismin a custom auth backend, or use
- #the mechanisms provided by most Web servers. This is regrading the sign up views/'''
-
+    
 def CheckoutSignUp(request):
     if request.method == 'POST':
         SignUpForm = UserRegisterForm(request.POST)
@@ -66,8 +60,7 @@ def CheckoutSignUp(request):
             messsage = messages.success(request, f'Welcome {username}, Start Shopping by adding goods to your trolley')
             new_user = authenticate(username=SignUpForm.cleaned_data['username'],
                                     password=SignUpForm.cleaned_data['password1'],
-                                    email = SignUpForm.cleaned_data['email']
-                                    )
+                                    email = SignUpForm.cleaned_data['email'])
             login(request, new_user)
             return redirect('checkout')
     else:

@@ -40,4 +40,5 @@ ecommerce/migrations
 profiles/migrations
 .gitignore
 UserLogin.log
+Checkout.log
 >>>>>>> 5bbe5d92d0b4838875cb0a0e600768f12331505e
