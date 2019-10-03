@@ -24,7 +24,8 @@ urlpatterns = [
     path('about/', views.About, name = 'about'),
     path('returns/', views.Returns, name = 'return'),
     path('terms/', views.Terms, name = 'terms'),
-    path('seller-help/', views.Help, name = 'help')
+    path('seller-help/', views.Help, name = 'help'),
+    path('empty-basket', views.Empty, name = 'empty')
     
 ]
 #for development environment

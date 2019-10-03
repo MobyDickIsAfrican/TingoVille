@@ -23,7 +23,14 @@ def SignUp(request):
     if request.method == 'POST':
         SignUpForm = UserRegisterForm(request.POST)
         if SignUpForm.is_valid():
-            SignUpForm.save()
+            user = SignUpForm.save()
+            user.refresh_from_db()
+            user.account.First_Name = SignUpForm.cleaned_data.get('First_Name')
+            user.account.Last_Name = SignUpForm.cleaned_data.get('Last_Name')
+            user.account.contact = SignUpForm.cleaned_data.get('contact')
+            user.account.Age = SignUpForm.cleaned_data.get('Age')
+            user.account.email = SignUpForm.cleaned_data.get('email')
+            user.account.save()
             username = SignUpForm.cleaned_data.get('username')
             messsage = messages.success(request, f'Welcome {username}, Start Shopping by adding goods to your trolley')
             new_user = authenticate(username=SignUpForm.cleaned_data['username'],
@@ -47,9 +54,16 @@ def CheckoutSignUp(request):
     if request.method == 'POST':
         SignUpForm = UserRegisterForm(request.POST)
         if SignUpForm.is_valid():
-            SignUpForm.save()
+            user = SignUpForm.save()
+            user.refresh_from_db()
+            user.account.First_Name = SignUpForm.cleaned_data.get('First_Name')
+            user.account.Last_Name = SignUpForm.cleaned_data.get('Last_Name')
+            user.account.contact = SignUpForm.cleaned_data.get('contact')
+            user.account.Age = SignUpForm.cleaned_data.get('Age')
+            user.account.email = SignUpForm.cleaned_data.get('email')
+            user.account.save()
             username = SignUpForm.cleaned_data.get('username')
-            messsage = messages.success(request, f'Welcome {username}, Enter You Shipping and Billing Details to place your order ')
+            messsage = messages.success(request, f'Welcome {username}, Start Shopping by adding goods to your trolley')
             new_user = authenticate(username=SignUpForm.cleaned_data['username'],
                                     password=SignUpForm.cleaned_data['password1'],
                                     email = SignUpForm.cleaned_data['email']
@@ -60,7 +74,7 @@ def CheckoutSignUp(request):
         SignUpForm = UserRegisterForm()
 
     context = {'SignUpForm': SignUpForm}
-    return render(request, 'profiles/checkout-sign-up.html', context)
+    return render(request, 'profiles/sign-up.html', context)
 
 class Login_session(object):
     def __init__(self, vars):
@@ -120,8 +134,8 @@ def RegisterShop(request):
             MyShop = RegisterShopForm.save(commit = False)
             MyShop.name = shop_account
             MyShop.save()
-            inventory = Inventory(shop = MyShop)
-            inventory.save()
+            #inventory = Inventory(shop = MyShop)
+            #inventory.save()
             Shop_Name = RegisterShopForm.cleaned_data['Shop_Name']
             message = messages.success(request, f'Congratulations your Shop, {Shop_Name} has been created. Start adding products! We have created an inventory for you')
             return redirect('my-shop')
@@ -211,6 +225,7 @@ def AccountView(request):
         user_account.CheckProcessedFully()
         user_account.CancelledOrders = []
         user_account.ProcessedOrders = []
+        user_account.save(update_fields = ['ProcessedOrders'])
         context = {'query': query, 'dates': dates, 'numbers': numbers, 'AccountDetails': AccountDetails, 'notifications': notifications, 'cancel_message':cancel_message}
         return render(request, 'profiles/account.html', context)
 

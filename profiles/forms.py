@@ -72,7 +72,7 @@ ProductImageFormset = formset_factory(ProductImageForm, extra =1)
 UpdateImageFormset = modelformset_factory(ProductImage, fields = ('AddImage', 'name', 'Stock', 'sizes'))
 
 class QuantityForm(forms.Form):
-    quantity = quantity = forms.IntegerField(initial = 0)
+    quantity = quantity = forms.IntegerField(initial = 0, widget = forms.NumberInput(attrs = {'style': 'width:60px', 'size': '10'}))
     FormId = forms.IntegerField(widget = forms.HiddenInput(), required = False)
     ProductId = forms.IntegerField(widget = forms.HiddenInput(), required = False)
 

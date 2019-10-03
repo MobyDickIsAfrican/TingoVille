@@ -22,7 +22,7 @@ import certifi
 from django_user_agents.utils import get_user_agent
 from django.conf import settings
 from django.core.paginator import Paginator
-
+import logging
 
 def keyfunc(x):
     return x[1]
@@ -239,11 +239,15 @@ def Checkout(request):
             details['ZipCode'] = form.cleaned_data['ZipCode']
             cart_account = get_object_or_404(Account, user = request.user)
             shoppingcart = ShoppingCartOrder.objects.create(Owner = cart_account)
+            messages = []
             for key, value in trolley.items():
                 p = Product.objects.get(id = int(value['item_id']))
                 orderitem = OrderItem.objects.create(product = p, quantity = value['quantity'], attribute = ProductImage.objects.get(id =int(key)).name, size = value['size'])
                 shoppingcart.CartOrder.add(orderitem.id)
             shoppingcart.save()
+            messages.append(shoppingcart.ReferenceNumber())
+            logging.basicConfig(filename = 'Checkout.log', level = logging.INFO, format = '%(message)s')
+            logging.info(f'{messages}')
             cart_id = shoppingcart.id
             progress_bar = ProgressBar.objects.create(account = cart_account, cart_id = cart_id )
             progress_bar.save()
@@ -262,11 +266,13 @@ def Checkout(request):
     else:
         form = CheckoutForm()
         cost = 0
+        number = 0
         for vars in trolley.values():
             cost = cost + int(vars['quantity'])*float(vars['Price'])
             request.session['cost'] = cost
             request.session.modified = True
-    context = {'form': form, 'cost': cost}
+            number +=1
+    context = {'form': form, 'cost': cost, 'number': number}
     return render(request, 'ecommerce/checkout.html', context)
 
 def AjaxView(request):
@@ -346,7 +352,7 @@ def CategoryView(request):
 def CategoryProducts(request, id):
     cats = ProductCategory.objects.get(id = id)
     pros = cats.products.all()
-    paginator = Paginator(pros, 2)
+    paginator = Paginator(pros, 25)
     page = request.GET.get('page')
     pro = paginator.get_page(page)
     context = {'cats': cats, 'pro': pro}
@@ -453,3 +459,9 @@ def Terms(request):
 
 def Help(request):
     return render(request, 'ecommerce/seller-help.html', context = {})
+
+def Empty(request):
+    trolley = {}
+    request.session['cart'] = trolley
+    request.session.modified = True
+    return redirect('my-cart')

@@ -16,6 +16,11 @@ class Account(models.Model):
     ProcessedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
     SortedOrders = ArrayField(ArrayField(models.IntegerField(blank = True), default = list, blank = True), default = list, blank = True)
     CancelledOrders = ArrayField(models.CharField(blank = True, max_length = 100), default = list, blank = True)
+    email = models.CharField(max_length = 100, unique = True, null = True)
+    First_Name = models.CharField(max_length = 50, null = True, blank = False)
+    Last_Name = models.CharField(max_length = 60, null = True, blank = False)
+    contact = models.CharField(max_length = 11, unique = True, null = True)
+    Age = models.IntegerField(default = 21)
 
     def Message(self, cart_id, order_id):
         self.ProcessedOrders.append([cart_id, order_id])

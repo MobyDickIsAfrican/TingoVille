@@ -39,7 +39,7 @@ td{
           <hr />
             {%for item, date , number, Delivery_Date, cost in AccountDetails%}
             <tr>
-<td>{{number}}</td>
+<td>{{number|truncatechars:7}}</td>
 <td>{{date}}</td>
 <td>{{Delivery_Date}}</td>
 <td>{{cost}}</td>
@@ -62,4 +62,24 @@ td{
 
 {%endfor%}
 </table>
+</div>
+
+<div style="margin-top:15px;"class="container">
+  <h4>UPDATES:</h4>
+<table style="width:100%; background-color:initial;">
+
+{% for note in cancel_message%}
+
+<tr style="width:100%;">
+  <td style="width:100%;text-align:left;">
+{{note}}
+     </td>
+
+</tr>
+
+{%endfor%}
+</table>
+</div
+
+
 {% endblock %}

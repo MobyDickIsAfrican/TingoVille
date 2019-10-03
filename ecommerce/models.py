@@ -9,6 +9,7 @@ from PIL import Image
 from django.core.files import File
 import os
 from django.urls import reverse
+from django.db.models.signals import post_save
 
 def compress(image):
     im = Image.open(image)
@@ -159,14 +160,20 @@ class Inventory (models.Model):
                     if item.name == attribute:
                         item.ToBeDelivered = item.ToBeDelivered + quantity
                         item.Stock = item.Stock - quantity
-                        item.save(update_fields = ['ToBeDelivered'])
+                        item.save(update_fields = ['ToBeDelivered', 'Stock'])
                         break
                 self.AcceptedOrders.append(message)
                 self.AcceptedUsersIds.append(cart_id)
                 self.AcceptedProductIds.append(product_id)
                 self.AcceptedObjectId.append(obj_id)
-                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds', 'AcceptedObjectId'])
+                return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds', 'AcceptedObjectId'])
             num += 1
+
+def Create_Inventory(sender, instance, created, **kwargs):
+    if created:
+        Inventory.objects.get_or_create(shop = instance)
+post_save.connect(Create_Inventory, sender = Shop)
+
 
 class OrderItem(models.Model):
     #on_delete is not a valid keyword argument for ManyToManyField
@@ -202,8 +209,7 @@ class ShoppingCartOrder(models.Model):
 
 
     def ReferenceNumber(self):
-        date = self.Date_Ordered.date()
-        date = date.strftime("%d%m%Y%H%M%S")
+        date = self.Date_Ordered.strftime("%d%m%Y%H%M%S")
         cart_id_string = str(self.id)
         account_str = str(self.Owner.id)
         #creates a unique reference number for the cart when an order is placed
@@ -229,8 +235,11 @@ class ProductImage(models.Model):
     ToBeDelivered = models.IntegerField(default = 0)
     #need to manually insert the number of items delivered in django admin
     Delivered = models.IntegerField(default = 0)
+    Just_Delivered = models.IntegerField(default = 0)
     Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
     sizes = models.CharField(max_length = 100, null = True)
+    Returns = models.IntegerField(default = 0)
+    Deactivated = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name
@@ -242,16 +251,26 @@ class ProductImage(models.Model):
             store = pro.shop
             if store.Type == 'Casual Seller':
                 #if there is only one productimage, delete the product
-                if pro.images.all().count() == 1:
-                    return pro.delete()
+                if self.Deactivated == True:
+                    if pro.images.all().count() == 1:
+                        return pro.delete()
+                    else:
+                        return self.delete()
                 else:
-                    return self.delete()
+                    self.ToBeDelivered = self.ToBeDelivered - self.Just_Delivered
+                    self.Delivered = self.Delivered + self.Just_Delivered
+                    self.Sales = self.image.Price*(self.Delivered)
+                    self.Just_Delivered  = 0
+                    return super(ProductImage, self).save(*args, **kwargs)
         else:
-            self.ToBeDelivered = self.ToBeDelivered - self.Delivered
-            self.Delivered = 0
-            #img = self.AddImage
-            #content = img.read()
-            #size = os.stat(os.listdir(img.path)).st_size
-            #if (size/1000) > 100:
-            #self.AddImage = compress(img)
+            self.Delivered = self.Delivered + self.Just_Delivered
+            self.Sales = self.image.Price*(self.Delivered)
+            self.Just_Delivered  = 0
             return super(ProductImage, self).save(*args, **kwargs)
+            
+        def delete(self, *args, **kwargs):
+            pro = self.image
+            if pro.images.all().count() == 1:
+                return pro.delete()
+            else:
+                return super(ProductImage, self).delete(*args, **kwargs)
