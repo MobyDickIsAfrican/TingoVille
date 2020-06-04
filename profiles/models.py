@@ -72,9 +72,6 @@ class ProgressBar(models.Model):
         self.progress = 40
         return self.save(update_fields =['progress'])
 
-#def CollectOrder(cart_id):
-#pass
-
     def save(self, *args, **kwargs):
         if self.completed:
             return self.delete()
