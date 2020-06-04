@@ -22,7 +22,6 @@ class Basket(object):
     	self.basket[str(attribute_id)]['quantity'] = quantity
 
     def Remove(self, attribute_id):
-        #the remove option will also be a form
         del self.basket[str(attribute_id)]
 
     def save(self):
@@ -43,4 +42,3 @@ class Basket(object):
 
         cart_list =list(zip(Item_ids, CartQuantities, CartPrices, Attribute_ids))
         return cart_list
-    #I need to add a functionality such that when a Shop owner deletes a product, it is removed from the basket.
