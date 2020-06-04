@@ -13,7 +13,6 @@ class UserRegisterForm(UserCreationForm):
     Last_Name = forms.CharField()
     contact = forms.CharField()
     Age = forms.IntegerField()
-    #need to validate that the contact is a valid phone number
 
     class Meta:
         model = User
@@ -31,36 +30,6 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['Name', 'ProductType', 'Price', 'Description', 'category', 'Resale']
-        '''
-    def clean_Description(self):
-        descriptiondata = self.cleaned_data['Description']
-        try:
-            commalist = descriptiondata.split(';')
-        except Exception:
-            raise forms.ValidationError('Your Description does not have semi colons')
-
-        finally:
-            RawList = []
-            contents = {}
-            def NotZero(x):
-                return x == ' '
-            for item in commalist:
-                #try:
-
-                raw_key, raw_value = item.split(':')
-                var1 = itertools.dropwhile(NotZero, raw_key)
-                raw_key = ''.join(list(itertools.dropwhile(NotZero, var1[::-1])))
-                raw_key = raw_key[::-1]
-                var2 = itertools.dropwhile(NotZero, raw_key)
-                raw_value = ''.join(list(itertools.dropwhile(NotZero, var2[::-1])))
-                raw_value = raw_value[::-1]
-                raw_key.capitalize()
-                raw_value.capitalize()
-                contents[raw_key]  = raw_value
-                '''
-                    #raise forms.ValidationError('You forgot (:) in your description')
-
-
 
 class ProductImageForm(forms.ModelForm):
 
@@ -79,7 +48,6 @@ class QuantityForm(forms.Form):
 class CheckoutSignUpForm(UserCreationForm):
     email = forms.EmailField()
     contact = forms.IntegerField()
-    #need to validate that the contact is a valid phone number
 
     class Meta:
         model = User
