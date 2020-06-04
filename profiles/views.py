@@ -127,8 +127,6 @@ def RegisterShop(request):
             MyShop = RegisterShopForm.save(commit = False)
             MyShop.name = shop_account
             MyShop.save()
-            #inventory = Inventory(shop = MyShop)
-            #inventory.save()
             Shop_Name = RegisterShopForm.cleaned_data['Shop_Name']
             message = messages.success(request, f'Congratulations your Shop, {Shop_Name} has been created. Start adding products! We have created an inventory for you')
             return redirect('my-shop')
@@ -136,8 +134,6 @@ def RegisterShop(request):
         this_account = get_object_or_404(Account, user = request.user)
         if Shop.objects.filter(name = this_account).exists():
             return redirect('my-shop')
-        #if request.user.account.shop.all().exists():
-            #return redirect('my-shop')
         RegisterShopForm = ShopForm()
 
     context = {'RegisterShopForm': RegisterShopForm}
@@ -192,7 +188,6 @@ def AccountView(request):
         numbers = []
         Delivery_Dates = []
         costs = []
-        #i still need to a short order description here: 3x Red Shirt, 4x white Shoes.
         for item in query:
             dates.append(item.Date_Ordered.date())
             Delivery_Date = item.Date_Ordered.date() + timedelta(days = 3)
@@ -255,21 +250,12 @@ def InventoryView(request):
     id = this_shop.inventory.id
     inventory = Inventory.objects.get(id = id)
     acceptedproducts =[]
-    #inventory.PendingOrders = []
-    #inventory.PendingProductIds = []
-    #inventory.PendingOrderIds = []
-    #inventory.PendingObjectId = []
-    #inventory.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId'])
     for p in Product.objects.filter(id__in = inventory.AcceptedProductIds):
         acceptedproducts.append(p.id)
     PendingQuerySet = list(zip(inventory.PendingOrders, inventory.PendingProductIds, inventory.PendingOrderIds, inventory.PendingObjectId, Product.objects.filter(id__in = inventory.PendingProductIds)))
     AcceptedQuerySet = list(zip(inventory.AcceptedOrders, inventory.AcceptedProductIds, inventory.AcceptedUsersIds, acceptedproducts, inventory.AcceptedObjectId))
     shop = inventory.shop
     QForms = []
-    #inventory.PendingOrders = []
-    #inventory.PendingProductIds = []
-    #inventory.PendingOrderIds = []
-    #inventory.save(update_fields = ['PendingOrders', 'PendingProductIds', 'PendingOrderIds'])
     items = []
     for item in shop.product_set.all():
         for item2 in item.images.all():
@@ -340,5 +326,4 @@ def DeclineOrder(request, order_id, cart_id):
     user_account.Declined(product_name)
     inventory = Inventory.objects.get(id = inventory_id)
     inventory.Remove(order_id)
-    #instance.delete()
     return redirect('inventory')
