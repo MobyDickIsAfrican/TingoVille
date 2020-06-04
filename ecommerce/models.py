@@ -11,6 +11,7 @@ import os
 from django.urls import reverse
 from django.db.models.signals import post_save
 
+#function to compress uploaded images
 def compress(image):
     im = Image.open(image)
     im_io = BytesIO()
@@ -19,8 +20,7 @@ def compress(image):
     return new_image
 
 
-## creating a shop model for the seller. The AUTH_USER_MODEL is used to link the seller to the user who actually
-## created the shop or sold the product.
+## creating a shop model for the seller. 
 
 class Shop(models.Model):
     name = models.ForeignKey(Account, on_delete = models.CASCADE, related_name = 'shop', null = True)
@@ -38,10 +38,6 @@ class Shop(models.Model):
     Type = models.CharField(max_length = 50, choices = STORE_CHOICES, null = True)
     image = models.ImageField(upload_to = 'Shop_image', blank = False, null = True)
     
-
-    #add cool customiseable stuff for the seller to make shop feel organic.
-
-    # Ask for preferred method of payment
     def __str__(self):
         return str(self.Shop_Name)
 
@@ -50,8 +46,7 @@ class Shop(models.Model):
         doc = ShopDocument(Name = self.Shop_Name, meta = {'id': self.id})
         return doc.save()
 
-    ##def Payment_Options(self)
-    ##return None
+    
 
 class ProductCategory (models.Model):
     CategoryName = models.CharField(max_length = 50, unique= True)
@@ -65,7 +60,6 @@ class ProductCategory (models.Model):
         #the categories are ordered in alphabetical order
         verbose_name= 'product_category'
         verbose_name_plural = 'categories'
-        # i dont know wahts happening here
     def indexing(self):
         doc = CategoryDocument(Name = self.CategoryName, meta = {'id': self.id})
         return doc.save()
@@ -76,24 +70,13 @@ class Product(models.Model):
     shop = models.ForeignKey(Shop, on_delete = models.CASCADE, null = True)
     #the category and product have a many to many relationship
     category = models.ForeignKey(ProductCategory, related_name = 'products', on_delete = models.CASCADE, null = True)
-    ##there should be an autocorrect and option to choose from relevent search options added
-    #inventory = models.ForeignKey(Inventory, on_delete = models.SET_NULL) v
     Name = models.CharField(max_length = 200, default = 'write here')
     ProductType = models.CharField(max_length = 200, default = 'write type here, i.e is it a cellphone, radio etc.')
     Price = models.DecimalField(max_digits = 9, decimal_places = 2)
-    #Stock = models.IntegerField(default = 1)
-    #image = models.ImageField(upload_to = 'Product_image', blank = True)
-    #change made here
     Description = models.TextField(default = 'follow the campus shop guides for creating your description')
     Resale = models.BooleanField(default = False)
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
-
-    #class Meta:
-        #index = (('Name','id'),)
-        #Ordering = ('-created',)
-        #Product_Ordering = () this is to order by smalles or largest price
-        #pass
 
     def __str__(self):
             return self.Name
@@ -103,6 +86,7 @@ class Product(models.Model):
         doc = ProductDocument(ProductType = self.ProductType, Name = self.Name, Description = self.Description, meta = {'id' : self.id})
         return doc.save()
 
+#inventory management allowing seller to approve sales of items and update item quantities
 class Inventory (models.Model):
     shop = models.OneToOneField(Shop, on_delete= models.CASCADE, related_name = 'inventory', null = True)
     PendingOrders = ArrayField(models.CharField(blank = True, max_length = 255), default = list,  blank = True)
@@ -168,7 +152,7 @@ class Inventory (models.Model):
                 self.AcceptedObjectId.append(obj_id)
                 return self.save(update_fields = ['PendingOrders', 'PendingOrderIds', 'PendingProductIds', 'PendingObjectId', 'AcceptedOrders', 'AcceptedUsersIds', 'AcceptedProductIds', 'AcceptedObjectId'])
             num += 1
-
+#create signal to save inventory model whenever a shop is added
 def Create_Inventory(sender, instance, created, **kwargs):
     if created:
         Inventory.objects.get_or_create(shop = instance)
@@ -176,17 +160,10 @@ post_save.connect(Create_Inventory, sender = Shop)
 
 
 class OrderItem(models.Model):
-    #on_delete is not a valid keyword argument for ManyToManyField
     product = models.ForeignKey(Product, related_name = 'orders', on_delete = models.CASCADE, null= True)
-    #a ForeignKey has to be used abovem istead of ManyToManyField.
-    #we us a related_name so that we can be able to track how many orders a particular product has, before completion of order
-    #a product is created once, but the quantity can be changed
-    #OrderExists = models.BooleanField(default = False)
-    #I think this should be true
     quantity = models.IntegerField(default = 1)
     attribute = models.CharField(default = 'Default', max_length = 200,)
     size = models.CharField(max_length = 100, null = True)
-    #auto_now is true, as product is added to the cart
     Date_Added = models.DateTimeField(auto_now_add = True)
 
 
@@ -194,28 +171,15 @@ class OrderItem(models.Model):
         return self.product.Name
 
 class ShoppingCartOrder(models.Model):
-    #need to define a remove method
-    #need to define an Increase_Quantity method
-    #need to define an add_to_cart methodn
-    #this model has to be above the OrderItem, and a ForeignKey included in the Orderitem.
     CartOrder = models.ManyToManyField(OrderItem, related_name = 'cartnumbers')
-    #change this to
     Owner = models.ForeignKey(Account, on_delete =models.CASCADE, related_name = 'carts')
-    #related_name was changed to 'carts'
-    #this also has to be changed to a one to one relationship, but the existing cart has to be deleted upon completion of order
     Date_Ordered = models.DateTimeField(auto_now= True)
-    # We need to add a boolean conditional that tells us if the cart exists.
-    #need to add a description to this model. It will have a default.
 
 
     def ReferenceNumber(self):
         date = self.Date_Ordered.strftime("%d%m%Y%H%M%S")
         cart_id_string = str(self.id)
         account_str = str(self.Owner.id)
-        #creates a unique reference number for the cart when an order is placed
-        #or when the function is called.
-        #A is used to distinquish the user account number from the reference
-        #number
         return account_str + 'A' + cart_id_string + date
 
     def CartList(self):
@@ -233,7 +197,6 @@ class ProductImage(models.Model):
     Stock = models.IntegerField(default = 1)
     name = models.CharField(max_length = 200, default = 'write here')
     ToBeDelivered = models.IntegerField(default = 0)
-    #need to manually insert the number of items delivered in django admin
     Delivered = models.IntegerField(default = 0)
     Just_Delivered = models.IntegerField(default = 0)
     Sales = models.DecimalField(default = 0, decimal_places = 2, max_digits = 9)
