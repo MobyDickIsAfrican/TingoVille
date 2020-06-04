@@ -9,6 +9,8 @@ from django.conf import settings
 http_auth = settings.HTTP_AUTH
 host = settings.HOST
 
+#This script is to add database models to elasticsearch cluster
+
 connections.create_connection(hosts = host, http_auth = http_auth, use_ssl=True, ca_certs=certifi.where())
 
 @registry.register_document
