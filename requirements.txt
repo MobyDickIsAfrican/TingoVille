@@ -12,7 +12,7 @@ ipaddress==1.0.22
 kiwisolver==1.1.0
 kombu==4.6.3
 matplotlib==2.2.4
-numpy==1.16.2
+numpy==1.22.0
 Pillow==6.0.0
 psycopg2-binary==2.8.2
 pyparsing==2.4.2
